@@ -2811,8 +2811,22 @@ document.addEventListener('change', function(e) {
 function signInWithGoogle(){
   sb.auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: window.location.href }
+    options: {
+      redirectTo: 'https://lymancorp.github.io/POTS/',
+      skipBrowserRedirect: false
+    }
   });
+}
+
+// Handle auth redirect on page load
+async function handleAuthRedirect(){
+  var hash = window.location.hash;
+  if(hash && hash.includes('access_token')){
+    var {data,error} = await sb.auth.getSession();
+    if(data.session){
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }
 }
 
 async function initApp() {
@@ -2892,7 +2906,7 @@ async function initApp() {
   renderWeek();
 }
 
-initApp();
+handleAuthRedirect().then(function(){ initApp(); });
 </script>
 </div><!-- /app-wrap -->
 <div id="login-screen" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;">
