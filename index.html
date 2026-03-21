@@ -587,6 +587,16 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 10px 0; 
 <!-- NAV -->
 <div class="nav-tabs">
   <div class="nav-logo">POTS <em>rehab</em></div>
+  <div id="nav-account" style="display:none;margin-left:auto;position:relative;">
+    <button onclick="toggleAccountMenu()" id="acct-btn" style="display:flex;align-items:center;gap:8px;background:none;border:1px solid var(--border);border-radius:20px;padding:4px 10px 4px 4px;cursor:pointer;">
+      <img id="acct-avatar" src="" style="width:24px;height:24px;border-radius:50%;display:none;" />
+      <span id="acct-name" style="font-size:12px;font-family:var(--mono);color:var(--sub);"></span>
+    </button>
+    <div id="acct-menu" style="display:none;position:absolute;right:0;top:36px;background:var(--card);border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);min-width:160px;z-index:100;">
+      <div id="acct-email" style="padding:10px 14px;font-size:11px;color:var(--dim);font-family:var(--mono);border-bottom:1px solid var(--border);"></div>
+      <button onclick="signOut()" style="width:100%;text-align:left;padding:10px 14px;background:none;border:none;font-size:13px;font-family:var(--mono);color:var(--red);cursor:pointer;">sign out</button>
+    </div>
+  </div>
   <button class="tab-btn active" onclick="showTab('schedule')">schedule</button>
   <button class="tab-btn" onclick="showTab('logger')">log session</button>
   <button class="tab-btn" onclick="showTab('sessions')">sessions</button>
@@ -2808,6 +2818,26 @@ document.addEventListener('change', function(e) {
 });
 
 // ── ASYNC INIT: load from Supabase, fall back to localStorage ─────────
+function toggleAccountMenu(){
+  var m = document.getElementById('acct-menu');
+  m.style.display = m.style.display==='none' ? 'block' : 'none';
+}
+
+// Close menu when clicking outside
+document.addEventListener('click', function(e){
+  if(!document.getElementById('nav-account')?.contains(e.target)){
+    var m = document.getElementById('acct-menu');
+    if(m) m.style.display='none';
+  }
+});
+
+async function signOut(){
+  await sb.auth.signOut();
+  document.getElementById('app-wrap').style.display='none';
+  document.getElementById('nav-account').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+}
+
 function signInWithGoogle(){
   sb.auth.signInWithOAuth({
     provider: 'google',
@@ -2839,6 +2869,18 @@ async function initApp() {
   currentUser = session.user;
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app-wrap').style.display = 'block';
+  // Show account button
+  var acctWrap = document.getElementById('nav-account');
+  if(acctWrap){
+    acctWrap.style.display = 'flex';
+    var meta = currentUser.user_metadata || {};
+    var name = meta.name || meta.full_name || currentUser.email.split('@')[0];
+    var avatar = meta.avatar_url || meta.picture || '';
+    document.getElementById('acct-name').textContent = name;
+    document.getElementById('acct-email').textContent = currentUser.email;
+    var avatarEl = document.getElementById('acct-avatar');
+    if(avatar){ avatarEl.src=avatar; avatarEl.style.display='block'; }
+  }
 
   // Show loading
   document.getElementById('today-exp-wrap').innerHTML = '<div style="padding:20px;color:var(--sub);font-family:var(--mono);font-size:11px;">loading from database…</div>';
