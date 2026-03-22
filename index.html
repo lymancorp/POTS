@@ -813,6 +813,68 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; 
 
 
 
+
+/* ── POLAR SYNC ── */
+.polar-strip-inner {
+  background: var(--s1); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 12px 16px;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  box-shadow: var(--shadow-sm);
+}
+.polar-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--dim); flex-shrink: 0; transition: all 0.3s;
+}
+.polar-dot.connected { background: #2a8a4a; box-shadow: 0 0 6px rgba(42,138,74,0.5); }
+.polar-dot.syncing   { background: #c87800; box-shadow: 0 0 6px rgba(200,120,0,0.5); animation: hrv-pulse 1s ease-in-out infinite; }
+.polar-text { flex: 1; font-family: var(--mono); font-size: 11px; color: var(--sub); }
+.polar-btn {
+  border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px;
+  font-family: var(--mono); font-size: 10px; cursor: pointer;
+  background: var(--s2); color: var(--sub); transition: all 0.12s;
+  white-space: nowrap;
+}
+.polar-btn:hover { border-color: var(--border2); color: var(--text); }
+.polar-btn.connect { background: var(--acc); border-color: var(--acc); color: #fff; }
+.polar-btn.connect:hover { background: var(--acc-mid); }
+.polar-btn.sync { background: var(--grn-bg); border-color: #2a8a4a; color: var(--green); }
+.polar-btn.sync:hover { background: #2a8a4a; color: #fff; }
+
+/* Polar import preview */
+.polar-preview {
+  background: var(--s1); border: 1px solid var(--amber);
+  border-radius: var(--radius-lg); padding: 16px 18px;
+  margin-top: 10px;
+}
+.polar-preview-hd {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--amber); margin-bottom: 12px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.polar-session-row {
+  background: var(--s2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 14px; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.polar-session-row.selected { border-color: #2a8a4a; background: var(--grn-bg); }
+.polar-session-check {
+  width: 16px; height: 16px; border-radius: 4px;
+  border: 1.5px solid var(--border2); cursor: pointer;
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  transition: all 0.12s; background: var(--s1);
+}
+.polar-session-check.checked { background: #2a8a4a; border-color: #2a8a4a; color: #fff; font-size: 10px; }
+.polar-session-info { flex: 1; }
+.polar-session-date { font-family: var(--mono); font-size: 11px; color: var(--text); font-weight: 500; }
+.polar-session-meta { font-family: var(--mono); font-size: 10px; color: var(--sub); margin-top: 2px; }
+.polar-confirm-btn {
+  background: #2a8a4a; border: none; border-radius: 7px;
+  padding: 9px 18px; font-family: var(--mono); font-size: 11px;
+  color: #fff; cursor: pointer; transition: all 0.12s; margin-top: 4px;
+}
+.polar-confirm-btn:hover { opacity: 0.88; }
+.polar-confirm-btn:disabled { opacity: 0.5; cursor: default; }
+
 /* ── HRV SCAN ── */
 .hrv-scan-btn {
   background: var(--s1); border: 1px solid var(--border);
@@ -1148,6 +1210,9 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; 
 
     <!-- HRV SCAN PANEL -->
     <div id="hrv-panel" style="display:none;margin-top:10px;"></div>
+
+    <!-- POLAR SYNC STRIP -->
+    <div id="polar-strip" style="margin-top:10px;display:none;"></div>
 
     <!-- Week nav -->
     <div class="week-nav">
@@ -1790,6 +1855,197 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; 
 <div class="toast" id="toast"></div>
 
 <script>
+
+
+// ── POLAR INTEGRATION ────────────────────────────────────────────────────
+const SUPABASE_FUNCTIONS = 'https://bpvgkgayivflrhaypjpc.supabase.co/functions/v1';
+let polarConnected = false;
+let polarPendingSessions = [];
+let polarSelectedIds = new Set();
+
+async function initPolar() {
+  // Check if polar is connected
+  const { data } = await sb.from('polar_tokens')
+    .select('polar_user_id')
+    .eq('user_id', currentUser.id)
+    .maybeSingle();
+
+  polarConnected = !!data;
+
+  // Check URL for polar_connected or polar_error params
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('polar_connected') === '1') {
+    polarConnected = true;
+    showToast('Polar connected!');
+    // Clean URL
+    window.history.replaceState({}, '', window.location.pathname + window.location.hash);
+  }
+  if (params.get('polar_error')) {
+    showToast('Polar error: ' + params.get('polar_error'));
+    window.history.replaceState({}, '', window.location.pathname + window.location.hash);
+  }
+
+  renderPolarStrip();
+}
+
+function renderPolarStrip() {
+  const strip = document.getElementById('polar-strip');
+  if (!strip) return;
+  strip.style.display = 'block';
+  strip.innerHTML = `<div class="polar-strip-inner">
+    <div class="polar-dot ${polarConnected ? 'connected' : ''}"></div>
+    <div class="polar-text">${polarConnected ? 'Polar connected' : 'Polar not connected'}</div>
+    ${!polarConnected
+      ? `<button class="polar-btn connect" onclick="connectPolar()">Connect Polar</button>`
+      : `<button class="polar-btn sync" onclick="syncPolar()" id="polar-sync-btn">↓ sync sessions</button>
+         <button class="polar-btn" onclick="disconnectPolar()">disconnect</button>`
+    }
+  </div>
+  <div id="polar-preview-wrap"></div>`;
+}
+
+async function connectPolar() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+
+  const res = await fetch(`${SUPABASE_FUNCTIONS}/polar-auth`, {
+    headers: { 'Authorization': `Bearer ${session.access_token}` }
+  });
+  const data = await res.json();
+  if (data.url) {
+    window.location.href = data.url;
+  } else {
+    showToast('Failed to get Polar auth URL');
+  }
+}
+
+async function syncPolar() {
+  const btn = document.getElementById('polar-sync-btn');
+  if (btn) { btn.textContent = 'syncing…'; btn.disabled = true; }
+
+  const dot = document.querySelector('.polar-dot');
+  if (dot) dot.classList.add('syncing');
+
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+
+  const res = await fetch(`${SUPABASE_FUNCTIONS}/polar-sync`, {
+    headers: { 'Authorization': `Bearer ${session.access_token}` }
+  });
+  const data = await res.json();
+
+  if (dot) dot.classList.remove('syncing');
+  if (btn) { btn.textContent = '↓ sync sessions'; btn.disabled = false; }
+
+  if (data.error) {
+    showToast('Sync error: ' + data.error);
+    return;
+  }
+
+  if (data.synced === 0) {
+    showToast('No new Polar sessions');
+    return;
+  }
+
+  // Show preview
+  polarPendingSessions = data.sessions;
+  polarSelectedIds = new Set(data.sessions.map(s => s.id));
+  renderPolarPreview();
+}
+
+function renderPolarPreview() {
+  const wrap = document.getElementById('polar-preview-wrap');
+  if (!wrap || !polarPendingSessions.length) return;
+
+  wrap.innerHTML = `<div class="polar-preview">
+    <div class="polar-preview-hd">
+      <span>${polarPendingSessions.length} new session${polarPendingSessions.length > 1 ? 's' : ''} from Polar</span>
+      <span style="font-size:10px;color:var(--dim);">select which to import</span>
+    </div>
+    ${polarPendingSessions.map(s => `
+      <div class="polar-session-row ${polarSelectedIds.has(s.id) ? 'selected' : ''}" id="polar-row-${s.id}">
+        <div class="polar-session-check ${polarSelectedIds.has(s.id) ? 'checked' : ''}"
+             onclick="togglePolarSession('${s.id}')">${polarSelectedIds.has(s.id) ? '✓' : ''}</div>
+        <div class="polar-session-info">
+          <div class="polar-session-date">${s.date}</div>
+          <div class="polar-session-meta">${s.notes}</div>
+        </div>
+        <span style="font-family:var(--mono);font-size:9px;padding:2px 8px;border-radius:4px;background:var(--grn-bg);color:var(--green);border:1px solid rgba(42,138,74,0.3);">${s.type}</span>
+      </div>`).join('')}
+    <div style="margin-top:10px;display:flex;gap:8px;align-items:center;">
+      <button class="polar-confirm-btn" onclick="confirmPolarImport()" id="polar-confirm-btn">
+        ✓ import ${polarPendingSessions.length} session${polarPendingSessions.length > 1 ? 's' : ''}
+      </button>
+      <button class="polar-btn" onclick="cancelPolarImport()">cancel</button>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--dim);">
+        ETCO2 fields will be blank — fill them in after import
+      </span>
+    </div>
+  </div>`;
+}
+
+function togglePolarSession(id) {
+  const numId = parseFloat(id);
+  if (polarSelectedIds.has(numId)) {
+    polarSelectedIds.delete(numId);
+  } else {
+    polarSelectedIds.add(numId);
+  }
+  const row = document.getElementById(`polar-row-${id}`);
+  const check = row?.querySelector('.polar-session-check');
+  if (row) row.classList.toggle('selected', polarSelectedIds.has(numId));
+  if (check) {
+    check.classList.toggle('checked', polarSelectedIds.has(numId));
+    check.textContent = polarSelectedIds.has(numId) ? '✓' : '';
+  }
+  const btn = document.getElementById('polar-confirm-btn');
+  if (btn) btn.textContent = `✓ import ${polarSelectedIds.size} session${polarSelectedIds.size !== 1 ? 's' : ''}`;
+}
+
+async function confirmPolarImport() {
+  const btn = document.getElementById('polar-confirm-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'saving…'; }
+
+  const toImport = polarPendingSessions.filter(s => polarSelectedIds.has(s.id));
+
+  // Add to local sessions array and save
+  let imported = 0;
+  for (const s of toImport) {
+    // Check not already imported (by date + source)
+    const exists = sessions.some(ex => ex.date === s.date && ex.source === 'polar' && ex.polarName === s.polarName);
+    if (!exists) {
+      sessions.push({ ...s, id: Date.now() + imported });
+      imported++;
+    }
+  }
+
+  saveSessions();
+  await Promise.all(sessions.slice(-imported).map(s => sbUpsert(s)));
+
+  showToast(`${imported} session${imported !== 1 ? 's' : ''} imported from Polar`);
+  polarPendingSessions = [];
+  polarSelectedIds = new Set();
+
+  const wrap = document.getElementById('polar-preview-wrap');
+  if (wrap) wrap.innerHTML = '';
+
+  renderSessions();
+  renderTrends();
+}
+
+function cancelPolarImport() {
+  polarPendingSessions = [];
+  const wrap = document.getElementById('polar-preview-wrap');
+  if (wrap) wrap.innerHTML = '';
+}
+
+async function disconnectPolar() {
+  if (!confirm('Disconnect Polar? Your existing imported sessions will remain.')) return;
+  await sb.from('polar_tokens').delete().eq('user_id', currentUser.id);
+  polarConnected = false;
+  renderPolarStrip();
+  showToast('Polar disconnected');
+}
 
 // ── HRV SCAN ─────────────────────────────────────────────────────────────
 // Uses Web Bluetooth HR Profile (GATT 0x180D) to read RR intervals from H10
@@ -2490,6 +2746,7 @@ function onSignedIn(user){
     renderWeek();
   });
   ensureHRVTable();
+  initPolar();
 }
 
 function onSignedOut(){
