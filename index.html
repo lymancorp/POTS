@@ -1103,7 +1103,6 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; 
   <button class="tab-btn" onclick="showTab('sessions')">sessions</button>
   <button class="tab-btn" onclick="showTab('trends')">trends</button>
   <button class="tab-btn" onclick="showTab('program')">program</button>
-  <button class="tab-btn" onclick="showTab('data')">data</button>
 </div>
 
 <!-- ═══════════════ SCHEDULE PAGE ═══════════════ -->
@@ -1410,18 +1409,6 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; 
       <div class="chart-card"><div class="chart-title">Angle progression</div><div class="chart-wrap"><canvas id="c-angle"></canvas></div></div>
     </div>
     
-    <div class="chart-grid2" style="margin-bottom:12px;">
-      <div class="chart-card">
-        <div class="chart-title">HRV — RMSSD (morning)</div>
-        <div class="chart-sub">green = above baseline · amber = -8% · red = -20%</div>
-        <div class="chart-wrap"><canvas id="c-hrv"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-title">Mean RR interval</div>
-        <div class="chart-sub">ms · proxy for resting HR</div>
-        <div class="chart-wrap"><canvas id="c-rr-hrv"></canvas></div>
-      </div>
-    </div>
     <div class="chart-grid2">
       <div class="chart-card"><div class="chart-title">Morning HR — supine vs standing</div><div class="chart-wrap"><canvas id="c-mhr"></canvas></div></div>
       <div class="chart-card"><div class="chart-title">Step-up: minutes at peak angle</div><div class="chart-wrap"><canvas id="c-stepup"></canvas></div></div>
@@ -1787,74 +1774,6 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; 
     Default cadence (keeps Step‑up clean): <b>Mon/Tue/Wed/Thu/Sat</b> = AM+PM neuro. <b>Fri</b> = AM only (Step‑up cardio). <b>Sun</b> = off or AM micro‑dose if you want.
   </div>
 </div></div>
-  </div>
-</div>
-
-<!-- ═══════════════ DATA PAGE ═══════════════ -->
-<div class="page" id="tab-data">
-  <div class="logger-wrap">
-    <div class="log-page-title">Data</div>
-    <div class="log-page-sub">all records · sorted newest first</div>
-
-    <!-- HRV TABLE -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);">Morning HRV</div>
-      <span id="hrv-table-count" style="font-family:var(--mono);font-size:10px;color:var(--dim);"></span>
-    </div>
-    <div class="lcard" style="padding:0;overflow:hidden;">
-      <div style="overflow-x:auto;">
-        <table id="hrv-table" style="width:100%;border-collapse:collapse;font-size:11px;">
-          <thead>
-            <tr style="background:var(--s2);border-bottom:1px solid var(--border);">
-              <th style="padding:9px 14px;text-align:left;font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:400;">Date</th>
-              <th style="padding:9px 14px;text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:400;">RMSSD</th>
-              <th style="padding:9px 14px;text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:400;">Mean RR</th>
-              <th style="padding:9px 14px;text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:400;">Beats</th>
-              <th style="padding:9px 14px;text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:400;">Readiness</th>
-              <th style="padding:9px 14px;text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:400;">vs Baseline</th>
-            </tr>
-          </thead>
-          <tbody id="hrv-table-body">
-            <tr><td colspan="6" style="padding:24px;text-align:center;color:var(--dim);font-family:var(--mono);font-size:11px;">loading…</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div style="height:28px;"></div>
-
-    <!-- SESSIONS TABLE -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);">Session log</div>
-      <div style="display:flex;gap:6px;align-items:center;">
-        <select id="data-type-filter" onchange="renderDataTab()" style="background:var(--s2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-family:var(--mono);font-size:10px;color:var(--sub);outline:none;">
-          <option value="all">all types</option>
-          <option value="F">Foundation</option>
-          <option value="S">Step-up</option>
-          <option value="R">Recovery</option>
-        </select>
-        <span id="sess-table-count" style="font-family:var(--mono);font-size:10px;color:var(--dim);"></span>
-      </div>
-    </div>
-    <div class="lcard" style="padding:0;overflow:hidden;">
-      <div style="overflow-x:auto;">
-        <table id="sess-table" style="width:100%;border-collapse:collapse;font-size:11px;">
-          <thead>
-            <tr style="background:var(--s2);border-bottom:1px solid var(--border);">
-              <th style="padding:9px 14px;text-align:left;font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:400;">Date</th>
-              <th style="padding:9px 14px;text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:400;">Type</th>
-              <th style="padding:9px 14px;text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:400;">Angle</th>
-              <th style="padding:9px 14px;text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:400;">Pre E</th>
-              <th style="padding:9px 14px;text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:400;">Mid E</th>
-              <th style="padding:9px 14px;text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:400;">Z2 min</th>
-              <th style="padding:9px 14px;text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:400;">Cliff</th>
-              <th style="padding:9px 14px;text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:400;">Day</th>
-            </tr>
-          </thead>
-          <tbody id="sess-table-body"></tbody>
-        </table>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -2718,7 +2637,6 @@ function showTab(name){
   document.querySelectorAll('.tab-btn')[idx]?.classList.add('active');
   if(name==='sessions') renderSessions();
   if(name==='trends') renderTrends();
-  if(name==='data') renderDataTab();
   if(name==='program') initBnCollapse();
 }
 
@@ -3415,33 +3333,6 @@ function renderTrends(){
     <div class="metric"><div class="metric-l">avg resting E</div><div class="metric-v">${pres.length?(pres.reduce((a,b)=>a+b,0)/pres.length).toFixed(1):'—'}</div><div class="metric-s">target ≥35</div></div>
     <div class="metric"><div class="metric-l">avg cliff</div><div class="metric-v">${cliffs.length?(cliffs.reduce((a,b)=>a+b,0)/cliffs.length).toFixed(1):'—'}</div><div class="metric-s">min to HR&lt;100</div></div>`;
 
-
-  // HRV RMSSD chart
-  const allHRV = [...hrvRecords].sort((a,b)=>a.date.localeCompare(b.date));
-  if (allHRV.length) {
-    const hvLabels = allHRV.map(r=>r.date.slice(5));
-    const hvData = allHRV.map(r=>parseFloat(r.rmssd));
-    const hvColors = hvData.map(v=>v>50?'#2a8a4a':v>30?'#c87800':'#cc2222');
-    const hvBaseline = allHRV.map(r=>r.baseline_rmssd?parseFloat(r.baseline_rmssd):null);
-    if(charts['c-hrv'])charts['c-hrv'].destroy();
-    const ctx=document.getElementById('c-hrv');
-    if(ctx) charts['c-hrv']=new Chart(ctx,{type:'bar',data:{labels:hvLabels,datasets:[
-      {data:hvData,backgroundColor:hvColors,borderRadius:3,order:2},
-      {data:hvBaseline,type:'line',borderColor:'rgba(42,84,144,0.4)',pointRadius:0,fill:false,borderWidth:1.5,borderDash:[4,3],order:1},
-    ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-      scales:{x:{ticks:{font:{size:8},color:tc,maxRotation:45,autoSkip:true,maxTicksLimit:14},grid:{color:gc}},
-              y:{ticks:{font:{size:10},color:tc},grid:{color:gc},title:{display:true,text:'RMSSD ms',font:{size:9},color:tc}}}}});
-
-    const rrCtx=document.getElementById('c-rr-hrv');
-    if(rrCtx){
-      if(charts['c-rr-hrv'])charts['c-rr-hrv'].destroy();
-      charts['c-rr-hrv']=new Chart(rrCtx,{type:'line',data:{labels:hvLabels,datasets:[
-        {data:allHRV.map(r=>r.mean_rr?parseFloat(r.mean_rr):null),borderColor:'#1a6a5a',pointBackgroundColor:'#1a6a5a',tension:0.3,pointRadius:3,fill:false,borderWidth:2},
-      ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-        scales:{x:{ticks:{font:{size:8},color:tc,maxRotation:45,autoSkip:true},grid:{color:gc}},
-                y:{ticks:{font:{size:10},color:tc},grid:{color:gc},title:{display:true,text:'ms',font:{size:9},color:tc}}}}});
-    }
-  }
 
   const labels=filt.map(s=>s.date.slice(5));
   const gc='rgba(0,0,0,0.06)';const tc='#9090a0';
