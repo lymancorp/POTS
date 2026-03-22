@@ -889,20 +889,125 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; 
 <canvas id="grain-canvas" style="position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.035;"></canvas>
 
 <!-- LOGIN SCREEN -->
-<div id="login-screen" style="display:none;position:fixed;inset:0;z-index:1000;background:var(--bg);align-items:center;justify-content:center;">
+<!-- LOGIN SCREEN -->
+<style>
+/* Fingerprint button */
+.fp-wrap {
+  display:flex;flex-direction:column;align-items:center;gap:28px;
+}
+.fp-btn {
+  position:relative;width:120px;height:120px;
+  background:none;border:none;cursor:pointer;padding:0;
+  -webkit-tap-highlight-color:transparent;
+  outline:none;
+}
+.fp-ring {
+  position:absolute;inset:0;border-radius:50%;
+  border:2px solid var(--border);
+  transition:border-color 0.3s, box-shadow 0.3s;
+}
+.fp-btn.scanning .fp-ring {
+  border-color:var(--acc);
+  box-shadow:0 0 0 6px rgba(60,110,40,0.1);
+}
+.fp-btn.done .fp-ring {
+  border-color:var(--acc);
+  box-shadow:0 0 0 10px rgba(60,110,40,0.08);
+}
+.fp-svg { width:100%;height:100%;display:block; }
+
+.fp-path {
+  fill:none;
+  stroke:var(--dim);
+  stroke-width:1.6;
+  stroke-linecap:round;
+  transition:stroke 0.3s;
+}
+.fp-btn.scanning .fp-path { stroke:var(--acc); }
+.fp-btn.done .fp-path    { stroke:var(--acc); }
+
+.fp-btn.scanning .p1 { animation: draw1 0.6s ease forwards 0.0s; }
+.fp-btn.scanning .p2 { animation: draw2 0.6s ease forwards 0.1s; }
+.fp-btn.scanning .p3 { animation: draw3 0.6s ease forwards 0.2s; }
+.fp-btn.scanning .p4 { animation: draw4 0.6s ease forwards 0.3s; }
+.fp-btn.scanning .p5 { animation: draw5 0.6s ease forwards 0.4s; }
+.fp-btn.scanning .p6 { animation: draw6 0.6s ease forwards 0.5s; }
+.fp-btn.scanning .p7 { animation: draw7 0.6s ease forwards 0.6s; }
+
+@keyframes draw1 { from{stroke-dashoffset:80}  to{stroke-dashoffset:0} }
+@keyframes draw2 { from{stroke-dashoffset:100} to{stroke-dashoffset:0} }
+@keyframes draw3 { from{stroke-dashoffset:120} to{stroke-dashoffset:0} }
+@keyframes draw4 { from{stroke-dashoffset:140} to{stroke-dashoffset:0} }
+@keyframes draw5 { from{stroke-dashoffset:120} to{stroke-dashoffset:0} }
+@keyframes draw6 { from{stroke-dashoffset:100} to{stroke-dashoffset:0} }
+@keyframes draw7 { from{stroke-dashoffset:80}  to{stroke-dashoffset:0} }
+
+.p1 { stroke-dasharray:80;  stroke-dashoffset:80;  }
+.p2 { stroke-dasharray:100; stroke-dashoffset:100; }
+.p3 { stroke-dasharray:120; stroke-dashoffset:120; }
+.p4 { stroke-dasharray:140; stroke-dashoffset:140; }
+.p5 { stroke-dasharray:120; stroke-dashoffset:120; }
+.p6 { stroke-dasharray:100; stroke-dashoffset:100; }
+.p7 { stroke-dasharray:80;  stroke-dashoffset:80;  }
+
+.fp-label {
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--dim);
+  transition:color 0.3s;
+  min-height:16px;
+}
+.fp-label.scanning { color:var(--acc); }
+.fp-label.done     { color:var(--acc); }
+.fp-label.error    { color:#cc2222; }
+</style>
+
+<div id="login-screen" style="display:none;position:fixed;inset:0;z-index:1000;background:var(--bg);display:flex;align-items:center;justify-content:center;">
   <div style="text-align:center;max-width:360px;padding:32px 24px;">
-    <div style="font-family:var(--serif);font-size:32px;font-weight:300;color:var(--acc);margin-bottom:6px;">POTS <em style='font-style:italic;color:#a8c4e0;'>rehab</em></div>
-    <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:32px;">rehabilitation protocol</div>
-    <div id="login-card" style="background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:24px;box-shadow:var(--shadow);">
-      <div style="font-size:13px;color:var(--sub);margin-bottom:20px;line-height:1.6;">Sign in to access your schedule and session data.</div>
-      <button onclick="signInGoogle()" id="google-btn" style="width:100%;background:var(--acc);color:#fff;border:none;border-radius:8px;padding:12px 20px;font-family:var(--mono);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.15s;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#fff"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="rgba(255,255,255,0.7)"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="rgba(255,255,255,0.5)"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="rgba(255,255,255,0.3)"/></svg>
-        continue with Google
+    <div style="font-family:var(--serif);font-size:32px;font-weight:300;color:var(--acc);margin-bottom:4px;">POTS <em style='font-style:italic;color:#a8c4e0;'>rehab</em></div>
+    <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:40px;">rehabilitation protocol</div>
+
+    <div class="fp-wrap">
+      <button class="fp-btn" id="fp-btn" onclick="fpTap()" aria-label="Sign in with Google">
+        <div class="fp-ring"></div>
+        <svg class="fp-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <path class="fp-path p1" d="M 42 50 Q 44 40 50 38 Q 56 36 60 42"/>
+          <path class="fp-path p2" d="M 34 54 Q 34 38 50 33 Q 64 29 70 44 Q 72 52 68 60"/>
+          <path class="fp-path p3" d="M 27 56 Q 25 35 50 27 Q 72 21 78 48 Q 80 60 74 70 Q 68 78 58 80"/>
+          <path class="fp-path p4" d="M 22 52 Q 18 28 50 20 Q 80 14 86 50 Q 88 68 78 78 Q 66 88 50 88 Q 36 88 28 78"/>
+          <path class="fp-path p5" d="M 30 72 Q 22 64 20 52"/>
+          <path class="fp-path p6" d="M 38 84 Q 28 80 22 70"/>
+          <path class="fp-path p7" d="M 46 58 Q 46 50 50 48 Q 54 46 56 50 Q 58 56 54 62 Q 50 66 46 62"/>
+        </svg>
       </button>
-      <div id="login-status" style="font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:12px;min-height:16px;"></div>
+      <div class="fp-label" id="fp-label">tap to sign in</div>
     </div>
+
+    <div id="login-status" style="font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:20px;min-height:16px;"></div>
   </div>
 </div>
+
+<script>
+function fpTap() {
+  const btn = document.getElementById('fp-btn');
+  const lbl = document.getElementById('fp-label');
+  if (btn.classList.contains('scanning') || btn.classList.contains('done')) return;
+
+  btn.classList.add('scanning');
+  lbl.textContent = 'scanning…';
+  lbl.className = 'fp-label scanning';
+
+  setTimeout(() => {
+    btn.classList.remove('scanning');
+    btn.classList.add('done');
+    lbl.textContent = 'verified';
+    lbl.className = 'fp-label done';
+    setTimeout(() => signInGoogle(), 400);
+  }, 1300);
+}
+</script>
 
 <!-- APP WRAPPER (hidden until logged in) -->
 <div id="app-wrapper" style="display:none;">
