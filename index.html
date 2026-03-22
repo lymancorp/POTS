@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫀</text></svg>">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -1672,18 +1674,21 @@ function fpTap() {
 }
 
 async function signInGoogle() {
-  const status = document.getElementById('login-status');
-  const lbl = document.getElementById('fp-label');
-  if (status) status.textContent = 'redirecting to Google…';
-  const { error } = await sb.auth.signInWithOAuth({
-    provider: 'google',
-    options: { redirectTo: window.location.href }
-  });
-  if (error) {
-    if (status) status.textContent = 'error: ' + error.message;
-    if (lbl) { lbl.textContent = 'tap to try again'; lbl.className = 'fp-label error'; }
-    const btn = document.getElementById('fp-btn');
-    if (btn) btn.classList.remove('done','scanning');
+  try {
+    const { error } = await sb.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.origin + window.location.pathname }
+    });
+    if (error) {
+      const status = document.getElementById('login-status');
+      const lbl = document.getElementById('fp-label');
+      const btn = document.getElementById('fp-btn');
+      if (status) status.textContent = 'error: ' + error.message;
+      if (lbl) { lbl.textContent = 'tap to try again'; lbl.className = 'fp-label error'; }
+      if (btn) btn.classList.remove('done','scanning');
+    }
+  } catch(e) {
+    console.warn('signInGoogle error:', e);
   }
 }
 
