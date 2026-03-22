@@ -1783,7 +1783,7 @@ async function signInGoogle(){
   status.textContent = '';
   const { error } = await sb.auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: window.location.href }
+    options: { redirectTo: window.location.origin + window.location.pathname }
   });
   if(error){
     status.textContent = 'error: ' + error.message;
