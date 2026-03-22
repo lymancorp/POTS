@@ -892,72 +892,69 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; 
 
 <!-- LOGIN SCREEN -->
 <style>
+#star-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+.login-scene{perspective:900px;z-index:1;position:relative;}
+.login-card-3d{transform-style:preserve-3d;text-align:center;max-width:360px;padding:32px 24px;will-change:transform;transition:transform 0.08s ease-out;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.l-title{animation:fadeUp 1s cubic-bezier(.16,1,.3,1) forwards 0.2s;opacity:0;}
+.l-sub{animation:fadeUp 1s cubic-bezier(.16,1,.3,1) forwards 0.4s;opacity:0;}
+.l-div{animation:fadeUp 1s cubic-bezier(.16,1,.3,1) forwards 0.55s;opacity:0;}
+.l-fp{animation:fadeUp 1s cubic-bezier(.16,1,.3,1) forwards 0.7s;opacity:0;}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(100,220,80,0),0 0 20px rgba(100,220,80,0.06)}50%{box-shadow:0 0 0 16px rgba(100,220,80,0),0 0 60px rgba(100,220,80,0.2)}}
 .fp-wrap{display:flex;flex-direction:column;align-items:center;gap:24px;}
-.fp-btn{position:relative;width:140px;height:140px;background:none;border:none;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent;outline:none;}
-.fp-ring{position:absolute;inset:0;border-radius:50%;border:2px solid var(--border);transition:border-color 0.4s,box-shadow 0.4s;}
-.fp-btn.scanning .fp-ring,.fp-btn.done .fp-ring{border-color:var(--acc);box-shadow:0 0 0 8px rgba(60,110,40,0.08),0 0 20px rgba(60,110,40,0.15);}
-.fp-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;letter-spacing:0.2em;color:var(--sub);transition:opacity 0.3s;z-index:2;}
+.fp-btn{position:relative;width:140px;height:140px;background:none;border:none;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent;outline:none;border-radius:50%;animation:pulseGlow 3s ease-in-out infinite;}
+.fp-ring{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(255,255,255,0.12);transition:border-color 0.4s,box-shadow 0.4s;}
+.fp-btn.scanning .fp-ring,.fp-btn.done .fp-ring{border-color:rgba(100,220,80,0.8);box-shadow:0 0 0 8px rgba(100,220,80,0.08),0 0 40px rgba(100,220,80,0.35);}
+.fp-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;letter-spacing:0.2em;color:rgba(255,255,255,0.4);transition:opacity 0.3s;z-index:2;}
 .fp-btn.scanning .fp-text,.fp-btn.done .fp-text{opacity:0;}
 .fp-svg{width:100%;height:100%;display:block;position:absolute;inset:0;}
-.fp-path{fill:none;stroke:var(--border);stroke-width:1.5;stroke-linecap:round;transition:stroke 0.3s;}
-.fp-btn.scanning .fp-path{stroke:var(--acc);}
-.fp-btn.done .fp-path{stroke:var(--acc);}
-.p1 {stroke-dasharray:35; stroke-dashoffset:35;}
-.p2 {stroke-dasharray:55; stroke-dashoffset:55;}
-.p3 {stroke-dasharray:75; stroke-dashoffset:75;}
-.p4 {stroke-dasharray:95; stroke-dashoffset:95;}
-.p5 {stroke-dasharray:115;stroke-dashoffset:115;}
-.p6 {stroke-dasharray:130;stroke-dashoffset:130;}
-.p7 {stroke-dasharray:145;stroke-dashoffset:145;}
-.p8 {stroke-dasharray:155;stroke-dashoffset:155;}
-.p9 {stroke-dasharray:145;stroke-dashoffset:145;}
-.p10{stroke-dasharray:130;stroke-dashoffset:130;}
-.p11{stroke-dasharray:115;stroke-dashoffset:115;}
-.fp-btn.scanning .p1 {animation:fpd 0.5s ease forwards 0.00s;}
-.fp-btn.scanning .p2 {animation:fpd 0.5s ease forwards 0.07s;}
-.fp-btn.scanning .p3 {animation:fpd 0.5s ease forwards 0.14s;}
-.fp-btn.scanning .p4 {animation:fpd 0.5s ease forwards 0.21s;}
-.fp-btn.scanning .p5 {animation:fpd 0.5s ease forwards 0.28s;}
-.fp-btn.scanning .p6 {animation:fpd 0.5s ease forwards 0.35s;}
-.fp-btn.scanning .p7 {animation:fpd 0.5s ease forwards 0.42s;}
-.fp-btn.scanning .p8 {animation:fpd 0.5s ease forwards 0.49s;}
-.fp-btn.scanning .p9 {animation:fpd 0.5s ease forwards 0.56s;}
-.fp-btn.scanning .p10{animation:fpd 0.5s ease forwards 0.63s;}
-.fp-btn.scanning .p11{animation:fpd 0.5s ease forwards 0.70s;}
-@keyframes fpd{to{stroke-dashoffset:0;}}
-.fp-label{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);transition:color 0.3s;min-height:14px;}
-.fp-label.scanning{color:var(--acc);}
-.fp-label.done{color:var(--acc);}
-.fp-label.error{color:#cc2222;}
+.fp-path{fill:none;stroke:rgba(255,255,255,0.12);stroke-width:1.5;stroke-linecap:round;transition:stroke 0.3s;}
+.fp-btn.scanning .fp-path{stroke:rgba(100,220,80,0.9);}
+.fp-btn.done .fp-path{stroke:rgba(100,220,80,0.9);}
+.p1{stroke-dasharray:35;stroke-dashoffset:35}.p2{stroke-dasharray:55;stroke-dashoffset:55}.p3{stroke-dasharray:75;stroke-dashoffset:75}.p4{stroke-dasharray:95;stroke-dashoffset:95}.p5{stroke-dasharray:115;stroke-dashoffset:115}.p6{stroke-dasharray:130;stroke-dashoffset:130}.p7{stroke-dasharray:145;stroke-dashoffset:145}.p8{stroke-dasharray:155;stroke-dashoffset:155}.p9{stroke-dasharray:145;stroke-dashoffset:145}.p10{stroke-dasharray:130;stroke-dashoffset:130}.p11{stroke-dasharray:115;stroke-dashoffset:115}
+.fp-btn.scanning .p1{animation:fpd 0.5s ease forwards 0.00s}.fp-btn.scanning .p2{animation:fpd 0.5s ease forwards 0.07s}.fp-btn.scanning .p3{animation:fpd 0.5s ease forwards 0.14s}.fp-btn.scanning .p4{animation:fpd 0.5s ease forwards 0.21s}.fp-btn.scanning .p5{animation:fpd 0.5s ease forwards 0.28s}.fp-btn.scanning .p6{animation:fpd 0.5s ease forwards 0.35s}.fp-btn.scanning .p7{animation:fpd 0.5s ease forwards 0.42s}.fp-btn.scanning .p8{animation:fpd 0.5s ease forwards 0.49s}.fp-btn.scanning .p9{animation:fpd 0.5s ease forwards 0.56s}.fp-btn.scanning .p10{animation:fpd 0.5s ease forwards 0.63s}.fp-btn.scanning .p11{animation:fpd 0.5s ease forwards 0.70s}
+@keyframes fpd{to{stroke-dashoffset:0}}
+.fp-label{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.3);transition:color 0.3s;min-height:14px;}
+.fp-label.scanning{color:rgba(100,220,80,0.9)}.fp-label.done{color:rgba(100,220,80,0.9)}.fp-label.error{color:#ff6b6b;}
 </style>
 
-<div id="login-screen" style="display:none;position:fixed;inset:0;z-index:1000;background:var(--bg);display:flex;align-items:center;justify-content:center;">
-  <div style="text-align:center;max-width:360px;padding:32px 24px;">
-    <div style="font-family:var(--serif);font-size:32px;font-weight:300;color:var(--acc);margin-bottom:4px;">POTS <em style='font-style:italic;color:#a8c4e0;'>rehab</em></div>
-    <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:44px;">rehabilitation protocol</div>
-    <div class="fp-wrap">
-      <button class="fp-btn" id="fp-btn" onclick="fpTap()" aria-label="Sign in">
-        <div class="fp-ring"></div>
-        <div class="fp-text">LOGIN</div>
-        <svg class="fp-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <path class="fp-path p1"  d="M 48 50 Q 48 46 50 45 Q 52 44 54 46 Q 56 49 54 53 Q 52 56 49 55 Q 46 53 47 50"/>
-          <path class="fp-path p2"  d="M 44 54 Q 42 47 46 42 Q 50 38 55 41 Q 60 44 59 51 Q 58 57 53 60 Q 48 62 44 58"/>
-          <path class="fp-path p3"  d="M 39 56 Q 37 45 43 38 Q 49 32 57 35 Q 64 38 65 47 Q 66 56 60 63 Q 54 68 46 65 Q 40 62 39 56"/>
-          <path class="fp-path p4"  d="M 34 57 Q 31 42 40 34 Q 49 26 59 30 Q 69 34 71 46 Q 73 57 65 66 Q 57 74 46 71 Q 36 68 34 57"/>
-          <path class="fp-path p5"  d="M 29 55 Q 26 37 37 28 Q 48 20 61 25 Q 73 30 76 45 Q 79 59 70 70 Q 61 79 48 76 Q 35 73 29 60"/>
-          <path class="fp-path p6"  d="M 25 52 Q 21 31 35 21 Q 49 12 64 18 Q 78 25 81 43 Q 84 60 74 73 Q 64 84 50 83 Q 36 82 28 72 Q 22 63 23 52"/>
-          <path class="fp-path p7"  d="M 38 22 Q 50 16 62 21"/>
-          <path class="fp-path p8"  d="M 22 52 Q 20 65 26 74"/>
-          <path class="fp-path p9"  d="M 81 48 Q 83 62 77 74"/>
-          <path class="fp-path p10" d="M 29 76 Q 37 83 48 84"/>
-          <path class="fp-path p11" d="M 72 76 Q 64 83 52 84"/>
-        </svg>
-      </button>
-      <div class="fp-label" id="fp-label">tap to authenticate</div>
+<div id="login-screen" style="display:none;position:fixed;inset:0;z-index:1000;background:#030810;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+  <canvas id="star-canvas"></canvas>
+  <div class="login-scene" id="login-scene">
+    <div class="login-card-3d" id="login-card-3d">
+      <div class="l-title" style="position:relative;">
+        <div style="position:absolute;inset:-60px;background:radial-gradient(ellipse 70% 50% at 50% 70%,rgba(60,160,40,0.1) 0%,transparent 70%);pointer-events:none;"></div>
+        <div style="font-family:var(--serif);font-size:38px;font-weight:300;color:#fff;letter-spacing:-0.01em;line-height:1.1;position:relative;">POTS <em style="font-style:italic;color:rgba(120,220,80,0.9);">rehab</em></div>
+      </div>
+      <div class="l-sub" style="font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-top:8px;">rehabilitation protocol</div>
+      <div class="l-div" style="margin:26px auto;width:40px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent);"></div>
+      <div class="l-fp">
+        <div class="fp-wrap">
+          <button class="fp-btn" id="fp-btn" onclick="fpTap()" aria-label="Sign in">
+            <div class="fp-ring"></div>
+            <div class="fp-text">LOGIN</div>
+            <svg class="fp-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <path class="fp-path p1"  d="M 48 50 Q 48 46 50 45 Q 52 44 54 46 Q 56 49 54 53 Q 52 56 49 55 Q 46 53 47 50"/>
+              <path class="fp-path p2"  d="M 44 54 Q 42 47 46 42 Q 50 38 55 41 Q 60 44 59 51 Q 58 57 53 60 Q 48 62 44 58"/>
+              <path class="fp-path p3"  d="M 39 56 Q 37 45 43 38 Q 49 32 57 35 Q 64 38 65 47 Q 66 56 60 63 Q 54 68 46 65 Q 40 62 39 56"/>
+              <path class="fp-path p4"  d="M 34 57 Q 31 42 40 34 Q 49 26 59 30 Q 69 34 71 46 Q 73 57 65 66 Q 57 74 46 71 Q 36 68 34 57"/>
+              <path class="fp-path p5"  d="M 29 55 Q 26 37 37 28 Q 48 20 61 25 Q 73 30 76 45 Q 79 59 70 70 Q 61 79 48 76 Q 35 73 29 60"/>
+              <path class="fp-path p6"  d="M 25 52 Q 21 31 35 21 Q 49 12 64 18 Q 78 25 81 43 Q 84 60 74 73 Q 64 84 50 83 Q 36 82 28 72 Q 22 63 23 52"/>
+              <path class="fp-path p7"  d="M 38 22 Q 50 16 62 21"/>
+              <path class="fp-path p8"  d="M 22 52 Q 20 65 26 74"/>
+              <path class="fp-path p9"  d="M 81 48 Q 83 62 77 74"/>
+              <path class="fp-path p10" d="M 29 76 Q 37 83 48 84"/>
+              <path class="fp-path p11" d="M 72 76 Q 64 83 52 84"/>
+            </svg>
+          </button>
+          <div class="fp-label" id="fp-label">tap to authenticate</div>
+        </div>
+      </div>
     </div>
-    <div id="login-status" style="font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:20px;min-height:16px;"></div>
   </div>
+  <div id="login-status" style="position:absolute;bottom:32px;font-family:var(--mono);font-size:10px;color:rgba(255,255,255,0.25);z-index:2;letter-spacing:0.1em;"></div>
 </div>
+
 
 
 
@@ -1656,6 +1653,118 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; 
 <div class="toast" id="toast"></div>
 
 <script>
+// ── STARFIELD + 3D TILT ──────────────────────────────────────
+function initStars() {
+  const canvas = document.getElementById('star-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, stars = [], shooters = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Generate 280 stars with varying sizes and twinkle phases
+  for (let i = 0; i < 280; i++) {
+    stars.push({
+      x: Math.random(),
+      y: Math.random(),
+      r: Math.random() * 1.2 + 0.2,
+      a: Math.random(),          // base alpha
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.4 + Math.random() * 0.8,
+      color: Math.random() > 0.92
+        ? `hsl(${180 + Math.random()*60},80%,85%)`  // occasional blue/teal
+        : '#ffffff'
+    });
+  }
+
+  let t = 0;
+  function frame() {
+    ctx.clearRect(0, 0, W, H);
+    t += 0.012;
+
+    // Draw stars with twinkle
+    stars.forEach(s => {
+      const twinkle = 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
+      ctx.globalAlpha = s.a * twinkle * 0.85;
+      ctx.fillStyle = s.color;
+      ctx.beginPath();
+      ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // Draw shooting stars
+    shooters = shooters.filter(sh => sh.life > 0);
+    shooters.forEach(sh => {
+      sh.x += sh.vx;
+      sh.y += sh.vy;
+      sh.life -= 1;
+      const prog = sh.life / sh.maxLife;
+      const grad = ctx.createLinearGradient(sh.x, sh.y, sh.x - sh.vx*8, sh.y - sh.vy*8);
+      grad.addColorStop(0, `rgba(255,255,255,${prog * 0.9})`);
+      grad.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = sh.w;
+      ctx.beginPath();
+      ctx.moveTo(sh.x, sh.y);
+      ctx.lineTo(sh.x - sh.vx * 12, sh.y - sh.vy * 12);
+      ctx.stroke();
+    });
+
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(frame);
+  }
+  frame();
+
+  // Spawn shooting star every 3-7s
+  function spawnShooter() {
+    const angle = (-30 + Math.random() * 20) * Math.PI / 180;
+    const speed = 8 + Math.random() * 6;
+    shooters.push({
+      x: Math.random() * W * 0.7,
+      y: Math.random() * H * 0.4,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      w: 0.8 + Math.random() * 0.8,
+      life: 40 + Math.random() * 20,
+      maxLife: 60
+    });
+    setTimeout(spawnShooter, 3000 + Math.random() * 4000);
+  }
+  setTimeout(spawnShooter, 1500);
+}
+
+// 3D mouse-tilt on login card
+function init3DTilt() {
+  const scene = document.getElementById('login-scene');
+  const card  = document.getElementById('login-card-3d');
+  if (!scene || !card) return;
+  scene.addEventListener('mousemove', e => {
+    const r = scene.getBoundingClientRect();
+    const cx = r.left + r.width  / 2;
+    const cy = r.top  + r.height / 2;
+    const dx = (e.clientX - cx) / (r.width  / 2);
+    const dy = (e.clientY - cy) / (r.height / 2);
+    card.style.transform = `rotateY(${dx * 10}deg) rotateX(${-dy * 8}deg)`;
+  });
+  scene.addEventListener('mouseleave', () => {
+    card.style.transform = 'rotateY(0deg) rotateX(0deg)';
+  });
+  // Touch tilt
+  scene.addEventListener('touchmove', e => {
+    const t = e.touches[0];
+    const r = scene.getBoundingClientRect();
+    const dx = (t.clientX - (r.left + r.width/2)) / (r.width/2);
+    const dy = (t.clientY - (r.top  + r.height/2)) / (r.height/2);
+    card.style.transform = `rotateY(${dx * 8}deg) rotateX(${-dy * 6}deg)`;
+  }, {passive:true});
+}
+
 // ── LOGIN ─────────────────────────────────────────────────────
 function fpTap() {
   const btn = document.getElementById('fp-btn');
@@ -1838,6 +1947,8 @@ async function initAuth(){
     // No session — show login
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('app-wrapper').style.display = 'none';
+    initStars();
+    init3DTilt();
   }
 
   // Listen for auth changes
@@ -2177,7 +2288,7 @@ function renderTodayExp(){
   if(!isOff){
     if(nb.am){
       const light=nb.am==='light';
-      sbs+=mkSblock('teal','Neuro Block — Session 1','15–20 min · morning · all exercises','am-neuro',[
+      sbs+=mkSblock('teal','Neuro Block — Session 1','15–20 min · morning · all exercises','today-am-neuro',[
         {n:'1',name:'PNS Stim',detail:'Peroneal + tibial + median + V3 · 3 Hz, 300 μs, TENS-M · 2–3 min each side.',src:'Keiser-prescribed'},
         {n:'2',name:'Cervical prep',detail:'Gentle ROM · neutral spine · always before eye work and head turns'},
         {n:'3',name:'Fixation holds',detail:'Fixation ON → OFF · work to reduce blink resets · progressive hold duration'},
@@ -2188,7 +2299,7 @@ function renderTodayExp(){
         {n:'8',name:'Whole-body rotation RIGHT',detail:'Thumb target · right rotation · 30s × 3 sets, 1 min rest · image on thumb stays clear',src:'Keiser-prescribed'},
       ]);
     }
-    sbs+=mkSblock(d.t==='S'?'acc':d.t==='R'?'purple':'blue',`${typeNames[d.t]||d.t} Cardio`,d.c||'','cardio',[
+    sbs+=mkSblock(d.t==='S'?'acc':d.t==='R'?'purple':'blue',`${typeNames[d.t]||d.t} Cardio`,d.c||'','today-cardio',[
       {n:'1',name:'Pre-load',detail:'500 ml water + 1.5g sodium · 500 ml during/after'},
       {n:'2',name:'Baseline',detail:'At angle, no pedaling, 2 min · log ETCO2 + HR + RR'},
       {n:'3',name:'Warmup',detail:'10 min gradual to 100 bpm · ETCO2 must reach 38–40 before Z2'},
@@ -2208,7 +2319,7 @@ function renderTodayExp(){
         {n:'3',name:'Clamshells',detail:'2 × 12–20'},
         {n:'4',name:'Pallof press',detail:'2 × 8–12 each side'},
       ]);
-    if(nb.pm) sbs+=mkSblock('teal','Neuro Block — Session 2','15–20 min · afternoon · repeat all exercises','pm-neuro',[
+    if(nb.pm) sbs+=mkSblock('teal','Neuro Block — Session 2','15–20 min · afternoon · repeat all exercises','today-pm-neuro',[
         {n:'1',name:'PNS Stim',detail:'Peroneal + tibial + median + V3 · 3 Hz, 300 μs, TENS-M · 2–3 min each side.',src:'Keiser-prescribed'},
         {n:'2',name:'Cervical prep',detail:'Gentle ROM · neutral spine · always before eye work and head turns'},
         {n:'3',name:'Fixation holds',detail:'Fixation ON → OFF · work to reduce blink resets · progressive hold duration'},
@@ -2218,7 +2329,7 @@ function renderTodayExp(){
         {n:'7',name:'Rightward Halmagyi thrusts',detail:'Supine, ceiling target · quick rightward thrust, close eyes, slow return · 5 × 3 sets, 1 min rest',src:'Keiser-prescribed'},
         {n:'8',name:'Whole-body rotation RIGHT',detail:'Thumb target · right rotation · 30s × 3 sets, 1 min rest · image on thumb stays clear',src:'Keiser-prescribed'},
       ]);
-    if(nb.osc) sbs+=mkSblock('red','0.05 Hz Oscillation','10 min · not before cognitive work','osc',[
+    if(nb.osc) sbs+=mkSblock('red','0.05 Hz Oscillation','10 min · not before cognitive work','today-osc',[
       {n:'1',name:'Setup',detail:'Metronome 60 bpm · supported upright'},
       {n:'2',name:'Cycles',detail:'Sit → stand/perch · 10 beats up, 10 down = 0.05 Hz · start 3–5 cycles'},
       {n:'3',name:'Progression',detail:'Add 1–2 cycles/week · time first, not speed · cadence is the mechanism'},
@@ -2354,7 +2465,7 @@ function renderDayDetail(d){
   if(!isOff){
     if(nb.am){
       const light=nb.am==='light';
-      sbs+=mkSblock('teal','Neuro Block — Session 1','15–20 min · morning · all exercises','am-neuro',[
+      sbs+=mkSblock('teal','Neuro Block — Session 1','15–20 min · morning · all exercises','dd-am-neuro',[
         {n:'1',name:'PNS Stim',detail:'Peroneal + tibial + median + V3 · 3 Hz, 300 μs, TENS-M · 2–3 min each side.',src:'Keiser-prescribed'},
         {n:'2',name:'Cervical prep',detail:'Gentle ROM · neutral spine · always before eye work and head turns'},
         {n:'3',name:'Fixation holds',detail:'Fixation ON → OFF · work to reduce blink resets · progressive hold duration'},
@@ -2385,7 +2496,7 @@ function renderDayDetail(d){
         {n:'3',name:'Clamshells',detail:'2 × 12–20'},
         {n:'4',name:'Pallof press',detail:'2 × 8–12 each side'},
       ]);
-    if(nb.pm) sbs+=mkSblock('teal','Neuro Block — Session 2','15–20 min · afternoon · repeat all exercises','pm-neuro',[
+    if(nb.pm) sbs+=mkSblock('teal','Neuro Block — Session 2','15–20 min · afternoon · repeat all exercises','dd-pm-neuro',[
         {n:'1',name:'PNS Stim',detail:'Peroneal + tibial + median + V3 · 3 Hz, 300 μs, TENS-M · 2–3 min each side.',src:'Keiser-prescribed'},
         {n:'2',name:'Cervical prep',detail:'Gentle ROM · neutral spine · always before eye work and head turns'},
         {n:'3',name:'Fixation holds',detail:'Fixation ON → OFF · work to reduce blink resets · progressive hold duration'},
