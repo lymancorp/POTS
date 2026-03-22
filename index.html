@@ -812,6 +812,134 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; 
 .nav-logo { transition: opacity 0.15s; cursor: default; }
 
 
+
+/* ── HRV SCAN ── */
+.hrv-scan-btn {
+  background: var(--s1); border: 1px solid var(--border);
+  border-radius: 20px; padding: 4px 12px;
+  font-family: var(--mono); font-size: 10px; color: var(--sub);
+  cursor: pointer; transition: all 0.12s; white-space: nowrap;
+  flex-shrink: 0;
+}
+.hrv-scan-btn:hover { border-color: var(--teal); color: var(--teal); }
+.hrv-scan-btn.connected { border-color: var(--teal); color: var(--teal); background: var(--teal-bg); }
+
+.hrv-panel-inner {
+  background: var(--s1); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 16px 18px;
+  box-shadow: var(--shadow-sm);
+}
+.hrv-hd {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.hrv-title {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--teal);
+}
+.hrv-close {
+  font-family: var(--mono); font-size: 11px; color: var(--dim);
+  cursor: pointer; background: none; border: none; padding: 0;
+}
+.hrv-close:hover { color: var(--text); }
+
+.hrv-status-row {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+}
+.hrv-indicator {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--dim); flex-shrink: 0;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.hrv-indicator.connecting { background: #c87800; box-shadow: 0 0 6px rgba(200,120,0,0.5); }
+.hrv-indicator.recording  { background: var(--teal); box-shadow: 0 0 6px rgba(26,106,90,0.5); animation: hrv-pulse 1s ease-in-out infinite; }
+.hrv-indicator.done       { background: #2a8a4a; box-shadow: 0 0 6px rgba(42,138,74,0.5); }
+.hrv-indicator.error      { background: var(--red); }
+@keyframes hrv-pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+.hrv-status-text {
+  font-family: var(--mono); font-size: 11px; color: var(--sub);
+}
+
+.hrv-countdown {
+  font-family: var(--serif); font-size: 48px; font-weight: 300;
+  color: var(--teal); line-height: 1; text-align: center;
+  margin: 8px 0; transition: color 0.3s;
+}
+.hrv-countdown.done { color: #2a8a4a; }
+
+.hrv-rr-viz {
+  height: 40px; background: var(--s2); border-radius: 6px;
+  overflow: hidden; margin-bottom: 12px; position: relative;
+}
+.hrv-rr-bar {
+  position: absolute; bottom: 0;
+  width: 3px; background: var(--teal); border-radius: 2px 2px 0 0;
+  transition: height 0.1s;
+  opacity: 0.7;
+}
+
+.hrv-result {
+  display: none;
+  background: var(--s2); border-radius: 8px; padding: 14px;
+  margin-bottom: 12px;
+}
+.hrv-result.show { display: block; animation: fadeUp 0.3s ease both; }
+.hrv-result-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;
+  margin-bottom: 12px;
+}
+.hrv-metric { text-align: center; }
+.hrv-metric-val {
+  font-family: var(--serif); font-size: 28px; font-weight: 300;
+  color: var(--text); line-height: 1;
+}
+.hrv-metric-val.good  { color: #2a8a4a; }
+.hrv-metric-val.warn  { color: #c87800; }
+.hrv-metric-val.bad   { color: var(--red); }
+.hrv-metric-lbl {
+  font-family: var(--mono); font-size: 9px; color: var(--dim);
+  letter-spacing: 0.08em; text-transform: uppercase; margin-top: 3px;
+}
+.hrv-readiness-banner {
+  text-align: center; padding: 8px 14px; border-radius: 6px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+.hrv-readiness-banner.green  { background: var(--grn-bg); color: #2a8a4a; border: 1px solid rgba(42,138,74,0.3); }
+.hrv-readiness-banner.amber  { background: var(--amb-bg); color: var(--amber); border: 1px solid rgba(122,79,15,0.3); }
+.hrv-readiness-banner.red    { background: var(--red-bg); color: var(--red); border: 1px solid rgba(122,31,31,0.3); }
+
+.hrv-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.hrv-btn {
+  border: 1px solid var(--border); border-radius: 6px; padding: 7px 14px;
+  font-family: var(--mono); font-size: 11px; cursor: pointer;
+  background: var(--s2); color: var(--sub); transition: all 0.12s;
+}
+.hrv-btn:hover { border-color: var(--border2); color: var(--text); }
+.hrv-btn.primary { background: var(--teal); border-color: var(--teal); color: #fff; }
+.hrv-btn.primary:hover { opacity: 0.88; }
+.hrv-btn.confirm { background: #2a8a4a; border-color: #2a8a4a; color: #fff; }
+.hrv-btn.confirm:hover { opacity: 0.88; }
+.hrv-saved-badge {
+  font-family: var(--mono); font-size: 10px; color: #2a8a4a;
+  background: var(--grn-bg); border: 1px solid rgba(42,138,74,0.3);
+  border-radius: 6px; padding: 7px 14px; display: none;
+}
+.hrv-saved-badge.show { display: inline-block; animation: badgePop 0.3s ease both; }
+.hrv-setup-note {
+  background: var(--blue-bg); border: 1px solid var(--blue);
+  border-radius: 7px; padding: 10px 13px; margin-bottom: 12px;
+  font-size: 11px; color: var(--blue); line-height: 1.6;
+  display: none;
+}
+.hrv-setup-note.show { display: block; }
+.hrv-setup-note code {
+  display: block; margin-top: 8px; background: rgba(30,74,122,0.08);
+  border-radius: 4px; padding: 6px 10px; font-family: var(--mono);
+  font-size: 10px; color: var(--blue);
+}
+
 /* ── GRAIN + CURSOR + TAB TRANSITIONS ── */
 #cursor-glow {
   position: fixed;
@@ -1015,7 +1143,11 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; 
         <div class="rtag" id="rt-bad"    onclick="setMorning('bad')">bad</div>
         <div class="rtag" id="rt-crash"  onclick="setMorning('crash')">crash</div>
       </div>
+      <button class="hrv-scan-btn" id="hrv-scan-btn" onclick="openHRVPanel()">&#9473; HRV scan</button>
     </div>
+
+    <!-- HRV SCAN PANEL -->
+    <div id="hrv-panel" style="display:none;margin-top:10px;"></div>
 
     <!-- Week nav -->
     <div class="week-nav">
@@ -1657,6 +1789,364 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; 
 <div class="toast" id="toast"></div>
 
 <script>
+
+// ── HRV SCAN ─────────────────────────────────────────────────────────────
+// Uses Web Bluetooth HR Profile (GATT 0x180D) to read RR intervals from H10
+// Calculates RMSSD over 90s, compares to 7-day baseline, saves to Supabase
+
+const HRV_DURATION = 90; // seconds
+const HRV_TABLE = 'morning_hrv';
+const HRV_SERVICE = '0000180d-0000-1000-8000-00805f9b34fb';
+const HRV_CHAR    = '00002a37-0000-1000-8000-00805f9b34fb';
+
+let hrvState = {
+  device: null,
+  char: null,
+  rrIntervals: [],
+  countdown: HRV_DURATION,
+  timer: null,
+  result: null,
+  baseline: null,
+  phase: 'idle' // idle | connecting | recording | done | error
+};
+
+function openHRVPanel() {
+  document.getElementById('hrv-panel').style.display = 'block';
+  renderHRVPanel();
+  loadHRVBaseline();
+}
+
+function closeHRVPanel() {
+  stopHRVScan();
+  document.getElementById('hrv-panel').style.display = 'none';
+  hrvState.phase = 'idle';
+  hrvState.rrIntervals = [];
+  hrvState.result = null;
+}
+
+function renderHRVPanel() {
+  const el = document.getElementById('hrv-panel');
+  const btSupported = 'bluetooth' in navigator;
+
+  el.innerHTML = `<div class="hrv-panel-inner">
+    <div class="hrv-hd">
+      <div class="hrv-title">HRV morning scan · Polar H10</div>
+      <button class="hrv-close" onclick="closeHRVPanel()">✕</button>
+    </div>
+
+    ${!btSupported ? `<div class="hrv-setup-note show">
+      Web Bluetooth is not available in this browser.<br>
+      Use <strong>Chrome on Mac</strong> for H10 scanning.
+    </div>` : ''}
+
+    <div class="hrv-setup-note ${btSupported ? '' : 'show'}" id="hrv-sql-note">
+      First time? Run this SQL in your <a href="https://supabase.com/dashboard" target="_blank" style="color:var(--blue)">Supabase dashboard</a>:
+      <code>create table if not exists morning_hrv (
+  id bigint generated always as identity primary key,
+  user_id uuid references auth.users,
+  date text not null,
+  rmssd numeric,
+  mean_rr numeric,
+  sdnn numeric,
+  rr_count integer,
+  readiness text,
+  baseline_rmssd numeric,
+  notes text,
+  created_at timestamptz default now()
+);</code>
+    </div>
+
+    <div class="hrv-status-row">
+      <div class="hrv-indicator ${hrvState.phase === 'connecting' ? 'connecting' : hrvState.phase === 'recording' ? 'recording' : hrvState.phase === 'done' ? 'done' : hrvState.phase === 'error' ? 'error' : ''}" id="hrv-dot"></div>
+      <div class="hrv-status-text" id="hrv-status">${
+        hrvState.phase === 'idle'       ? 'ready to connect' :
+        hrvState.phase === 'connecting' ? 'connecting to H10…' :
+        hrvState.phase === 'recording'  ? 'recording RR intervals…' :
+        hrvState.phase === 'done'       ? 'scan complete' :
+        hrvState.phase === 'error'      ? 'connection failed — try again' : ''
+      }</div>
+    </div>
+
+    ${(hrvState.phase === 'recording' || hrvState.phase === 'done') ? `
+    <div class="hrv-countdown ${hrvState.phase === 'done' ? 'done' : ''}" id="hrv-cd">
+      ${hrvState.phase === 'recording' ? hrvState.countdown + 's' : '✓'}
+    </div>
+    <div class="hrv-rr-viz" id="hrv-viz"></div>
+    ` : ''}
+
+    <div class="hrv-result ${hrvState.result ? 'show' : ''}" id="hrv-result-panel">
+      ${hrvState.result ? renderHRVResult(hrvState.result) : ''}
+    </div>
+
+    <div class="hrv-btns">
+      ${!btSupported ? '' :
+        hrvState.phase === 'idle' || hrvState.phase === 'error' ?
+          `<button class="hrv-btn primary" onclick="startHRVScan()">▶ connect H10 &amp; scan</button>` :
+        hrvState.phase === 'recording' ?
+          `<button class="hrv-btn" onclick="stopHRVScan()">■ stop early</button>` :
+        hrvState.phase === 'done' && hrvState.result ?
+          `<button class="hrv-btn confirm" id="hrv-save-btn" onclick="saveHRVResult()">✓ save &amp; apply readiness</button>
+           <button class="hrv-btn" onclick="startHRVScan()">↺ rescan</button>` : ''
+      }
+      <span class="hrv-saved-badge" id="hrv-saved-badge">✓ saved to database</span>
+    </div>
+  </div>`;
+
+  renderHRVBars();
+}
+
+function renderHRVResult(r) {
+  const readinessColor = r.readiness === 'normal' ? 'good' : r.readiness === 'tired' ? 'warn' : 'bad';
+  const readinessBanner = r.readiness === 'normal' ? 'green' : r.readiness === 'tired' ? 'amber' : 'red';
+  const readinessText = {
+    normal: '↑ green — proceed as planned',
+    tired:  '→ amber — monitor closely today',
+    bad:    '↓ red — consider downgrading'
+  }[r.readiness];
+  const trend = r.baseline ? ((r.rmssd - r.baseline) / r.baseline * 100).toFixed(0) : null;
+  const trendStr = trend ? (trend > 0 ? `+${trend}%` : `${trend}%`) + ' vs baseline' : 'no baseline yet';
+
+  return `<div class="hrv-result-grid">
+    <div class="hrv-metric">
+      <div class="hrv-metric-val ${readinessColor}">${r.rmssd.toFixed(1)}</div>
+      <div class="hrv-metric-lbl">RMSSD ms</div>
+    </div>
+    <div class="hrv-metric">
+      <div class="hrv-metric-val">${r.meanRR.toFixed(0)}</div>
+      <div class="hrv-metric-lbl">mean RR ms</div>
+    </div>
+    <div class="hrv-metric">
+      <div class="hrv-metric-val">${r.rrCount}</div>
+      <div class="hrv-metric-lbl">beats</div>
+    </div>
+  </div>
+  <div class="hrv-readiness-banner ${readinessBanner}">${readinessText}</div>
+  <div style="font-family:var(--mono);font-size:10px;color:var(--dim);text-align:center;">
+    ${r.baseline ? `baseline: ${r.baseline.toFixed(1)} ms · ${trendStr}` : trendStr}
+  </div>`;
+}
+
+function renderHRVBars() {
+  const viz = document.getElementById('hrv-viz');
+  if (!viz || !hrvState.rrIntervals.length) return;
+  const rrs = hrvState.rrIntervals.slice(-40); // last 40 beats
+  const max = Math.max(...rrs);
+  const min = Math.min(...rrs);
+  const range = max - min || 1;
+  viz.innerHTML = rrs.map((rr, i) => {
+    const h = 6 + ((rr - min) / range) * 30;
+    const x = (i / 40) * 100;
+    return `<div class="hrv-rr-bar" style="left:${x}%;height:${h}px"></div>`;
+  }).join('');
+}
+
+async function startHRVScan() {
+  if (!('bluetooth' in navigator)) return;
+  hrvState.rrIntervals = [];
+  hrvState.result = null;
+  hrvState.phase = 'connecting';
+  renderHRVPanel();
+
+  try {
+    // Request H10 — filter by Heart Rate service
+    hrvState.device = await navigator.bluetooth.requestDevice({
+      filters: [{ services: [HRV_SERVICE] }],
+      optionalServices: [HRV_SERVICE]
+    });
+
+    const server = await hrvState.device.gatt.connect();
+    const service = await server.getPrimaryService(HRV_SERVICE);
+    hrvState.char = await service.getCharacteristic(HRV_CHAR);
+
+    hrvState.phase = 'recording';
+    hrvState.countdown = HRV_DURATION;
+    renderHRVPanel();
+    updateHRVStatus('recording RR intervals…');
+
+    // Start notifications
+    await hrvState.char.startNotifications();
+    hrvState.char.addEventListener('characteristicvaluechanged', onHRVData);
+
+    // Countdown timer
+    hrvState.timer = setInterval(() => {
+      hrvState.countdown--;
+      const cd = document.getElementById('hrv-cd');
+      if (cd) cd.textContent = hrvState.countdown + 's';
+      renderHRVBars();
+
+      if (hrvState.countdown <= 0) {
+        finishHRVScan();
+      }
+    }, 1000);
+
+  } catch(e) {
+    console.warn('HRV connect error:', e);
+    hrvState.phase = 'error';
+    renderHRVPanel();
+    updateHRVStatus('connection failed — ' + e.message);
+  }
+}
+
+function onHRVData(event) {
+  const val = event.target.value;
+  const flags = val.getUint8(0);
+  const hrFormat = flags & 0x1; // 0 = UINT8, 1 = UINT16
+  const rrPresent = (flags >> 4) & 0x1;
+
+  if (!rrPresent) return;
+
+  // Skip HR value bytes
+  let offset = hrFormat ? 3 : 2;
+
+  // Parse RR intervals (units: 1/1024 sec)
+  while (offset + 1 < val.byteLength) {
+    const rr = val.getUint16(offset, true); // little-endian
+    const rrMs = (rr / 1024) * 1000;
+    // Sanity check: 300-2000ms (30-200bpm)
+    if (rrMs > 300 && rrMs < 2000) {
+      hrvState.rrIntervals.push(rrMs);
+    }
+    offset += 2;
+  }
+}
+
+function stopHRVScan() {
+  if (hrvState.timer) clearInterval(hrvState.timer);
+  if (hrvState.char) {
+    hrvState.char.removeEventListener('characteristicvaluechanged', onHRVData);
+    hrvState.char.stopNotifications().catch(()=>{});
+  }
+  if (hrvState.device?.gatt?.connected) {
+    hrvState.device.gatt.disconnect();
+  }
+  if (hrvState.phase === 'recording' && hrvState.rrIntervals.length >= 20) {
+    finishHRVScan();
+  } else {
+    hrvState.phase = 'idle';
+    renderHRVPanel();
+  }
+}
+
+function finishHRVScan() {
+  if (hrvState.timer) clearInterval(hrvState.timer);
+  if (hrvState.char) {
+    hrvState.char.removeEventListener('characteristicvaluechanged', onHRVData);
+    hrvState.char.stopNotifications().catch(()=>{});
+  }
+
+  const rrs = hrvState.rrIntervals;
+  if (rrs.length < 20) {
+    hrvState.phase = 'error';
+    renderHRVPanel();
+    updateHRVStatus('not enough beats recorded — try again');
+    return;
+  }
+
+  // Calculate RMSSD
+  let sumSqDiff = 0;
+  for (let i = 1; i < rrs.length; i++) {
+    const diff = rrs[i] - rrs[i-1];
+    sumSqDiff += diff * diff;
+  }
+  const rmssd = Math.sqrt(sumSqDiff / (rrs.length - 1));
+  const meanRR = rrs.reduce((a,b) => a+b, 0) / rrs.length;
+
+  // SDNN
+  const mean = meanRR;
+  const sdnn = Math.sqrt(rrs.reduce((a,b) => a + (b-mean)**2, 0) / rrs.length);
+
+  // Determine readiness vs baseline
+  const baseline = hrvState.baseline;
+  let readiness = 'normal';
+  if (baseline) {
+    const pct = (rmssd - baseline) / baseline;
+    if (pct < -0.20) readiness = 'bad';
+    else if (pct < -0.08) readiness = 'tired';
+  } else {
+    // No baseline — use absolute thresholds (conservative)
+    if (rmssd < 18) readiness = 'bad';
+    else if (rmssd < 28) readiness = 'tired';
+  }
+
+  hrvState.result = { rmssd, meanRR, sdnn, rrCount: rrs.length, readiness, baseline };
+  hrvState.phase = 'done';
+  renderHRVPanel();
+}
+
+async function loadHRVBaseline() {
+  if (!currentUser) return;
+  try {
+    // Get last 7 days of HRV scans
+    const since = new Date(Date.now() - 7*24*60*60*1000).toISOString().slice(0,10);
+    const { data, error } = await sb
+      .from(HRV_TABLE)
+      .select('rmssd, date')
+      .eq('user_id', currentUser.id)
+      .gte('date', since)
+      .order('date', { ascending: false });
+
+    if (error) {
+      // Table likely doesn't exist yet — show SQL note
+      const note = document.getElementById('hrv-sql-note');
+      if (note) note.classList.add('show');
+      return;
+    }
+
+    if (data && data.length >= 3) {
+      // Hide SQL note — table exists
+      const note = document.getElementById('hrv-sql-note');
+      if (note) note.classList.remove('show');
+      const avg = data.reduce((a,b) => a + parseFloat(b.rmssd), 0) / data.length;
+      hrvState.baseline = avg;
+    }
+  } catch(e) {
+    console.warn('HRV baseline load error:', e);
+  }
+}
+
+async function saveHRVResult() {
+  if (!hrvState.result || !currentUser) return;
+  const btn = document.getElementById('hrv-save-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'saving…'; }
+
+  const r = hrvState.result;
+  const today = getTodayISO();
+
+  const { error } = await sb.from(HRV_TABLE).insert({
+    user_id: currentUser.id,
+    date: today,
+    rmssd: parseFloat(r.rmssd.toFixed(2)),
+    mean_rr: parseFloat(r.meanRR.toFixed(1)),
+    sdnn: parseFloat(r.sdnn.toFixed(2)),
+    rr_count: r.rrCount,
+    readiness: r.readiness,
+    baseline_rmssd: r.baseline ? parseFloat(r.baseline.toFixed(2)) : null
+  });
+
+  if (error) {
+    console.warn('HRV save error:', error);
+    // Show SQL note — table probably needs to be created
+    const note = document.getElementById('hrv-sql-note');
+    if (note) note.classList.add('show');
+    if (btn) { btn.disabled = false; btn.textContent = '✓ save & apply readiness'; }
+    showToast('table missing — see SQL instructions');
+    return;
+  }
+
+  // Apply readiness to schedule
+  setMorning(r.readiness);
+
+  const badge = document.getElementById('hrv-saved-badge');
+  if (badge) badge.classList.add('show');
+  if (btn) btn.style.display = 'none';
+  showToast('HRV saved · readiness set to ' + r.readiness);
+}
+
+function updateHRVStatus(msg) {
+  const el = document.getElementById('hrv-status');
+  if (el) el.textContent = msg;
+}
+
 // ── STARFIELD + 3D TILT ──────────────────────────────────────
 function initStars() {
   const canvas = document.getElementById('star-canvas');
