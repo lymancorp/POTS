@@ -1674,21 +1674,23 @@ function fpTap() {
 }
 
 async function signInGoogle() {
+  const status = document.getElementById('login-status');
+  const lbl = document.getElementById('fp-label');
+  const btn = document.getElementById('fp-btn');
+  const redirectTo = 'https://lymancorp.github.io/POTS/';
   try {
-    const { error } = await sb.auth.signInWithOAuth({
+    if (status) status.textContent = 'opening Google…';
+    const { data, error } = await sb.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.origin + window.location.pathname }
+      options: { redirectTo }
     });
-    if (error) {
-      const status = document.getElementById('login-status');
-      const lbl = document.getElementById('fp-label');
-      const btn = document.getElementById('fp-btn');
-      if (status) status.textContent = 'error: ' + error.message;
-      if (lbl) { lbl.textContent = 'tap to try again'; lbl.className = 'fp-label error'; }
-      if (btn) btn.classList.remove('done','scanning');
-    }
+    console.log('signInWithOAuth result:', data, error);
+    if (error) throw error;
   } catch(e) {
-    console.warn('signInGoogle error:', e);
+    console.error('signInGoogle error:', e);
+    if (status) status.textContent = 'error: ' + e.message;
+    if (lbl) { lbl.textContent = 'tap to try again'; lbl.className = 'fp-label error'; }
+    if (btn) btn.classList.remove('done','scanning');
   }
 }
 
