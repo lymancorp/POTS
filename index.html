@@ -1864,20 +1864,11 @@ let polarPendingSessions = [];
 let polarSelectedIds = new Set();
 
 async function initPolar() {
-  // Check if polar is connected
-  const { data } = await sb.from('polar_tokens')
-    .select('polar_user_id')
-    .eq('user_id', currentUser.id)
-    .maybeSingle();
-
-  polarConnected = !!data;
-
-  // Check URL for polar_connected or polar_error params
+  // Check URL params first (works even before table exists)
   const params = new URLSearchParams(window.location.search);
   if (params.get('polar_connected') === '1') {
     polarConnected = true;
     showToast('Polar connected!');
-    // Clean URL
     window.history.replaceState({}, '', window.location.pathname + window.location.hash);
   }
   if (params.get('polar_error')) {
@@ -1885,6 +1876,18 @@ async function initPolar() {
     window.history.replaceState({}, '', window.location.pathname + window.location.hash);
   }
 
+  // Check if polar is connected — silently fail if table doesn't exist yet
+  try {
+    const { data } = await sb.from('polar_tokens')
+      .select('polar_user_id')
+      .eq('user_id', currentUser.id)
+      .maybeSingle();
+    polarConnected = !!data;
+  } catch(e) {
+    polarConnected = false;
+  }
+
+  // Always render the strip
   renderPolarStrip();
 }
 
