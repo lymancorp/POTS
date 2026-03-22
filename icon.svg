@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 680">
+<style>
+.bg{fill:#030810}
+.grid{fill:none;stroke:#0e2210;stroke-width:1.2}
+.trace{fill:none;stroke:#1d4a1d;stroke-width:1.5}
+.trace-bright{fill:none;stroke:#3a8c3a;stroke-width:1.5}
+.dot-sm{fill:#2d6e2d}
+.dot-xs{fill:#1a3a1a}
+.brain-outer{fill:none;stroke:#6ddc50;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+.brain-fold{fill:none;stroke:#6ddc50;stroke-width:1.8;stroke-linecap:round;opacity:0.65}
+.brain-fold-dim{fill:none;stroke:#6ddc50;stroke-width:1.4;stroke-linecap:round;opacity:0.4}
+.heart-fill{fill:#6ddc50;opacity:0.1}
+.heart-stroke{fill:none;stroke:#6ddc50;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+.connector{fill:none;stroke:#6ddc50;stroke-width:2;stroke-linecap:round;opacity:0.85}
+.pulse{fill:none;stroke:#6ddc50;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.node-fill{fill:#6ddc50}
+.node-ring{fill:none;stroke:#6ddc50;stroke-width:1.5}
+</style>
+<rect width="680" height="680" rx="130" class="bg"/>
+<line x1="40" y1="170" x2="640" y2="170" class="grid"/>
+<line x1="40" y1="250" x2="640" y2="250" class="grid"/>
+<line x1="40" y1="430" x2="640" y2="430" class="grid"/>
+<line x1="40" y1="510" x2="640" y2="510" class="grid"/>
+<line x1="170" y1="40" x2="170" y2="640" class="grid"/>
+<line x1="250" y1="40" x2="250" y2="640" class="grid"/>
+<line x1="430" y1="40" x2="430" y2="640" class="grid"/>
+<line x1="510" y1="40" x2="510" y2="640" class="grid"/>
+<polyline points="80,170 80,130 170,130" class="trace-bright"/>
+<polyline points="170,130 170,80" class="trace-bright"/>
+<polyline points="510,80 510,130 600,130 600,170" class="trace-bright"/>
+<polyline points="80,510 80,560 170,560 170,640" class="trace-bright"/>
+<polyline points="510,640 510,560 600,560 600,510" class="trace-bright"/>
+<polyline points="40,340 110,340 110,300 150,300" class="trace"/>
+<polyline points="530,300 570,300 570,340 640,340" class="trace"/>
+<polyline points="340,40 340,110 380,110 380,150" class="trace"/>
+<polyline points="300,530 300,570 340,570 340,640" class="trace"/>
+<circle cx="170" cy="130" r="5" class="dot-sm"/>
+<circle cx="510" cy="130" r="5" class="dot-sm"/>
+<circle cx="170" cy="560" r="5" class="dot-sm"/>
+<circle cx="510" cy="560" r="5" class="dot-sm"/>
+<circle cx="110" cy="340" r="3.5" class="dot-xs"/>
+<circle cx="570" cy="340" r="3.5" class="dot-xs"/>
+<circle cx="340" cy="110" r="3.5" class="dot-xs"/>
+<circle cx="340" cy="570" r="3.5" class="dot-xs"/>
+<path d="M 316 308 Q 298 306 282 300 Q 265 293 255 283 Q 242 270 238 256 Q 232 240 234 224 Q 236 208 244 198 Q 250 190 258 186 Q 248 178 248 166 Q 249 154 260 148 Q 272 142 282 150 Q 286 142 296 138 Q 308 134 318 140 Q 316 128 326 122 Q 336 116 346 122 Q 354 116 366 120 Q 378 124 380 136 Q 390 130 400 136 Q 412 144 410 158 Q 420 162 426 172 Q 434 184 432 198 Q 430 212 422 222 Q 430 230 432 244 Q 434 260 424 274 Q 414 288 398 296 Q 382 304 364 308 Q 340 312 316 308 Z" class="brain-outer"/>
+<path d="M 338 122 Q 338 160 338 200 Q 338 240 338 280 Q 338 298 338 308" class="brain-fold-dim" style="stroke-dasharray:5,4"/>
+<path d="M 260 148 Q 268 160 264 174 Q 260 188 266 200 Q 272 212 266 224 Q 260 234 264 248 Q 268 260 260 272" class="brain-fold"/>
+<path d="M 282 150 Q 290 164 286 180 Q 282 196 288 210 Q 294 224 288 238 Q 282 250 286 264 Q 290 276 282 288" class="brain-fold"/>
+<path d="M 304 138 Q 310 154 307 170 Q 304 186 310 200 Q 316 214 310 228 Q 304 242 308 256 Q 312 270 306 284" class="brain-fold"/>
+<path d="M 364 122 Q 356 138 360 154 Q 364 170 358 184 Q 352 198 358 212 Q 364 226 358 240 Q 352 254 358 268 Q 362 278 356 290" class="brain-fold"/>
+<path d="M 386 136 Q 380 150 384 166 Q 388 182 382 196 Q 376 210 382 224 Q 388 238 382 252 Q 376 264 382 276 Q 386 286 380 296" class="brain-fold"/>
+<path d="M 406 156 Q 402 170 406 184 Q 410 198 404 212 Q 398 226 404 238 Q 410 250 404 262 Q 398 272 402 284" class="brain-fold"/>
+<path d="M 268 288 Q 280 296 294 300" class="brain-fold-dim"/>
+<path d="M 278 295 Q 284 304 292 308" class="brain-fold-dim"/>
+<path d="M 382 296 Q 396 300 410 294" class="brain-fold-dim"/>
+<path d="M 392 302 Q 400 308 408 302" class="brain-fold-dim"/>
+<path d="M 316 308 Q 322 318 328 326 Q 334 334 338 340" class="brain-fold" style="opacity:0.8;stroke-width:2"/>
+<path d="M 360 308 Q 354 318 348 326 Q 342 334 338 340" class="brain-fold" style="opacity:0.8;stroke-width:2"/>
+<circle cx="258" cy="186" r="4.5" class="node-fill"/>
+<circle cx="418" cy="188" r="4.5" class="node-fill"/>
+<circle cx="240" cy="256" r="4.5" class="node-fill"/>
+<circle cx="428" cy="256" r="4.5" class="node-fill"/>
+<circle cx="338" cy="120" r="4.5" class="node-fill"/>
+<path d="M 338 480 Q 286 448 258 416 Q 228 382 228 356 Q 228 326 250 310 Q 272 296 296 302 Q 314 308 326 322 Q 332 330 338 342 Q 344 330 350 322 Q 362 308 380 302 Q 404 296 426 310 Q 448 326 448 356 Q 448 382 418 416 Q 390 448 338 480 Z" class="heart-fill"/>
+<path d="M 338 480 Q 286 448 258 416 Q 228 382 228 356 Q 228 326 250 310 Q 272 296 296 302 Q 314 308 326 322 Q 332 330 338 342 Q 344 330 350 322 Q 362 308 380 302 Q 404 296 426 310 Q 448 326 448 356 Q 448 382 418 416 Q 390 448 338 480 Z" class="heart-stroke"/>
+<circle cx="258" cy="416" r="4.5" class="node-fill"/>
+<circle cx="418" cy="416" r="4.5" class="node-fill"/>
+<circle cx="228" cy="356" r="4.5" class="node-fill"/>
+<circle cx="448" cy="356" r="4.5" class="node-fill"/>
+<path d="M 240 256 Q 232 284 228 310 Q 228 328 228 356" class="connector"/>
+<path d="M 428 256 Q 436 284 448 310 Q 448 328 448 356" class="connector"/>
+<path d="M 338 340 L 338 342" class="connector"/>
+<polyline points="150,340 196,340 212,312 228,368 244,292 260,388 276,322 292,340 338,340 384,340 400,322 416,388 432,292 448,368 464,312 480,340 530,340" class="pulse"/>
+<circle cx="338" cy="340" r="7" class="node-fill"/>
+<circle cx="338" cy="340" r="13" class="node-ring"/>
+<circle cx="338" cy="340" r="21" class="node-ring" style="opacity:0.35"/>
+<circle cx="338" cy="340" r="30" class="node-ring" style="opacity:0.15"/>
+</svg>
