@@ -1843,9 +1843,10 @@ async function sbUpsert(s){
 // Delete a session from Supabase
 async function sbDelete(id){
   try {
-    const { error } = await sb.from('sessions').delete().eq('id', String(id));
-    if(error) console.warn('Supabase delete failed:', error.message);
-  } catch(e){ console.warn('Supabase error:', e); }
+    const { error, data } = await sb.from('sessions').delete().eq('id', String(id));
+    if(error) console.error('Supabase delete failed:', error.message, error);
+    else console.log('Supabase delete OK for id:', id);
+  } catch(e){ console.error('Supabase delete exception:', e); }
 }
 
 // Load all sessions from Supabase — Supabase is the only source of truth
