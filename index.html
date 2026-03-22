@@ -2,43 +2,59 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="POTS">
-<title>POTS — Schedule + Logger</title>
+<title>POTS rehab</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap');
+
 :root {
-  --bg:     #f7f4ee;
-  --s1:     #ffffff;
-  --s2:     #f0ece3;
-  --s3:     #e8e3d8;
-  --border: #ddd8cc;
-  --border2:#ccc5b5;
-  --text:   #1c1a16;
-  --sub:    #6b6557;
-  --dim:    #a09882;
-  --acc:    #2d5a1b;    /* deep forest green */
-  --acc-bg: #eaf2e5;
-  --acc-mid:#4a8a32;
-  --blue:   #1e4a7a;
-  --blue-bg:#e8f0f8;
-  --amber:  #8a5a10;
-  --amb-bg: #fdf3e0;
-  --red:    #8a1f1f;
-  --red-bg: #fce8e8;
-  --purple: #5a3a8a;
-  --pur-bg: #f0ebf8;
-  --teal:   #1a6a5a;
-  --teal-bg:#e5f4f0;
+  /* Warm off-white base — parchment not paper */
+  --bg:      #f5f0e8;
+  --s1:      #fdfaf5;
+  --s2:      #ede8de;
+  --s3:      #e3ddd2;
+  --border:  #d8d1c4;
+  --border2: #bfb7a8;
+
+  /* Typography */
+  --text:    #1a1814;
+  --sub:     #5c5649;
+  --dim:     #9c9284;
+
+  /* Brand — deep warm navy */
+  --acc:     #1c3a5e;
+  --acc-bg:  #e8eef5;
+  --acc-mid: #2a5490;
+
+  /* Functional colors */
+  --blue:    #1e4a7a;
+  --blue-bg: #e8f0f8;
+  --amber:   #7a4f0f;
+  --amb-bg:  #fdf0dc;
+  --red:     #7a1f1f;
+  --red-bg:  #fce8e8;
+  --purple:  #4a3070;
+  --pur-bg:  #ede8f5;
+  --teal:    #155a4a;
+  --teal-bg: #e0f0ea;
+  --green:   #1e5c30;
+  --grn-bg:  #e5f2ea;
+
   --mono: 'DM Mono', monospace;
-  --serif: 'Instrument Serif', serif;
+  --serif: 'Fraunces', serif;
   --sans: 'DM Sans', sans-serif;
-  --radius: 10px;
-  --radius-lg: 14px;
+  --radius: 8px;
+  --radius-lg: 12px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(26,24,20,0.06), 0 1px 2px rgba(26,24,20,0.04);
+  --shadow: 0 4px 12px rgba(26,24,20,0.08), 0 1px 4px rgba(26,24,20,0.04);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -53,71 +69,149 @@ body {
   min-height: 100vh;
 }
 
-/* ── NAV TABS ── */
+/* ── NAV ── */
 .nav-tabs {
-  background: var(--s1);
-  border-bottom: 1px solid var(--border);
+  background: var(--acc);
+  border-bottom: none;
   display: flex;
   align-items: stretch;
   position: sticky;
   top: 0;
   z-index: 50;
-  padding: 0 20px;
+  padding: 0 24px;
+  box-shadow: 0 2px 12px rgba(26,24,20,0.15);
 }
 .nav-logo {
   font-family: var(--serif);
-  font-size: 16px;
-  color: var(--text);
-  padding: 12px 16px 12px 0;
-  border-right: 1px solid var(--border);
+  font-size: 17px;
+  color: rgba(255,255,255,0.95);
+  padding: 13px 20px 13px 0;
+  border-right: 1px solid rgba(255,255,255,0.15);
   margin-right: 8px;
   white-space: nowrap;
+  letter-spacing: -0.01em;
 }
-.nav-logo em { font-style: italic; color: var(--acc); }
+.nav-logo em { font-style: italic; color: #a8c4e0; font-weight: 300; }
 .tab-btn {
   background: none; border: none;
-  padding: 14px 16px;
+  padding: 15px 16px;
   font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  color: var(--dim);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.45);
   cursor: pointer;
   border-bottom: 2px solid transparent;
-  transition: all 0.12s;
+  transition: all 0.15s;
   white-space: nowrap;
+  text-transform: lowercase;
 }
-.tab-btn:hover { color: var(--text); }
-.tab-btn.active { color: var(--acc); border-bottom-color: var(--acc); }
+.tab-btn:hover { color: rgba(255,255,255,0.8); }
+.tab-btn.active { color: #fff; border-bottom-color: #a8c4e0; }
 
 /* ── PAGES ── */
-.page { display: none; padding-bottom: 60px; }
+.page { display: none; padding-bottom: 80px; }
 .page.active { display: block; }
 
-/* ── SHARED LAYOUT ── */
-.wrap { max-width: 940px; margin: 0 auto; padding: 0 20px; }
-.section-gap { height: 20px; }
+/* ── LAYOUT ── */
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
 
 /* ── SCHEDULE PAGE ── */
-
-/* Header */
-.sched-header {
-  background: var(--s1);
-  border-bottom: 1px solid var(--border);
-  padding: 20px 20px 16px;
+.sched-hero {
+  background: var(--acc);
+  position: relative;
+  overflow: hidden;
 }
-.sched-header-inner {
-  max-width: 940px;
+.sched-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 80% 50%, rgba(168,196,224,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+.sched-hero-inner {
+  max-width: 960px;
   margin: 0 auto;
+  padding: 28px 24px 20px;
   display: flex;
-  align-items: flex-start;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
 }
-.sh-title { font-family: var(--serif); font-size: 22px; line-height: 1.15; }
-.sh-title em { font-style: italic; color: var(--acc); }
-.sh-meta { font-size: 11px; color: var(--sub); margin-top: 4px; font-family: var(--mono); }
-.sh-date { font-size: 12px; color: var(--sub); font-family: var(--mono); }
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(168,196,224,0.7);
+  margin-bottom: 8px;
+}
+.hero-phase {
+  font-family: var(--serif);
+  font-size: 36px;
+  font-weight: 300;
+  color: #fff;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+.hero-phase em { font-style: italic; color: #a8c4e0; }
+.hero-week {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  margin-top: 8px;
+  letter-spacing: 0.04em;
+}
+.hero-right { text-align: right; }
+.hero-date {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.hero-goal {
+  font-family: var(--serif);
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  font-weight: 300;
+}
+.hero-goal em { color: #a8c4e0; font-style: italic; }
+.hero-progress-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px 20px;
+}
+.hero-progress-bar {
+  height: 2px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.hero-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #a8c4e0, #fff);
+  border-radius: 2px;
+  transition: width 0.8s cubic-bezier(0.25,1,0.5,1);
+}
+.hero-milestones {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.ms {
+  font-family: var(--mono);
+  font-size: 9px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.35);
+}
+.ms.reached { border-color: rgba(168,196,224,0.5); color: #a8c4e0; background: rgba(168,196,224,0.08); }
+.ms.current { border-color: rgba(255,255,255,0.5); color: #fff; background: rgba(255,255,255,0.08); }
+.sh-date { font-size: 11px; color: rgba(255,255,255,0.5); font-family: var(--mono); }
 
 /* Readiness */
 .readiness-strip {
@@ -128,17 +222,18 @@ body {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-top: 16px;
+  margin-top: 20px;
   flex-wrap: wrap;
+  box-shadow: var(--shadow-sm);
 }
 .r-light {
-  width: 12px; height: 12px; border-radius: 50%;
+  width: 10px; height: 10px; border-radius: 50%;
   flex-shrink: 0; transition: all 0.3s;
 }
 .r-light.unknown { background: var(--dim); }
-.r-light.green  { background: var(--acc-mid); box-shadow: 0 0 8px rgba(74,138,50,0.5); }
-.r-light.amber  { background: #c87800; box-shadow: 0 0 8px rgba(200,120,0,0.4); }
-.r-light.red    { background: #cc2222; box-shadow: 0 0 8px rgba(204,34,34,0.4); }
+.r-light.green  { background: #2a8a4a; box-shadow: 0 0 8px rgba(42,138,74,0.4); }
+.r-light.amber  { background: #c87800; box-shadow: 0 0 8px rgba(200,120,0,0.35); }
+.r-light.red    { background: #cc2222; box-shadow: 0 0 8px rgba(204,34,34,0.35); }
 .r-text { flex: 1; min-width: 160px; }
 .r-main { font-size: 12px; font-weight: 500; color: var(--text); }
 .r-sub-txt { font-size: 10px; color: var(--sub); margin-top: 1px; }
@@ -147,12 +242,12 @@ body {
   background: var(--s2);
   border: 1px solid var(--border);
   border-radius: 20px;
-  padding: 3px 10px;
+  padding: 3px 11px;
   font-family: var(--mono); font-size: 10px;
   color: var(--sub); cursor: pointer; transition: all 0.12s;
 }
-.rtag:hover { border-color: var(--acc); color: var(--acc); }
-.rtag.s-green  { background: var(--acc-bg); border-color: var(--acc-mid); color: var(--acc); }
+.rtag:hover { border-color: var(--acc-mid); color: var(--acc); }
+.rtag.s-green  { background: var(--grn-bg); border-color: #2a8a4a; color: var(--green); }
 .rtag.s-amber  { background: var(--amb-bg); border-color: var(--amber); color: var(--amber); }
 .rtag.s-red    { background: var(--red-bg); border-color: var(--red); color: var(--red); }
 
@@ -160,27 +255,27 @@ body {
 .week-nav {
   display: flex; align-items: center;
   justify-content: space-between; gap: 10px;
-  margin-top: 16px;
+  margin-top: 20px;
 }
-.wn-info {}
-.wn-week { font-family: var(--mono); font-size: 11px; color: var(--sub); text-transform: uppercase; letter-spacing: 0.08em; }
-.wn-phase { font-size: 12px; font-weight: 500; color: var(--acc); margin-top: 1px; }
+.wn-week { font-family: var(--mono); font-size: 10px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.1em; }
+.wn-phase { font-size: 13px; font-weight: 500; color: var(--acc); margin-top: 2px; font-family: var(--serif); font-style: italic; }
 .wn-btns { display: flex; gap: 6px; }
 .wn-btn {
   background: var(--s1); border: 1px solid var(--border);
-  border-radius: 7px; padding: 5px 12px;
-  font-family: var(--mono); font-size: 11px;
+  border-radius: 6px; padding: 5px 13px;
+  font-family: var(--mono); font-size: 10px;
   color: var(--sub); cursor: pointer; transition: all 0.12s;
+  box-shadow: var(--shadow-sm);
 }
-.wn-btn:hover { border-color: var(--acc); color: var(--acc); }
-.wn-btn:disabled { opacity: 0.35; cursor: default; }
+.wn-btn:hover { border-color: var(--acc-mid); color: var(--acc); }
+.wn-btn:disabled { opacity: 0.3; cursor: default; box-shadow: none; }
 
 /* Week grid */
 .week-grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0,1fr));
   gap: 6px;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 @media(max-width:600px){ .week-grid { grid-template-columns: repeat(4,1fr); } }
 
@@ -188,95 +283,92 @@ body {
   background: var(--s1);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 9px;
+  padding: 10px;
   cursor: pointer;
   transition: all 0.12s;
-  min-height: 140px;
+  min-height: 130px;
   position: relative;
+  box-shadow: var(--shadow-sm);
 }
-.day-card:hover { border-color: var(--border2); }
+.day-card:hover { border-color: var(--border2); box-shadow: var(--shadow); transform: translateY(-1px); }
 .day-card.today {
   border-color: var(--acc-mid);
-  background: linear-gradient(160deg, #fff 60%, var(--acc-bg));
+  background: linear-gradient(160deg, var(--s1) 50%, var(--acc-bg));
+  box-shadow: 0 0 0 3px rgba(42,84,144,0.1), var(--shadow);
 }
-.day-card.today::after { display: none; }
 .day-card.today::before {
   content: '';
   position: absolute;
-  top: 0; left: 10%; right: 10%;
+  top: 0; left: 12%; right: 12%;
   height: 2px;
   background: var(--acc-mid);
-  border-radius: 0 0 2px 2px;
+  border-radius: 0 0 3px 3px;
 }
-.day-card.is-off { opacity: 0.6; }
+.day-card.is-off { opacity: 1; cursor: pointer; }
 .day-status {
   position: absolute; top: 7px; right: 7px;
   font-family: var(--mono); font-size: 10px;
 }
-.day-status.done { color: var(--acc); }
+.day-status.done { color: var(--green); }
 .day-status.downgraded { color: var(--amber); }
 .day-status.missed { color: var(--dim); }
-.day-card.status-missed { opacity: 0.45; background: var(--s2) !important; }
-.day-card.status-missed .dc-datenum { color: var(--dim); }
-.day-card.status-missed .dc-typepill { opacity: 0.4; }
-.day-card.status-downgraded { border-color: var(--amber) !important; }
-.day-card.status-done { border-color: var(--acc-mid) !important; }
-.day-card.status-skipped { opacity: 0.45; }
 
-.dc-dayname { font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); margin-bottom: 2px; }
-.day-card.today .dc-dayname { color: var(--acc); }
-.dc-datenum { font-family: var(--serif); font-size: 20px; line-height: 1; color: var(--text); margin-bottom: 5px; }
+.dc-dayname { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); margin-bottom: 3px; }
+.day-card.today .dc-dayname { color: var(--acc-mid); }
+.dc-datenum { font-family: var(--serif); font-size: 22px; line-height: 1; color: var(--text); margin-bottom: 6px; font-weight: 300; }
 .dc-typepill {
-  font-family: var(--mono); font-size: 9px; letter-spacing: 0.05em;
-  padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 6px;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.04em;
+  padding: 2px 7px; border-radius: 4px; display: inline-block; margin-bottom: 6px;
 }
-.pill-F  { background: var(--blue-bg); color: var(--blue); }
-.pill-S  { background: var(--acc-bg);  color: var(--acc); }
-.pill-R  { background: var(--pur-bg);  color: var(--purple); }
-.pill-off{ background: var(--s2);       color: var(--dim); }
+.pill-F  { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(30,74,122,0.2); }
+.pill-S  { background: var(--grn-bg); color: var(--green); border: 1px solid rgba(30,92,48,0.2); }
+.pill-R  { background: var(--pur-bg); color: var(--purple); border: 1px solid rgba(74,48,112,0.2); }
+.pill-off{ background: var(--s2); color: var(--dim); border: 1px solid var(--border); }
 .dc-blocks { display: flex; flex-direction: column; gap: 2px; }
 .dcb { font-size: 10px; color: var(--sub); display: flex; gap: 4px; align-items: flex-start; line-height: 1.3; }
 .dcb-dot { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
 
 /* Today expanded */
-.today-exp-collapsed .sblocks,
-.today-exp-collapsed .te-sub,
-.today-exp-collapsed [id^=neuro-checks] { display: none; }
 .today-exp {
   background: var(--s1);
   border: 1px solid var(--acc-mid);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  margin-top: 14px;
+  margin-top: 16px;
+  box-shadow: var(--shadow);
 }
 .te-head {
-  padding: 14px 18px;
+  padding: 16px 20px;
   border-bottom: 1px solid var(--border);
   display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  background: linear-gradient(135deg, var(--s1), var(--acc-bg));
 }
-.te-lbl { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--acc); margin-bottom: 3px; }
-.te-name { font-family: var(--serif); font-size: 20px; }
-.te-sub  { font-size: 11px; color: var(--sub); margin-top: 2px; }
-.te-warn { font-size: 11px; color: var(--amber); margin-top: 4px; }
+.te-lbl { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--acc-mid); margin-bottom: 4px; }
+.te-name { font-family: var(--serif); font-size: 22px; font-weight: 300; color: var(--acc); }
+.te-sub  { font-size: 11px; color: var(--sub); margin-top: 3px; }
+.te-warn { font-size: 11px; color: var(--amber); margin-top: 4px; background: var(--amb-bg); padding: 5px 9px; border-radius: 5px; display: inline-block; }
 .te-actions { display: flex; gap: 6px; flex-wrap: wrap; align-items: flex-start; margin-top: 2px; }
 .ta-btn {
-  border: 1px solid var(--border); border-radius: 7px; padding: 7px 13px;
-  font-family: var(--mono); font-size: 11px; cursor: pointer; background: var(--s2); color: var(--sub);
-  transition: all 0.12s;
+  border: 1px solid var(--border); border-radius: 6px; padding: 7px 14px;
+  font-family: var(--mono); font-size: 10px; cursor: pointer;
+  background: var(--s2); color: var(--sub);
+  transition: all 0.12s; letter-spacing: 0.03em;
 }
 .ta-btn:hover { border-color: var(--border2); color: var(--text); }
 .ta-btn.primary { background: var(--acc); border-color: var(--acc); color: #fff; }
-.ta-btn.primary:hover { opacity: 0.88; }
+.ta-btn.primary:hover { background: var(--acc-mid); border-color: var(--acc-mid); }
 .ta-btn.warn { background: var(--amb-bg); border-color: var(--amber); color: var(--amber); }
-.ta-btn.done-btn { background: var(--acc-bg); border-color: var(--acc-mid); color: var(--acc); }
+.ta-btn.done-btn { background: var(--grn-bg); border-color: #2a8a4a; color: var(--green); }
 
-.sblocks { padding: 12px 16px; display: flex; flex-direction: column; gap: 7px; }
+.sblocks { padding: 14px 18px; display: flex; flex-direction: column; gap: 8px; }
 .sblock {
   background: var(--s2); border: 1px solid var(--border);
   border-radius: var(--radius); overflow: hidden;
+  transition: border-color 0.12s;
 }
+.sblock:hover { border-color: var(--border2); }
 .sblock-hd {
-  padding: 9px 12px; display: flex; align-items: center; gap: 9px;
+  padding: 10px 14px; display: flex; align-items: center; gap: 9px;
   cursor: pointer; transition: background 0.1s;
 }
 .sblock-hd:hover { background: var(--s3); }
@@ -286,20 +378,20 @@ body {
 .sbl-chev { font-size: 11px; color: var(--dim); transition: transform 0.15s; }
 .sblock.open .sbl-chev { transform: rotate(180deg); }
 .sblock-bd {
-  display: none; padding: 0 12px 10px; border-top: 1px solid var(--border); padding-top: 10px;
+  display: none; padding: 12px 14px; border-top: 1px solid var(--border);
 }
 .sblock.open .sblock-bd { display: block; }
-.rstep { display: flex; gap: 9px; margin-bottom: 7px; font-size: 11px; }
+.rstep { display: flex; gap: 9px; margin-bottom: 8px; font-size: 11px; }
 .rstep:last-child { margin-bottom: 0; }
 .rs-n { font-family: var(--mono); font-size: 9px; color: var(--dim); min-width: 14px; margin-top: 1px; }
 .rs-name { font-weight: 500; color: var(--text); }
-.rs-detail { color: var(--sub); line-height: 1.5; }
-.rs-src { font-family: var(--mono); font-size: 9px; color: var(--dim); margin-top: 1px; }
+.rs-detail { color: var(--sub); line-height: 1.55; }
+.rs-src { font-family: var(--mono); font-size: 9px; color: var(--dim); margin-top: 2px; }
 
 .log-btn {
   display: flex; align-items: center; gap: 7px;
   background: var(--acc-bg); border: 1px solid var(--acc-mid);
-  border-radius: 8px; padding: 8px 14px;
+  border-radius: 7px; padding: 8px 14px;
   font-family: var(--mono); font-size: 11px; color: var(--acc);
   cursor: pointer; width: 100%; margin-top: 10px; transition: all 0.12s;
 }
@@ -308,57 +400,61 @@ body {
 /* Progress */
 .prog-card {
   background: var(--s1); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 14px 18px; margin-top: 14px;
+  border-radius: var(--radius-lg); padding: 16px 20px; margin-top: 16px;
+  box-shadow: var(--shadow-sm);
 }
 .prog-lbl {
   font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--dim); margin-bottom: 10px;
+  text-transform: uppercase; color: var(--dim); margin-bottom: 12px;
   display: flex; justify-content: space-between;
 }
-.prog-phase { color: var(--acc); }
+.prog-phase { color: var(--acc); font-style: italic; font-family: var(--serif); font-size: 11px; text-transform: none; letter-spacing: 0; }
 .prog-bar-wrap { margin-bottom: 10px; }
-.prog-bar-lbl { font-size: 10px; color: var(--sub); margin-bottom: 4px; display: flex; justify-content: space-between; }
+.prog-bar-lbl { font-size: 10px; color: var(--sub); margin-bottom: 5px; display: flex; justify-content: space-between; }
 .prog-bar { height: 3px; background: var(--s3); border-radius: 2px; overflow: hidden; }
-.prog-bar-fill { height: 100%; background: var(--acc-mid); border-radius: 2px; transition: width 0.4s; }
+.prog-bar-fill { height: 100%; background: var(--acc-mid); border-radius: 2px; transition: width 0.6s ease; }
 .milestones { display: flex; gap: 5px; flex-wrap: wrap; }
 .ms {
-  font-family: var(--mono); font-size: 9px; padding: 2px 7px;
+  font-family: var(--mono); font-size: 9px; padding: 2px 8px;
   border-radius: 4px; border: 1px solid var(--border); color: var(--dim);
 }
-.ms.reached { border-color: var(--acc-mid); color: var(--acc); background: var(--acc-bg); }
+.ms.reached { border-color: #2a8a4a; color: var(--green); background: var(--grn-bg); }
 .ms.current { border-color: var(--amber); color: var(--amber); background: var(--amb-bg); }
 
 /* Hard rules */
 .rules-card {
   background: var(--s1); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 13px 16px; margin-top: 12px;
+  border-radius: var(--radius-lg); padding: 14px 18px; margin-top: 14px;
+  box-shadow: var(--shadow-sm);
 }
-.rules-lbl { font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); margin-bottom: 9px; }
-.rule { display: flex; gap: 10px; font-size: 11px; margin-bottom: 5px; align-items: flex-start; }
+.rules-lbl { font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); margin-bottom: 10px; }
+.rule { display: flex; gap: 10px; font-size: 11px; margin-bottom: 6px; align-items: flex-start; }
 .rule:last-child { margin-bottom: 0; }
 .rule-n { font-family: var(--mono); font-size: 9px; color: var(--dim); min-width: 18px; margin-top: 1px; }
-.rule-t { color: var(--sub); line-height: 1.5; }
+.rule-t { color: var(--sub); line-height: 1.55; }
 .rule-t strong { color: var(--text); font-weight: 500; }
 
 /* Modal */
 .modal-bg {
-  position: fixed; inset: 0; background: rgba(28,26,22,0.6);
+  position: fixed; inset: 0; background: rgba(26,24,20,0.5);
   display: none; align-items: center; justify-content: center; z-index: 200; padding: 20px;
+  backdrop-filter: blur(3px);
 }
 .modal-bg.open { display: flex; }
 .modal {
   background: var(--s1); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 20px; max-width: 380px; width: 100%;
+  border-radius: var(--radius-lg); padding: 22px; max-width: 380px; width: 100%;
+  box-shadow: var(--shadow);
 }
-.modal-title { font-family: var(--serif); font-size: 17px; margin-bottom: 5px; }
-.modal-sub { font-size: 11px; color: var(--sub); margin-bottom: 14px; line-height: 1.6; }
+.modal-title { font-family: var(--serif); font-size: 18px; font-weight: 300; margin-bottom: 6px; color: var(--acc); }
+.modal-sub { font-size: 11px; color: var(--sub); margin-bottom: 16px; line-height: 1.6; }
 .modal-opts { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
 .modal-opt {
   background: var(--s2); border: 1px solid var(--border);
-  border-radius: 8px; padding: 9px 13px; cursor: pointer;
+  border-radius: 8px; padding: 10px 14px; cursor: pointer;
   transition: all 0.12s; font-size: 12px;
 }
-.modal-opt:hover { border-color: var(--acc-mid); }
+.modal-opt:hover { border-color: var(--acc-mid); background: var(--acc-bg); }
 .modal-opt strong { display: block; color: var(--text); font-weight: 500; margin-bottom: 1px; }
 .modal-opt span { color: var(--sub); font-size: 11px; }
 .modal-opt.sel { background: var(--acc-bg); border-color: var(--acc-mid); }
@@ -366,148 +462,139 @@ body {
 .modal-close { font-family: var(--mono); font-size: 11px; color: var(--sub); cursor: pointer; }
 .modal-close:hover { color: var(--text); }
 
-/* ═══════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    LOGGER PAGE
-═══════════════════════════════════════════════════ */
-.logger-wrap { max-width: 860px; margin: 0 auto; padding: 20px 20px 60px; }
-.log-page-title { font-family: var(--serif); font-size: 20px; margin-bottom: 2px; }
-.log-page-sub { font-size: 11px; color: var(--sub); margin-bottom: 20px; }
-
-/* Log nav */
-.log-nav { display: flex; gap: 5px; margin-bottom: 18px; flex-wrap: wrap; }
-.ln-btn {
-  background: var(--s1); border: 1px solid var(--border);
-  border-radius: 7px; padding: 6px 13px;
-  font-family: var(--mono); font-size: 11px; color: var(--sub);
-  cursor: pointer; transition: all 0.12s;
-}
-.ln-btn:hover { border-color: var(--border2); color: var(--text); }
-.ln-btn.active { background: var(--acc-bg); border-color: var(--acc-mid); color: var(--acc); }
-
-.log-section { display: none; }
-.log-section.active { display: block; }
+══════════════════════════════════════════════════════ */
+.logger-wrap { max-width: 860px; margin: 0 auto; padding: 24px 24px 80px; }
+.log-page-title { font-family: var(--serif); font-size: 22px; font-weight: 300; margin-bottom: 3px; color: var(--acc); }
+.log-page-sub { font-size: 11px; color: var(--sub); margin-bottom: 20px; font-family: var(--mono); }
 
 /* Cards */
 .lcard {
   background: var(--s1); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 16px; margin-bottom: 12px;
+  border-radius: var(--radius-lg); padding: 18px; margin-bottom: 14px;
+  box-shadow: var(--shadow-sm);
 }
 .lcard-hd {
-  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--dim); margin-bottom: 12px;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--dim); margin-bottom: 14px;
   display: flex; align-items: center; gap: 8px;
 }
 .lcard-hd::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
 /* Form */
-.fg2 { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
-.fg3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 9px; }
-.fg4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 9px; }
+.fg2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.fg3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.fg4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; }
 @media(max-width:520px){ .fg2,.fg3,.fg4 { grid-template-columns: 1fr 1fr; } }
-.field { display: flex; flex-direction: column; gap: 3px; }
-.field label { font-size: 9px; letter-spacing: 0.09em; color: var(--sub); text-transform: uppercase; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field label { font-size: 9px; letter-spacing: 0.09em; color: var(--sub); text-transform: uppercase; font-family: var(--mono); }
 .field input, .field select, .field textarea {
   background: var(--s2); border: 1px solid var(--border);
   border-radius: 6px; color: var(--text);
   font-family: var(--mono); font-size: 12px;
-  padding: 7px 9px; outline: none; width: 100%;
-  transition: border-color 0.12s;
+  padding: 8px 10px; outline: none; width: 100%;
+  transition: border-color 0.12s, box-shadow 0.12s;
 }
-.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--acc-mid); }
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--acc-mid);
+  box-shadow: 0 0 0 3px rgba(42,84,144,0.1);
+}
 .field select option { background: var(--s1); }
-.field textarea { resize: vertical; min-height: 50px; }
-.field input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.5; }
+.field textarea { resize: vertical; min-height: 55px; }
 
 /* Tags */
 .tg-group { display: flex; gap: 5px; flex-wrap: wrap; }
 .tg-btn {
   background: var(--s2); border: 1px solid var(--border);
-  border-radius: 20px; padding: 3px 10px; cursor: pointer;
+  border-radius: 20px; padding: 4px 12px; cursor: pointer;
   font-family: var(--mono); font-size: 10px; color: var(--sub);
   transition: all 0.12s;
 }
 .tg-btn:hover { border-color: var(--acc-mid); color: var(--acc); }
-.tg-sel-green  { background: var(--acc-bg)!important;  border-color: var(--acc-mid)!important;  color: var(--acc)!important; }
-.tg-sel-amber  { background: var(--amb-bg)!important;  border-color: var(--amber)!important;    color: var(--amber)!important; }
-.tg-sel-red    { background: var(--red-bg)!important;  border-color: var(--red)!important;      color: var(--red)!important; }
-.tg-sel-blue   { background: var(--blue-bg)!important; border-color: var(--blue)!important;     color: var(--blue)!important; }
-.tg-sel-purple { background: var(--pur-bg)!important;  border-color: var(--purple)!important;   color: var(--purple)!important; }
+.tg-sel-green  { background: var(--grn-bg)!important;  border-color: #2a8a4a!important;  color: var(--green)!important; }
+.tg-sel-amber  { background: var(--amb-bg)!important;  border-color: var(--amber)!important; color: var(--amber)!important; }
+.tg-sel-red    { background: var(--red-bg)!important;  border-color: var(--red)!important;   color: var(--red)!important; }
+.tg-sel-blue   { background: var(--blue-bg)!important; border-color: var(--blue)!important;  color: var(--blue)!important; }
+.tg-sel-purple { background: var(--pur-bg)!important;  border-color: var(--purple)!important; color: var(--purple)!important; }
+.tg-sel-none   { background: var(--s3)!important; border-color: var(--border2)!important; color: var(--text)!important; }
 
 /* CP block */
 .cpblock {
   background: var(--s2); border: 1px solid var(--border);
-  border-radius: 8px; padding: 10px; margin-bottom: 8px;
+  border-radius: 7px; padding: 10px; margin-bottom: 8px;
 }
-.cpblock-lbl { font-size: 9px; letter-spacing: 0.09em; color: var(--acc); text-transform: uppercase; margin-bottom: 8px; }
+.cpblock-lbl { font-size: 9px; letter-spacing: 0.09em; color: var(--acc); text-transform: uppercase; margin-bottom: 8px; font-family: var(--mono); }
 
 /* Step-up block */
 .su-block {
   background: var(--amb-bg); border: 1px solid var(--amber);
-  border-radius: 8px; padding: 12px; margin-bottom: 12px; display: none;
+  border-radius: 8px; padding: 14px; margin-bottom: 14px; display: none;
 }
 .su-block.vis { display: block; }
-.su-lbl { font-size: 9px; letter-spacing: 0.09em; color: var(--amber); text-transform: uppercase; margin-bottom: 10px; }
+.su-lbl { font-size: 9px; letter-spacing: 0.09em; color: var(--amber); text-transform: uppercase; margin-bottom: 10px; font-family: var(--mono); }
 
 /* Stop timer */
 .stop-panel {
   background: var(--s2); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 16px; margin-bottom: 12px;
+  border-radius: var(--radius); padding: 18px; margin-bottom: 14px;
 }
 .stop-panel.running { border-color: var(--red); background: var(--red-bg); }
-.stop-panel.captured { border-color: var(--acc-mid); background: var(--acc-bg); }
+.stop-panel.captured { border-color: #2a8a4a; background: var(--grn-bg); }
 .timer-disp {
-  font-family: var(--serif); font-size: 48px; font-weight: 700;
-  letter-spacing: -0.03em; color: var(--dim); line-height: 1; margin: 6px 0 10px;
+  font-family: var(--serif); font-size: 52px; font-weight: 300;
+  letter-spacing: -0.02em; color: var(--dim); line-height: 1; margin: 8px 0 10px;
   transition: color 0.3s;
 }
 .stop-panel.running .timer-disp { color: var(--red); }
-.stop-panel.captured .timer-disp { color: var(--acc); }
-.timer-sub { font-size: 10px; color: var(--sub); margin-bottom: 12px; }
+.stop-panel.captured .timer-disp { color: var(--green); }
+.timer-sub { font-size: 10px; color: var(--sub); margin-bottom: 12px; font-family: var(--mono); }
 .stop-panel.running .timer-sub { color: var(--red); }
-.stop-panel.captured .timer-sub { color: var(--acc); }
+.stop-panel.captured .timer-sub { color: var(--green); }
 .timer-btns { display: flex; gap: 7px; flex-wrap: wrap; }
 .tbtn {
-  border: 1px solid var(--border); border-radius: 7px; padding: 7px 14px;
+  border: 1px solid var(--border); border-radius: 6px; padding: 8px 15px;
   font-family: var(--mono); font-size: 11px; cursor: pointer;
   background: var(--s1); color: var(--sub); transition: all 0.12s;
 }
 .tbtn:hover { border-color: var(--border2); color: var(--text); }
 .tbtn.red  { background: var(--red-bg); border-color: var(--red); color: var(--red); }
 .tbtn.red:hover { background: var(--red); color: #fff; }
-.tbtn.green { background: var(--acc-bg); border-color: var(--acc-mid); color: var(--acc); }
-.tbtn.green:hover { background: var(--acc); color: #fff; }
+.tbtn.green { background: var(--grn-bg); border-color: #2a8a4a; color: var(--green); }
+.tbtn.green:hover { background: var(--green); color: #fff; }
 .capture-row { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); display: none; gap: 9px; align-items: flex-end; flex-wrap: wrap; }
 .stop-panel.running .capture-row, .stop-panel.captured .capture-row { display: flex; }
 .result-badge {
-  background: var(--acc-bg); border: 1px solid var(--acc-mid);
-  border-radius: 6px; padding: 5px 10px; font-size: 11px; color: var(--acc);
+  background: var(--grn-bg); border: 1px solid #2a8a4a;
+  border-radius: 6px; padding: 5px 11px; font-size: 11px; color: var(--green);
   display: none; margin-top: 8px; font-family: var(--mono);
 }
 .stop-panel.captured .result-badge { display: inline-block; }
 .polar-hint {
   background: var(--blue-bg); border: 1px solid var(--blue);
-  border-radius: 7px; padding: 9px 12px; margin-bottom: 12px;
+  border-radius: 7px; padding: 9px 13px; margin-bottom: 14px;
   font-size: 11px; color: var(--blue); line-height: 1.6;
 }
 
 /* Buttons */
 .save-btn {
   background: var(--acc); color: #fff; border: none;
-  border-radius: 8px; padding: 10px 20px;
+  border-radius: 7px; padding: 11px 22px;
   font-family: var(--mono); font-size: 12px; font-weight: 500;
   cursor: pointer; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px;
+  letter-spacing: 0.03em;
 }
-.save-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.save-btn:hover { background: var(--acc-mid); transform: translateY(-1px); box-shadow: var(--shadow); }
 .btn-sec {
   background: var(--s1); color: var(--text); border: 1px solid var(--border);
-  border-radius: 8px; padding: 9px 16px;
+  border-radius: 7px; padding: 10px 17px;
   font-family: var(--mono); font-size: 11px; cursor: pointer;
-  transition: all 0.12s; margin-left: 7px;
+  transition: all 0.12s; margin-left: 8px;
 }
 .btn-sec:hover { border-color: var(--border2); }
 .btn-danger {
   background: var(--red-bg); color: var(--red); border: 1px solid var(--red);
-  border-radius: 6px; padding: 4px 9px; font-family: var(--mono);
+  border-radius: 6px; padding: 4px 10px; font-family: var(--mono);
   font-size: 10px; cursor: pointer; transition: all 0.12s;
 }
 .btn-danger:hover { background: var(--red); color: #fff; }
@@ -515,88 +602,295 @@ body {
 /* Session list */
 .sess-item {
   background: var(--s1); border: 1px solid var(--border);
-  border-radius: 8px; padding: 10px 13px; margin-bottom: 6px;
-  cursor: pointer; transition: border-color 0.12s;
+  border-radius: 9px; padding: 11px 14px; margin-bottom: 7px;
+  cursor: pointer; transition: all 0.12s;
+  box-shadow: var(--shadow-sm);
 }
-.sess-item:hover { border-color: var(--border2); }
+.sess-item:hover { border-color: var(--border2); box-shadow: var(--shadow); }
 .sess-top { display: flex; align-items: center; justify-content: space-between; gap: 7px; }
 .sess-date { font-size: 11px; color: var(--sub); white-space: nowrap; font-family: var(--mono); }
 .sess-tags { display: flex; gap: 4px; flex-wrap: wrap; }
 .spill {
-  font-size: 9px; padding: 2px 6px; border-radius: 4px;
+  font-size: 9px; padding: 2px 7px; border-radius: 4px;
   border: 1px solid var(--border); color: var(--sub);
 }
-.spill.F { background: var(--blue-bg); border-color: var(--blue); color: var(--blue); }
-.spill.S { background: var(--acc-bg);  border-color: var(--acc-mid); color: var(--acc); }
-.spill.R { background: var(--pur-bg);  border-color: var(--purple); color: var(--purple); }
-.spill.normal { background: var(--acc-bg); border-color: var(--acc-mid); color: var(--acc); }
+.spill.F { background: var(--blue-bg); border-color: rgba(30,74,122,0.3); color: var(--blue); }
+.spill.S { background: var(--grn-bg);  border-color: rgba(30,92,48,0.3); color: var(--green); }
+.spill.R { background: var(--pur-bg);  border-color: rgba(74,48,112,0.3); color: var(--purple); }
+.spill.normal { background: var(--grn-bg); border-color: rgba(30,92,48,0.3); color: var(--green); }
 .spill.tired  { background: var(--amb-bg); border-color: var(--amber); color: var(--amber); }
 .spill.bad,.spill.crash { background: var(--red-bg); border-color: var(--red); color: var(--red); }
-.sess-exp { display: none; margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--border); }
+.sess-exp { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
 .sess-exp.open { display: block; }
-.cp-mini-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; margin-bottom: 7px; }
-.cp-mini { background: var(--s2); border-radius: 6px; padding: 6px 8px; }
-.cp-mini-t { font-size: 9px; color: var(--acc); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 2px; }
-.cp-mini-v { font-size: 11px; color: var(--text); line-height: 1.4; }
+.cp-mini-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; margin-bottom: 8px; }
+.cp-mini { background: var(--s2); border-radius: 6px; padding: 7px 9px; }
+.cp-mini-t { font-size: 9px; color: var(--acc-mid); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 2px; font-family: var(--mono); }
+.cp-mini-v { font-size: 11px; color: var(--text); line-height: 1.4; font-family: var(--mono); }
 
 /* Charts */
-.chart-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.chart-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
 @media(max-width:560px){ .chart-grid2 { grid-template-columns: 1fr; } }
-.chart-card { background: var(--s1); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 14px; }
+.chart-card { background: var(--s1); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow-sm); }
 .chart-title { font-family: var(--mono); font-size: 10px; letter-spacing: 0.07em; color: var(--sub); text-transform: uppercase; margin-bottom: 3px; }
 .chart-sub { font-size: 10px; color: var(--dim); margin-bottom: 10px; }
-.chart-wrap { position: relative; width: 100%; height: 170px; }
-.chart-wrap-tall { position: relative; width: 100%; height: 220px; }
+.chart-wrap { position: relative; width: 100%; height: 175px; }
+.chart-wrap-tall { position: relative; width: 100%; height: 225px; }
 
 /* Metric grid */
-.metric-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 9px; margin-bottom: 14px; }
+.metric-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; margin-bottom: 16px; }
 @media(max-width:500px){ .metric-grid { grid-template-columns: repeat(2,1fr); } }
-.metric { background: var(--s1); border: 1px solid var(--border); border-radius: 8px; padding: 10px 13px; }
-.metric-l { font-size: 9px; letter-spacing: 0.09em; color: var(--sub); text-transform: uppercase; margin-bottom: 4px; }
-.metric-v { font-family: var(--serif); font-size: 21px; color: var(--text); }
-.metric-s { font-size: 10px; color: var(--dim); margin-top: 1px; }
+.metric { background: var(--s1); border: 1px solid var(--border); border-radius: 9px; padding: 12px 14px; box-shadow: var(--shadow-sm); }
+.metric-l { font-size: 9px; letter-spacing: 0.09em; color: var(--sub); text-transform: uppercase; margin-bottom: 5px; font-family: var(--mono); }
+.metric-v { font-family: var(--serif); font-size: 24px; color: var(--text); font-weight: 300; }
+.metric-s { font-size: 10px; color: var(--dim); margin-top: 1px; font-family: var(--mono); }
 
 /* Filter */
-.filter-row { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 12px; }
+.filter-row { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 14px; }
 .filter-btn {
   background: var(--s1); border: 1px solid var(--border);
-  border-radius: 6px; padding: 4px 11px;
+  border-radius: 6px; padding: 5px 12px;
   font-family: var(--mono); font-size: 10px; color: var(--sub); cursor: pointer; transition: all 0.12s;
 }
 .filter-btn.active { background: var(--acc-bg); border-color: var(--acc-mid); color: var(--acc); }
 
 /* Toast */
 .toast {
-  position: fixed; bottom: 18px; right: 18px;
-  background: var(--acc-bg); border: 1px solid var(--acc-mid);
-  color: var(--acc); font-family: var(--mono); font-size: 11px;
-  padding: 7px 13px; border-radius: 8px;
-  opacity: 0; transform: translateY(5px);
-  transition: all 0.18s; pointer-events: none; z-index: 999;
+  position: fixed; bottom: 20px; right: 20px;
+  background: var(--acc); border: none;
+  color: #fff; font-family: var(--mono); font-size: 11px;
+  padding: 8px 15px; border-radius: 8px;
+  opacity: 0; transform: translateY(6px);
+  transition: all 0.2s; pointer-events: none; z-index: 999;
+  box-shadow: var(--shadow);
 }
 .toast.show { opacity: 1; transform: translateY(0); }
 
-.empty-state { text-align: center; padding: 36px 16px; color: var(--dim); }
+.empty-state { text-align: center; padding: 40px 16px; color: var(--dim); }
 .empty-icon { font-size: 24px; margin-bottom: 8px; opacity: 0.3; }
-hr.divider { border: none; border-top: 1px solid var(--border); margin: 10px 0; }
+hr.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(42,84,144,0.3); }
+  70%  { box-shadow: 0 0 0 8px rgba(42,84,144,0); }
+  100% { box-shadow: 0 0 0 0 rgba(42,84,144,0); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes timerPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.6; }
+}
+@keyframes countUp {
+  from { transform: scale(0.85); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+@keyframes badgePop {
+  0%   { transform: scale(0.7); opacity: 0; }
+  70%  { transform: scale(1.08); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes missedSlide {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Page load — stagger each card */
+.page.active .lcard          { animation: fadeUp 0.35s ease both; }
+.page.active .lcard:nth-child(1) { animation-delay: 0.05s; }
+.page.active .lcard:nth-child(2) { animation-delay: 0.10s; }
+.page.active .lcard:nth-child(3) { animation-delay: 0.15s; }
+.page.active .lcard:nth-child(4) { animation-delay: 0.20s; }
+.page.active .lcard:nth-child(5) { animation-delay: 0.25s; }
+
+/* Week grid cards stagger */
+.day-card { animation: fadeUp 0.3s ease both; }
+.day-card:nth-child(1) { animation-delay: 0.04s; }
+.day-card:nth-child(2) { animation-delay: 0.08s; }
+.day-card:nth-child(3) { animation-delay: 0.12s; }
+.day-card:nth-child(4) { animation-delay: 0.16s; }
+.day-card:nth-child(5) { animation-delay: 0.20s; }
+.day-card:nth-child(6) { animation-delay: 0.24s; }
+.day-card:nth-child(7) { animation-delay: 0.28s; }
+
+/* Today expanded panel */
+.today-exp { animation: slideDown 0.25s ease both; }
+
+/* Session items stagger */
+.sess-item { animation: fadeUp 0.3s ease both; }
+.sess-item:nth-child(1) { animation-delay: 0.03s; }
+.sess-item:nth-child(2) { animation-delay: 0.07s; }
+.sess-item:nth-child(3) { animation-delay: 0.11s; }
+.sess-item:nth-child(4) { animation-delay: 0.15s; }
+.sess-item:nth-child(5) { animation-delay: 0.19s; }
+
+/* Metric grid */
+.metric { animation: fadeUp 0.3s ease both; }
+.metric:nth-child(1) { animation-delay: 0.05s; }
+.metric:nth-child(2) { animation-delay: 0.10s; }
+.metric:nth-child(3) { animation-delay: 0.15s; }
+.metric:nth-child(4) { animation-delay: 0.20s; }
+
+/* Chart cards */
+.chart-card { animation: fadeUp 0.35s ease both; }
+
+/* Buttons */
+.ta-btn        { transition: all 0.15s cubic-bezier(0.34,1.56,0.64,1); }
+.ta-btn:active { transform: scale(0.94); }
+.ta-btn.primary:hover { box-shadow: 0 4px 14px rgba(28,58,94,0.35); }
+.save-btn { transition: all 0.18s cubic-bezier(0.34,1.56,0.64,1); }
+.save-btn:active { transform: scale(0.96); }
+.wn-btn { transition: all 0.15s cubic-bezier(0.34,1.56,0.64,1); }
+.wn-btn:hover { transform: translateY(-1px); }
+.wn-btn:active { transform: scale(0.95); }
+
+/* Tab switcher */
+.tab-btn { transition: color 0.15s, border-color 0.15s; }
+.tab-btn.active { animation: fadeIn 0.2s ease; }
+
+/* Today card pulse */
+.day-card.today { animation: fadeUp 0.3s ease both, pulse-ring 2.5s ease 1s 2; }
+
+/* Session expanded */
+.sess-exp.open { animation: slideDown 0.2s ease both; }
+
+/* Sblock open */
+.sblock-bd { animation: slideDown 0.18s ease both; }
+
+/* Readiness light */
+.r-light { transition: background 0.4s ease, box-shadow 0.4s ease; }
+.r-light.green { animation: pulse-ring 2s ease infinite; }
+
+/* Tag buttons */
+.tg-btn { transition: all 0.12s cubic-bezier(0.34,1.56,0.64,1); }
+.tg-btn:active { transform: scale(0.92); }
+[class*="tg-sel-"] { animation: badgePop 0.2s cubic-bezier(0.34,1.56,0.64,1) both; }
+
+/* Toast */
+.toast { transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+.toast.show { animation: badgePop 0.3s cubic-bezier(0.34,1.56,0.64,1) both; }
+
+/* Timer */
+.stop-panel.running .timer-disp { animation: timerPulse 1s ease-in-out infinite; }
+.stop-panel.captured .timer-disp { animation: countUp 0.35s cubic-bezier(0.34,1.56,0.64,1) both; }
+.result-badge { animation: badgePop 0.3s cubic-bezier(0.34,1.56,0.64,1) both; }
+
+/* Missed banner */
+.missed-banner { animation: missedSlide 0.25s ease both; }
+
+/* Modal */
+.modal-bg.open .modal { animation: fadeUp 0.25s cubic-bezier(0.34,1.56,0.64,1) both; }
+
+/* Progress bar fill */
+.prog-bar-fill { transition: width 0.8s cubic-bezier(0.25,1,0.5,1); }
+
+/* Card hover */
+.day-card { transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s cubic-bezier(0.34,1.56,0.64,1); }
+.sess-item { transition: border-color 0.12s, box-shadow 0.15s; }
+.sblock { transition: border-color 0.12s; }
+.modal-opt { transition: all 0.12s cubic-bezier(0.34,1.56,0.64,1); }
+.modal-opt:hover { transform: translateX(3px); }
+
+/* Nav logo hover */
+.nav-logo { transition: opacity 0.15s; cursor: default; }
+
+
+/* ── GRAIN + CURSOR + TAB TRANSITIONS ── */
+#cursor-glow {
+  position: fixed;
+  width: 90px; height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168,196,224,0.5) 0%, rgba(42,84,144,0.12) 50%, transparent 70%);
+  pointer-events: none;
+  z-index: 9998;
+  transition: opacity 0.2s;
+  opacity: 0;
+  will-change: transform;
+  mix-blend-mode: multiply;
+}
+
+/* Tab page transitions */
+.page {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform-origin: top center;
+}
+.page.page-exit {
+  opacity: 0;
+  transform: translateY(6px);
+}
+.page.active {
+  animation: pageEnter 0.25s ease both;
+}
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Split text */
+.split-char {
+  display: inline-block;
+  animation: charReveal 0.5s cubic-bezier(0.22,1,0.36,1) both;
+}
+@keyframes charReveal {
+  from { opacity: 0; transform: translateY(8px) rotate(3deg); filter: blur(4px); }
+  to   { opacity: 1; transform: translateY(0) rotate(0deg); filter: blur(0); }
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Number count-up shimmer */
+.metric-v.counting {
+  background: linear-gradient(90deg, var(--text) 0%, var(--acc-mid) 50%, var(--text) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 1s ease both;
+}
+@keyframes shimmer {
+  from { background-position: 200% center; }
+  to   { background-position: -200% center; }
+}
+
+/* Magnetic button wrapper */
+.magnetic { display: inline-block; }
+
 </style>
 </head>
 <body>
-<div id="app-wrap" style="display:none">
+
+<!-- Cursor glow -->
+<div id="cursor-glow"></div>
+
+<!-- Grain overlay -->
+<canvas id="grain-canvas" style="position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.035;"></canvas>
 
 <!-- NAV -->
 <div class="nav-tabs">
   <div class="nav-logo">POTS <em>rehab</em></div>
-  <div id="nav-account" style="display:none;margin-left:auto;position:relative;">
-    <button onclick="toggleAccountMenu()" id="acct-btn" style="display:flex;align-items:center;gap:8px;background:none;border:1px solid var(--border);border-radius:20px;padding:4px 10px 4px 4px;cursor:pointer;">
-      <img id="acct-avatar" src="" style="width:24px;height:24px;border-radius:50%;display:none;" />
-      <span id="acct-name" style="font-size:12px;font-family:var(--mono);color:var(--sub);"></span>
-    </button>
-    <div id="acct-menu" style="display:none;position:absolute;right:0;top:36px;background:var(--card);border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);min-width:160px;z-index:100;">
-      <div id="acct-email" style="padding:10px 14px;font-size:11px;color:var(--dim);font-family:var(--mono);border-bottom:1px solid var(--border);"></div>
-      <button onclick="signOut()" style="width:100%;text-align:left;padding:10px 14px;background:none;border:none;font-size:13px;font-family:var(--mono);color:var(--red);cursor:pointer;">sign out</button>
-    </div>
-  </div>
   <button class="tab-btn active" onclick="showTab('schedule')">schedule</button>
   <button class="tab-btn" onclick="showTab('logger')">log session</button>
   <button class="tab-btn" onclick="showTab('sessions')">sessions</button>
@@ -606,19 +900,31 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 10px 0; 
 
 <!-- ═══════════════ SCHEDULE PAGE ═══════════════ -->
 <div class="page active" id="tab-schedule">
-  <div class="sched-header">
-    <div class="sched-header-inner">
-      <div>
-        <div class="sh-title">March → <em>May 25, 2026</em></div>
-        <div class="sh-meta">goal: 60° stable training angle</div>
+
+  <!-- Hero header -->
+  <div class="sched-hero">
+    <div class="sched-hero-inner">
+      <div class="hero-left">
+        <div class="hero-eyebrow" id="hero-eyebrow">rehabilitation protocol</div>
+        <div class="hero-phase" id="hero-phase">Loading...</div>
+        <div class="hero-week" id="hero-week"></div>
       </div>
-      <div class="sh-date" id="sh-date"></div>
+      <div class="hero-right">
+        <div class="hero-date" id="sh-date"></div>
+        <div class="hero-goal">goal — <em>60° stable</em></div>
+      </div>
+    </div>
+    <!-- Progress bar sits at bottom of hero -->
+    <div class="hero-progress-wrap">
+      <div class="hero-progress-bar"><div class="hero-progress-fill" id="prog-fill" style="width:0%"></div></div>
+      <div class="hero-milestones" id="milestones"></div>
     </div>
   </div>
 
   <div class="wrap">
+
     <!-- Readiness -->
-    <div class="readiness-strip" style="margin-top:16px;">
+    <div class="readiness-strip" style="margin-top:20px;">
       <div class="r-light unknown" id="r-light"></div>
       <div class="r-text">
         <div class="r-main" id="r-main">tap morning state</div>
@@ -648,25 +954,11 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 10px 0; 
     <!-- Grid -->
     <div class="week-grid" id="week-grid"></div>
 
-    <!-- Today expanded -->
-    <div id="day-detail-wrap"></div>
+    <!-- Today / Day detail -->
     <div id="today-exp-wrap"></div>
 
-    <!-- Progress -->
-    <div class="prog-card">
-      <div class="prog-lbl">
-        <span>angle progression</span>
-        <span class="prog-phase" id="prog-phase"></span>
-      </div>
-      <div class="prog-bar-wrap">
-        <div class="prog-bar-lbl"><span>40° → 60°</span><span id="prog-pct"></span></div>
-        <div class="prog-bar"><div class="prog-bar-fill" id="prog-fill" style="width:0%"></div></div>
-      </div>
-      <div class="milestones" id="milestones"></div>
-    </div>
-
-    <!-- Hard rules -->
-    <div class="rules-card">
+    <!-- Rules — minimal, collapsed by default -->
+    <div class="rules-card" style="margin-top:16px;">
       <div class="rules-lbl">3 hard rules</div>
       <div class="rule"><div class="rule-n">R1</div><div class="rule-t"><strong>Angle up only</strong> — never increase angle AND duration in the same week.</div></div>
       <div class="rule"><div class="rule-n">R2</div><div class="rule-t"><strong>Bad next-day?</strong> Repeat the week, do not progress.</div></div>
@@ -675,11 +967,16 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 10px 0; 
   </div>
 </div>
 
+
 <!-- ═══════════════ LOGGER PAGE ═══════════════ -->
 <div class="page" id="tab-logger">
   <div class="logger-wrap">
     <div class="log-page-title">Log session</div>
     <div class="log-page-sub">fill what you have — nothing required.</div>
+    <div id="log-edit-banner" style="display:none;background:var(--amb-bg);border:1px solid var(--amber);border-radius:8px;padding:9px 14px;margin-bottom:14px;font-size:12px;color:var(--amber);font-family:var(--mono);">
+      editing existing session — save will overwrite ·
+      <span style="cursor:pointer;text-decoration:underline;" onclick="window._editingId=null;document.getElementById('log-edit-banner').style.display='none';clearForm();">cancel</span>
+    </div>
 
     <!-- SESSION META -->
     <div class="lcard">
@@ -696,7 +993,7 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 10px 0; 
           <button class="tg-btn" data-val="F" onclick="selTag(this,'tg-type','blue');toggleSU()">Foundation</button>
           <button class="tg-btn" data-val="S" onclick="selTag(this,'tg-type','green');toggleSU()">Step-up</button>
           <button class="tg-btn" data-val="R" onclick="selTag(this,'tg-type','purple')">Recovery</button>
-          <button class="tg-btn" data-val="M" onclick="selTag(this,'tg-type','')">Monitoring</button>
+          
         </div>
       </div>
       <div class="fg2" style="margin-bottom:9px;">
@@ -904,8 +1201,6 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 10px 0; 
   </div>
 </div>
 
-
-<!-- ═══════════════ PROGRAM PAGE ═══════════════ -->
 <div class="page" id="tab-program">
   <div class="logger-wrap">
     <div class="log-page-title">Program</div>
@@ -1267,14 +1562,6 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 10px 0; 
   </div>
 </div>
 
-    <!-- Skip analytics -->
-    <div class="lcard" style="margin-top:14px;margin-left:20px;margin-right:20px;margin-bottom:20px;">
-      <div class="lcard-hd">skip patterns</div>
-      <div id="skip-analytics"><div style="color:var(--dim);font-size:11px;font-family:var(--mono);">no skips logged yet</div></div>
-    </div>
-  </div>
-</div>
-
 <!-- MODAL -->
 <div class="modal-bg" id="modal" onclick="closeModal(event)">
   <div class="modal">
@@ -1288,31 +1575,6 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 10px 0; 
 <div class="toast" id="toast"></div>
 
 <script>
-const SB_URL = 'https://bpvgkgayivflrhaypjpc.supabase.co';
-const SB_KEY = 'sb_publishable_h8c-ZL9tbgSz4fhx96_rfw_aggS2CkN';
-const sb = supabase.createClient(SB_URL, SB_KEY);
-var currentUser = null;
-async function sbGet(table, filter) {
-  var q = sb.from(table).select('*');
-  if(filter) q = q.match(filter);
-  var {data,error} = await q;
-  if(error) throw new Error(error.message);
-  return data;
-}
-async function sbUpsert(table, data) {
-  var {error} = await sb.from(table).upsert(data);
-  if(error) throw new Error(error.message);
-}
-async function sbInsert(table, data) {
-  var {error} = await sb.from(table).insert(data);
-  if(error) throw new Error(error.message);
-}
-async function sbDelete(table, match) {
-  var {error} = await sb.from(table).delete().match(match);
-  if(error) throw new Error(error.message);
-}
-
-
 // ═══════════════════════════════════════════════════════
 // SCHEDULE DATA — starts Mon Mar 23 (correct dates)
 // ═══════════════════════════════════════════════════════
@@ -1439,6 +1701,103 @@ const SCHED = [
 // ═══════════════════════════════════════════════════════
 const LKEY = 'pots_v13';
 let sessions = JSON.parse(localStorage.getItem(LKEY)||'[]');
+
+// ── SUPABASE ──────────────────────────────────────────
+const SB_URL = 'https://bpvgkgayivflrhaypjpc.supabase.co';
+const SB_KEY = 'sb_publishable_h8c-ZL9tbgSz4fhx96_rfw_aggS2CkN';
+const sb = supabase.createClient(SB_URL, SB_KEY);
+
+// Convert local session format → Supabase row
+function toRow(s){
+  return {
+    id: String(s.id),
+    session_date: s.date,
+    type: s.type||null,
+    angle: s.angle||null,
+    pre_etco2: s.pre?.etco2||null,
+    cp5_etco2: s.cp5?.etco2||null,
+    cp15_etco2: s.cp15?.etco2||null,
+    z2_min: s.z2min||null,
+    min_under_100: s.minUnder100||null,
+    etco2_at_60s: s.etco2at60s||null,
+    morning_state: s.morningState||null,
+    data: s
+  };
+}
+
+// Convert Supabase row → local session format
+function fromRow(row){
+  return row.data || {
+    id: parseInt(row.id)||row.id,
+    date: row.session_date,
+    type: row.type,
+    angle: row.angle,
+    pre: {etco2: row.pre_etco2},
+    cp5: {etco2: row.cp5_etco2},
+    cp15: {etco2: row.cp15_etco2},
+    z2min: row.z2_min,
+    minUnder100: row.min_under_100,
+    etco2at60s: row.etco2_at_60s,
+    morningState: row.morning_state,
+  };
+}
+
+// Upsert a single session to Supabase (non-blocking)
+async function sbUpsert(s){
+  try {
+    const { error } = await sb.from('sessions').upsert(toRow(s), {onConflict:'id'});
+    if(error) console.warn('Supabase upsert failed:', error.message);
+  } catch(e){ console.warn('Supabase error:', e); }
+}
+
+// Delete a session from Supabase
+async function sbDelete(id){
+  try {
+    const { error } = await sb.from('sessions').delete().eq('id', String(id));
+    if(error) console.warn('Supabase delete failed:', error.message);
+  } catch(e){ console.warn('Supabase error:', e); }
+}
+
+// Load all sessions from Supabase and merge with localStorage
+async function sbLoad(){
+  try {
+    const { data, error } = await sb.from('sessions').select('*').order('session_date', {ascending:true});
+    if(error || !data) return;
+    if(data.length === 0 && sessions.length > 0){
+      // First time — push all local sessions to Supabase
+      console.log('Seeding Supabase with', sessions.length, 'local sessions...');
+      for(const s of sessions){
+        await sbUpsert(s);
+      }
+      showToast('synced '+sessions.length+' sessions ↑');
+    } else if(data.length > 0){
+      // Merge: Supabase is source of truth
+      const remoteIds = new Set(data.map(r => String(r.id)));
+      const localIds  = new Set(sessions.map(s => String(s.id)));
+      // Add any remote sessions not in local
+      let added = 0;
+      data.forEach(row => {
+        if(!localIds.has(String(row.id))){
+          sessions.push(fromRow(row));
+          added++;
+        }
+      });
+      if(added > 0){
+        saveSessions();
+        console.log('Pulled', added, 'sessions from Supabase');
+      }
+      // Push any local sessions not in remote
+      let pushed = 0;
+      for(const s of sessions){
+        if(!remoteIds.has(String(s.id))){
+          await sbUpsert(s);
+          pushed++;
+        }
+      }
+      if(pushed > 0) console.log('Pushed', pushed, 'sessions to Supabase');
+    }
+  } catch(e){ console.warn('sbLoad error:', e); }
+}
 // migrate from v1.2
 (function migrate(){
   ['pots_v12','pots_sessions'].forEach(k=>{
@@ -1452,349 +1811,25 @@ let sessions = JSON.parse(localStorage.getItem(LKEY)||'[]');
     sessions=h; saveSessions();
   }
 })();
-function saveSessions(){
-  localStorage.setItem(LKEY, JSON.stringify(sessions));
-  // Background sync to Supabase — don't await, non-blocking
-}
+function saveSessions(cb){ localStorage.setItem(LKEY, JSON.stringify(sessions)); if(cb) cb(); }
 
 // ─── SCHED STATE ────────────────────────────────────
-const SKEY = 'pots_sched_v8';
-
-// ═══ DYNAMIC CARDIO QUEUE ENGINE ═══════════════════════════════════════
-function buildInitialQueue(){
-  const q=[];
-  SCHED.forEach(week=>{
-    week.days.forEach(d=>{
-      if(d.t==='F'||d.t==='S'||d.t==='R'){
-        q.push({
-          id:d.iso+'_'+d.t, type:d.t,
-          description:d.c||'', phase:week.phase,
-          weekNum:week.w, weekNote:week.note||'',
-          scheduledIso:d.iso, actualIso:null,
-          status:'pending', skipReason:null, isExtra:false,
-        });
-      }
-    });
-  });
-  return q;
-}
-function buildProjections(){
-  // Remove existing gate entries — rebuilt fresh each time
-  sState.cardioQueue = sState.cardioQueue.filter(function(q){ return !q.isGate; });
-  // Dedupe any duplicate pending sessions
-  dedupeQueue();
-
-  // Determine gate requirements by scanning non-pending history
-  var nonPending = sState.cardioQueue.filter(function(q){ return q.status!=='pending'; });
-  var lastDone = nonPending.length ? nonPending[nonPending.length-1] : null;
-  var wasCrash = lastDone && lastDone.skipReason==='crash';
-  var wasMissedOrSkipped = lastDone && (lastDone.status==='missed'||lastDone.status==='skipped');
-
-  // Also check if ANY recent non-pending was a miss/skip (not just the last)
-  // This handles 2+ misses in a row
-  var recentBadCount = nonPending.filter(function(q){
-    return q.status==='missed'||q.status==='skipped';
-  }).length;
-  // Count clean completions after the last miss/skip
-  var lastMissIdx = -1;
-  for(var i=nonPending.length-1; i>=0; i--){
-    if(nonPending[i].status==='missed'||nonPending[i].status==='skipped'){
-      lastMissIdx=i; break;
-    }
-  }
-  var cleanAfterMiss = lastMissIdx>=0
-    ? nonPending.slice(lastMissIdx+1).filter(function(q){ return q.status==='done'||q.status==='downgraded'; }).length
-    : 999;
-
-  // Gate needed if last miss/skip has fewer than 1 clean Foundation after it
-  var needsFoundationGate = wasMissedOrSkipped && cleanAfterMiss < 1;
-  // Crash gate: insert Recovery before Foundation if last was a crash
-  var needsCrashGate = wasCrash && cleanAfterMiss === 0;
-
-  var pending = sState.cardioQueue.filter(function(q){ return q.status==='pending'; });
-
-  // Insert crash Recovery gate first (goes before everything)
-  if(needsCrashGate){
-    var _firstPendingSortIso = sState.cardioQueue.find(function(q){ return q.status==='pending' && !q.isGate; });
-    var _crashSortIso = _firstPendingSortIso ? (function(){
-      var d=new Date((_firstPendingSortIso.sortIso||_firstPendingSortIso.scheduledIso||getTodayISO())+'T12:00:00');
-      d.setDate(d.getDate()-1);
-      return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-    })() : getTodayISO();
-    var crashGate = {
-      id:'gate_recovery_'+Date.now(), type:'R',
-      description:'Recovery required after crash',
-      phase:'gate', weekNum:null, weekNote:'',
-      scheduledIso:null, sortIso:_crashSortIso, actualIso:null,
-      status:'pending', skipReason:null, isExtra:false, isGate:true,
-    };
-    sState.cardioQueue.splice(
-      sState.cardioQueue.findIndex(function(q){ return q.status==='pending'; }),
-      0, crashGate
-    );
-    pending = sState.cardioQueue.filter(function(q){ return q.status==='pending'; });
-  }
-
-  // Insert Foundation gate before first Step-up if no Foundation precedes it
-  if(needsFoundationGate){
-    var firstSIdx=-1, firstFIdx=-1;
-    for(var i=0; i<pending.length; i++){
-      if(pending[i].type==='S' && firstSIdx<0) firstSIdx=i;
-      if(pending[i].type==='F' && firstFIdx<0) firstFIdx=i;
-    }
-    if(firstSIdx>=0 && (firstFIdx<0 || firstFIdx>firstSIdx)){
-      var _stepupSortIso = pending[firstSIdx].sortIso||pending[firstSIdx].scheduledIso||'9999';
-      // Gate sorts just before the step-up
-      var _gateSortDate = new Date(_stepupSortIso+'T12:00:00');
-      _gateSortDate.setDate(_gateSortDate.getDate()-1);
-      var _gateSortIso = _gateSortDate.getFullYear()+'-'+String(_gateSortDate.getMonth()+1).padStart(2,'0')+'-'+String(_gateSortDate.getDate()).padStart(2,'0');
-      var fGate = {
-        id:'gate_foundation_'+Date.now(), type:'F',
-        description:'Foundation required before Step-up',
-        phase:'gate', weekNum:null, weekNote:'',
-        scheduledIso:null, sortIso:_gateSortIso, actualIso:null,
-        status:'pending', skipReason:null, isExtra:false, isGate:true,
-      };
-      var qIdx = sState.cardioQueue.findIndex(function(q){ return q.id===pending[firstSIdx].id; });
-      if(qIdx>=0) sState.cardioQueue.splice(qIdx, 0, fGate);
-      pending = sState.cardioQueue.filter(function(q){ return q.status==='pending'; });
-    }
-  }
-
-  var today = getTodayISO();
-  var todayDate = new Date(today+'T12:00:00');
-
-  var firstPending = sState.cardioQueue.find(function(q){
-    return q.status==='pending' && q.scheduledIso && !q.isGate;
-  });
-  var offsetDays = 0;
-  if(firstPending){
-    var acted = sState.cardioQueue.filter(function(q){
-      return q.status!=='pending' && q.actualIso;
-    });
-    var startFrom;
-    if(acted.length){
-      var lastActIso = acted.map(function(q){ return q.actualIso; }).sort().pop();
-      startFrom = new Date(lastActIso+'T12:00:00');
-      startFrom.setDate(startFrom.getDate()+1);
-    } else {
-      startFrom = todayDate;
-    }
-    var scheduledDate = new Date(firstPending.scheduledIso+'T12:00:00');
-    offsetDays = Math.round((startFrom - scheduledDate) / 86400000);
-  } else {
-  }
-
-  // Project pending sessions sequentially, preserving relative order
-  // Sort by scheduledIso so original ordering is maintained
-  var pendingQ = sState.cardioQueue.filter(function(q){ return q.status==='pending'; });
-  pendingQ.sort(function(a,b){
-    var ai = a.sortIso||a.scheduledIso||'9999';
-    var bi = b.sortIso||b.scheduledIso||'9999';
-    return ai < bi ? -1 : ai > bi ? 1 : 0;
-  });
-
-  // Two-pass projection:
-  // Pass 1: assign original sessions to their sortIso (preserves original schedule)
-  // Pass 2: slot rescheduled/gate sessions into the next available day after their sortIso
-  var taken = {}; // tracks which dates are occupied
-
-  // Pass 1: original sessions keep their scheduled dates
-  pendingQ.forEach(function(q){
-    if(!q.isGate && !q.isRescheduled && q.scheduledIso){
-      q.projectedIso = q.scheduledIso; // always use original date, never sortIso
-      taken[q.projectedIso] = true;
-    }
-  });
-
-  // Pass 2: rescheduled and gate sessions find next available day >= their sortIso
-  pendingQ.forEach(function(q){
-    if(q.isGate || q.isRescheduled){
-      var base = q.sortIso || today;
-      var d = new Date(base+'T12:00:00');
-      // Find next day not already taken
-      for(var i=0; i<60; i++){
-        var iso = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-        if(!taken[iso]){
-          q.projectedIso = iso;
-          taken[iso] = true;
-          break;
-        }
-        d.setDate(d.getDate()+1);
-      }
-    }
-  });
-}
-
-function dedupeQueue(){
-  var seen={};
-  sState.cardioQueue=sState.cardioQueue.filter(function(q){
-    if(q.isGate||q.isExtra||q.status!=='pending') return true;
-    var key=(q.scheduledIso||q.id)+'_'+q.type;
-    if(seen[key]) return false;
-    seen[key]=true;
-    return true;
-  });
-}
-
-function cleanQueueOnInit(){
-  // Remove rescheduled and gate sessions — rebuilt fresh by buildProjections
-  sState.cardioQueue = sState.cardioQueue.filter(function(q){ return !q.isRescheduled && !q.isGate; });
-  // Reset sessions whose actualIso is in the future (test artifacts)
-  var todayStr = getTodayISO();
-  sState.cardioQueue.forEach(function(q){
-    if(q.actualIso && q.actualIso > todayStr){
-      q.status='pending'; q.actualIso=null; q.skipReason=null;
-    }
-    // Clear sortIso from original sessions — only used by rescheduled/gate
-    if(!q.isRescheduled && !q.isGate) delete q.sortIso;
-  });
-  dedupeQueue();
-}
-
-function getSessionForDate(iso){
-  var actual=sState.cardioQueue.find(function(s){ return s.actualIso===iso; });
-  if(actual) return actual;
-  // Check projected date for pending sessions
-  return sState.cardioQueue.find(function(s){
-    return s.status==='pending' && (s.projectedIso===iso || s.scheduledIso===iso);
-  });
-}
-function completeCardioSession(id,actualIso){
-  const s=sState.cardioQueue.find(q=>q.id===id);
-  if(s){s.status='done';s.actualIso=actualIso;}
-  buildProjections(); saveSchedState();
-}
-function skipCardioSession(id,reason){
-  const s=sState.cardioQueue.find(q=>q.id===id);
-  if(!s) return;
-  s.status='skipped'; s.skipReason=reason;
-  sState.skipLog.push({sessionId:id,reason,morningState:morningState||'unknown',date:getTodayISO(),type:s.type});
-  buildProjections(); saveSchedState();
-}
-function addExtraSession(actualIso,type,description){
-  const lastIdx=sState.cardioQueue.reduce((a,s,i)=>s.status==='done'?i:a,-1);
-  sState.cardioQueue.splice(lastIdx+1,0,{
-    id:actualIso+'_extra_'+Date.now(), type, description,
-    phase:'unplanned', weekNum:null, weekNote:'',
-    scheduledIso:null, actualIso, status:'done', skipReason:null, isExtra:true,
-  });
-  buildProjections(); saveSchedState();
-}
-function fmtDgType(t){
-  return {F:'Foundation',S:'Step-up',R:'Recovery',short:'short/partial'}[t]||t;
-}
-
-function undoCardioSession(id){
-  const s=sState.cardioQueue.find(q=>q.id===id);
-  if(!s) return;
-  if(s.isExtra){
-    sState.cardioQueue=sState.cardioQueue.filter(q=>q.id!==id);
-  } else {
-    s.status='pending'; s.actualIso=null; s.skipReason=null; delete s.sortIso;
-    // Remove any rescheduled session that was created from this session
-    sState.cardioQueue=sState.cardioQueue.filter(function(q){
-      return !(q.isRescheduled && q.id.indexOf(s.scheduledIso)===0);
-    });
-  }
-  // Clear lastDowngrade if it was for this session
-  if(sState.lastDowngrade && s.scheduledIso && sState.lastDowngrade.date===s.scheduledIso){
-    delete sState.lastDowngrade;
-  }
-  buildProjections(); saveSchedState();
-}
-
-// Also fix undo lookup to handle downgraded/missed (not just done)
-// (undoCardioSession is called by markDay(null) which searches for non-pending sessions)
-function fmtSessionType(t){
-  return {F:'Foundation',S:'Step-up',R:'Recovery',short:'Short/partial'}[t]||t;
-}
-
-function getSkipAnalytics(){
-  const log=sState.skipLog||[];
-  const reasons={'crash':0,'bad-morning':0,'time-school':0};
-  log.forEach(s=>{if(s.reason in reasons) reasons[s.reason]++;});
-  return {total:log.length,reasons,log};
-}
-// ═══════════════════════════════════════════════════════════════════════
-// Clear all old schedule state versions on startup
-['pots_sched_v2','pots_sched_v3','pots_sched_v4','pots_sched_v5','pots_sched_v6','pots_sched_v7'].forEach(function(k){ localStorage.removeItem(k); });
+const SKEY = 'pots_sched_v2';
 let sState = JSON.parse(localStorage.getItem(SKEY)||'{}');
-if(!sState.cardioQueue) sState.cardioQueue = buildInitialQueue();
-cleanQueueOnInit();
-if(!sState.neuCompleted) sState.neuCompleted={};
-if(!sState.skipLog) sState.skipLog=[];
-// Clear lastDowngrade if it's older than yesterday
-if(sState.lastDowngrade){
-  const _now=new Date();
-  const _lyd=new Date(_now.getFullYear(),_now.getMonth(),_now.getDate()-1);
-  const _todayIso=_now.getFullYear()+'-'+String(_now.getMonth()+1).padStart(2,'0')+'-'+String(_now.getDate()).padStart(2,'0');
-  const _lydIso=_lyd.getFullYear()+'-'+String(_lyd.getMonth()+1).padStart(2,'0')+'-'+String(_lyd.getDate()).padStart(2,'0');
-  // Keep if today (just logged) or yesterday (warning day); clear if older
-  // Keep downgrade for 2 days (today + tomorrow warning day)
-  if(sState.lastDowngrade.date < _lydIso){
-    delete sState.lastDowngrade;
-  }
-}
-// Clear morning state if it was set on a previous day
-if(sState.morningDate && sState.morningDate !== getTodayISO()){
-  sState.morning = null;
-  delete sState.morningDate;
-  saveSchedState();
-}
+if(!sState.completions) sState.completions={};
 let morningState = sState.morning || null;
-let _activeISO = null; // ISO of the currently open day-detail panel
-let _todayExpanded = true; // today card starts expanded
-let _todayISO = null;  // ISO of today's card — never overwritten by detail clicks
 let curWeek = sState.curWeek ?? getTodayWeek();
 let trendFilter = 'all';
 let charts = {};
-function changeWeek(dir){
-  curWeek = Math.max(0, Math.min(SCHED.length-1, curWeek+dir));
-  sState.curWeek = curWeek;
-  saveSchedState();
-  renderWeek();
-}
+function saveSchedState(){ localStorage.setItem(SKEY, JSON.stringify(sState)); }
 
-function goToday(){
-  curWeek = getTodayWeek();
-  sState.curWeek = curWeek;
-  saveSchedState();
-  renderWeek();
-}
-
-function closeModal(e){
-  if(e && e.target !== document.getElementById('modal')) return;
-  document.getElementById('modal').classList.remove('open');
-}
-
-function saveSchedState(){
-  localStorage.setItem(SKEY, JSON.stringify(sState));
-  // Sync schedule state to Supabase
-  if(currentUser) sbUpsert('schedule_state', {
-    user_id: currentUser.id,
-    cardio_queue: sState.cardioQueue,
-    neuro_completed: sState.neuCompleted,
-    skip_log: sState.skipLog,
-    morning: sState.morning||null,
-    morning_date: sState.morningDate||null,
-    last_downgrade: sState.lastDowngrade||null,
-    cur_week: sState.curWeek||0,
-    updated_at: new Date().toISOString()
-  }).catch(function(e){ console.warn('Schedule sync failed:', e.message); });
-}
-
-function getTodayISO(){
-  const d=new Date();
-  const y=d.getFullYear();
-  const m=String(d.getMonth()+1).padStart(2,'0');
-  const day=String(d.getDate()).padStart(2,'0');
-  return y+'-'+m+'-'+day;
-}
+function getTodayISO(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function getTodayWeek(){
   const t=getTodayISO();
   for(let i=0;i<SCHED.length;i++) if(SCHED[i].days.some(d=>d.iso===t)) return i;
-  return 0;
+  // If today is before first week, return 0; if after last week, return last
+  const first=SCHED[0].days[0].iso;
+  return t<first?0:SCHED.length-1;
 }
 
 // ═══ TAB NAV ════════════════════════════════════════
@@ -1802,10 +1837,10 @@ function showTab(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
-  const idx=['schedule','logger','sessions','trends','program'].indexOf(name);
+  const idx=['schedule','logger','sessions','trends'].indexOf(name);
   document.querySelectorAll('.tab-btn')[idx]?.classList.add('active');
   if(name==='sessions') renderSessions();
-  if(name==='trends'){ renderTrends(); renderSkipAnalytics(); }
+  if(name==='trends') renderTrends();
   if(name==='program') initBnCollapse();
 }
 
@@ -1814,7 +1849,7 @@ function showTab(name){
 // Amber = can train but downgrade one level
 // Red = Recovery or off only
 function setMorning(val){
-  morningState=val; sState.morning=val; sState.morningDate=getTodayISO(); saveSchedState();
+  morningState=val; sState.morning=val; saveSchedState();
   document.querySelectorAll('.rtag').forEach(t=>{t.className='rtag';});
   const cls={normal:'s-green',tired:'s-amber',bad:'s-red',crash:'s-red'}[val];
   document.getElementById('rt-'+val)?.classList.add(cls);
@@ -1825,23 +1860,9 @@ function updateReadiness(){
   const light=document.getElementById('r-light');
   const main=document.getElementById('r-main');
   const sub=document.getElementById('r-sub-txt');
-  // Compute yesterday in local time
-  var _ydR=new Date(); _ydR.setDate(_ydR.getDate()-1);
-  var _ydRIso=_ydR.getFullYear()+'-'+String(_ydR.getMonth()+1).padStart(2,'0')+'-'+String(_ydR.getDate()).padStart(2,'0');
-  // Show warning if downgrade was on any previous day (not just exactly yesterday)
-  // This way testing works without waiting for the clock to change
-  var recentDowngrade=!!(sState.lastDowngrade&&sState.lastDowngrade.date<getTodayISO());
   if(!morningState){
-    if(recentDowngrade){
-      light.className='r-light amber';
-      main.textContent='amber — you downgraded yesterday';
-      var _dg=sState.lastDowngrade;
-      sub.textContent=fmtDgType(_dg.plannedType)+' → '+fmtDgType(_dg.actualType)+' · tap morning state to confirm readiness';
-    } else {
-      light.className='r-light unknown';
-      main.textContent='tap morning state';
-      sub.textContent="readiness for today's planned session";
-    }
+    light.className='r-light unknown';
+    main.textContent='tap morning state'; sub.textContent='readiness for today\'s planned session';
     return;
   }
   // Get today's planned session type
@@ -1851,18 +1872,10 @@ function updateReadiness(){
   const planned=day?.t||'off';
 
   // CORRECT logic: green = cleared for what's planned, not about pushing harder
-  // recentDowngrade computed at top of function
-
   if(morningState==='normal'){
-    if(recentDowngrade){
-      light.className='r-light amber';
-      main.textContent='amber — you downgraded yesterday';
-      sub.textContent='normal morning but '+({S:'Step-up',F:'Foundation',R:'Recovery'}[sState.lastDowngrade.plannedType]||sState.lastDowngrade.plannedType)+' → '+(labelActualType(sState.lastDowngrade.actualType))+' · stay at lower level today';
-    } else {
-      light.className='r-light green';
-      main.textContent='green — cleared for '+(planned==='off'?'rest day':({F:'Foundation',S:'Step-up',R:'Recovery',M:'Monitoring'}[planned]||planned));
-      sub.textContent='morning normal → proceed as planned';
-    }
+    light.className='r-light green';
+    main.textContent=`green — cleared for ${planned==='off'?'rest day':{F:'Foundation',S:'Step-up',R:'Recovery',M:'Monitoring'}[planned]||planned}`;
+    sub.textContent='morning normal → proceed as planned';
   } else if(morningState==='tired'){
     if(planned==='S'){
       light.className='r-light amber';
@@ -1892,7 +1905,6 @@ function updateReadiness(){
 
 // ═══ SCHEDULE RENDER ════════════════════════════════
 function renderWeek(){
-  if(curWeek >= SCHED.length) curWeek=getTodayWeek();
   const week=SCHED[curWeek];
   const today=getTodayISO();
   document.getElementById('wn-week').textContent=`week ${week.w} — ${week.dates.toLowerCase()}`;
@@ -1905,40 +1917,19 @@ function renderWeek(){
 
   document.getElementById('week-grid').innerHTML = week.days.map(d=>{
     const isToday=d.iso===today;
-    // Check for any session (completed on this date, or projected to this date)
-    const qSession=sState.cardioQueue.find(function(q){
-      return q.actualIso===d.iso ||
-        (q.projectedIso===d.iso && q.status==='pending') ||
-        (q.scheduledIso===d.iso && q.status!=='pending');
-    });
-    const comp=(qSession&&qSession.status!=='pending')?qSession.status:null;
-    // Determine cardio type: from queue session if available, else from SCHED
-    const cardioType = qSession ? qSession.type : d.t;
-    const isOff = !qSession && d.t==='off';
+    const isOff=d.t==='off';
+    const comp=sState.completions[d.iso];
     const nb=NEURO[d.n]||{};
     let cls='day-card'+(isToday?' today':'')+(isOff?' is-off':'');
-    if(comp==='done') cls+=' status-done';
-    else if(comp==='downgraded') cls+=' status-downgraded';
-    else if(comp==='missed'||comp==='skipped') cls+=' status-missed';
-    if(comp==='done') cls+=' status-done';
-    else if(comp==='downgraded') cls+=' status-downgraded';
-    else if(comp==='missed'||comp==='skipped') cls+=' status-missed';
-    if(comp==='done') cls+=' status-done';
-    else if(comp==='downgraded') cls+=' status-downgraded';
-    else if(comp==='missed') cls+=' status-missed';
 
     let statusMark='';
     if(comp==='done') statusMark='<div class="day-status done">✓</div>';
     else if(comp==='downgraded') statusMark='<div class="day-status downgraded">↓</div>';
     else if(comp==='missed') statusMark='<div class="day-status missed">○</div>';
-    else if(comp==='skipped') statusMark='<div class="day-status missed">–</div>';
 
     let blocks='';
-    const cardioDesc = qSession ? qSession.description : d.c;
-    const cardioActed = comp==='missed'||comp==='skipped'; // don't show dot for acted sessions
-    if(!isOff && cardioDesc && !cardioActed){
-      blocks+=`<div class="dcb"><div class="dcb-dot" style="background:${colors[cardioType]||'var(--dim)'}"></div><span>${cardioDesc}</span></div>`;
-      if(qSession&&qSession.isGate) blocks+=`<div class="dcb" style="color:var(--amber)"><div class="dcb-dot" style="background:var(--amber)"></div><span>required before step-up</span></div>`;
+    if(!isOff&&d.c){
+      blocks+=`<div class="dcb"><div class="dcb-dot" style="background:${colors[d.t]||'var(--dim)'}"></div><span>${d.c}</span></div>`;
     }
     if(nb.am===true) blocks+=`<div class="dcb"><div class="dcb-dot" style="background:var(--teal)"></div><span>AM neuro</span></div>`;
     if(nb.am==='light') blocks+=`<div class="dcb"><div class="dcb-dot" style="background:var(--teal)"></div><span>light neuro</span></div>`;
@@ -1952,38 +1943,25 @@ function renderWeek(){
       ${statusMark}
       <div class="dc-dayname">${d.n}</div>
       <div class="dc-datenum">${dateNum}</div>
-      <span class="dc-typepill ${pillCls[cardioType]||'pill-off'}">${cardioType==='off'?'off':cardioType}</span>
+      <span class="dc-typepill ${pillCls[d.t]||'pill-off'}">${d.t}</span>
       <div class="dc-blocks">${blocks}</div>
     </div>`;
   }).join('');
 
   renderTodayExp();
   renderProgress();
-  // Re-render open day detail if one is selected
-  if(selectedDayISO){
-    const allDays=SCHED.flatMap(function(w){ return w.days; });
-    const openDay=allDays.find(function(d){ return d.iso===selectedDayISO; });
-    if(openDay) renderDayDetail(openDay);
-  }
 }
 
 function renderTodayExp(){
   const today=getTodayISO();
-  // Always find today across the full schedule, not just current week
-  const allDays2=SCHED.flatMap(w=>w.days);
-  const d=allDays2.find(x=>x.iso===today);
+  const week=SCHED[curWeek];
+  const d=week.days.find(x=>x.iso===today);
   const el=document.getElementById('today-exp-wrap');
-  if(!d){el.innerHTML='<div style="padding:14px;color:var(--dim);font-size:11px;font-family:var(--mono);">today is not in the active schedule window</div>';return;}
+  if(!d){el.innerHTML='';return;}
 
   const nb=NEURO[d.n]||{};
-  const _qs=sState.cardioQueue.find(function(q){
-    return q.actualIso===d.iso ||
-      (q.projectedIso===d.iso && q.status==='pending') ||
-      (q.scheduledIso===d.iso && q.status!=='pending');
-  });
-  const comp=(_qs&&_qs.status!=='pending')?_qs.status:null;
-  // isOff only if SCHED says off AND no session is projected here
-  const isOff=d.t==='off' && !_qs;
+  const isOff=d.t==='off';
+  const comp=sState.completions[d.iso];
   const typeNames={F:'Foundation',S:'Step-up',R:'Recovery',M:'Monitoring',off:'Rest'};
   const typeColors={F:'var(--blue)',S:'var(--acc)',R:'var(--purple)',off:'var(--dim)'};
 
@@ -1992,33 +1970,53 @@ function renderTodayExp(){
   if(morningState==='tired'&&d.t==='S') warn='⚠ tired morning on step-up day — consider downgrading to Foundation';
   if(morningState==='bad'&&(d.t==='S'||d.t==='F')) warn='⚠ bad morning — downgrade to Recovery recommended';
   if(morningState==='crash'&&!isOff) warn='⚠ crash — skip cardio. PNS stim only today.';
-  if(!warn && sState.lastDowngrade){
-    var _ydw=new Date();
-    var _ydwLocal=new Date(_ydw.getFullYear(),_ydw.getMonth(),_ydw.getDate()-1);
-    var _lydIso=_ydwLocal.getFullYear()+'-'+String(_ydwLocal.getMonth()+1).padStart(2,'0')+'-'+String(_ydwLocal.getDate()).padStart(2,'0');
-    if(sState.lastDowngrade.date<getTodayISO()){
-      warn='⚠ you downgraded yesterday ('+({S:'Step-up',F:'Foundation',R:'Recovery'}[sState.lastDowngrade.plannedType]||sState.lastDowngrade.plannedType)+' → '+fmtSessionType(labelActualType(sState.lastDowngrade.actualType))+') — assess before stepping back up';
-    }
-  }
 
+  // Check if yesterday had a missed session
+  const allDays2=SCHED.flatMap(function(w){return w.days;});
+  const yesterDate=new Date(d.iso+'T12:00:00');
+  yesterDate.setDate(yesterDate.getDate()-1);
+  const yesterIso=yesterDate.getFullYear()+'-'+String(yesterDate.getMonth()+1).padStart(2,'0')+'-'+String(yesterDate.getDate()).padStart(2,'0');
+  const yesterDay=allDays2.find(function(x){return x.iso===yesterIso;});
+  const yesterComp=sState.completions[yesterIso];
+  const yesterMissed=yesterDay&&yesterDay.t!=='off'&&yesterComp==='missed';
 
   // Action buttons
-  // action bar built after render via buildActionBar
+  const typeNames2={F:'Foundation',S:'Step-up',R:'Recovery'};
+  let acts='';
+  // Yesterday missed banner
+  if(yesterMissed){
+    acts+=`<div style="background:var(--amb-bg);border:1px solid var(--amber);border-radius:8px;padding:8px 12px;margin-bottom:6px;font-size:11px;color:var(--amber);font-family:var(--mono);width:100%;">`;
+    acts+=`missed yesterday: ${typeNames2[yesterDay.t]||yesterDay.t}${yesterDay.c?' · '+yesterDay.c:''}`;
+    acts+=` <button class="ta-btn" style="margin-left:8px;padding:4px 10px;font-size:10px;" onclick="prefillLogger('${d.iso}')">log make-up here →</button>`;
+    acts+=`</div>`;
+  }
+  if(!isOff&&comp!=='done'&&comp!=='missed'){
+    acts+=`<button class="ta-btn primary" onclick="markDay('${d.iso}','done');showTab('logger')">log this session →</button>`;
+    acts+=`<button class="ta-btn warn" onclick="markDay('${d.iso}','downgraded')">↓ downgraded</button>`;
+    acts+=`<button class="ta-btn" onclick="markDay('${d.iso}','missed');renderTodayExp()">○ missed</button>`;
+  }
+  if(comp==='missed'){
+    acts+=`<div style="background:var(--red-bg);border:1px solid var(--red);border-radius:8px;padding:9px 13px;margin-bottom:4px;font-size:11px;color:var(--red);font-family:var(--mono);">`;
+    acts+=`○ missed — ${typeNames2[d.t]||d.t}${d.c?' · '+d.c:''}</div>`;
+    acts+=`<button class="ta-btn primary" onclick="prefillLogger('${d.iso}')">log make-up →</button>`;
+    acts+=`<button class="ta-btn" onclick="markDay('${d.iso}',null);renderTodayExp()">undo</button>`;
+  }
+  if(comp==='done') acts+=`<button class="ta-btn done-btn" disabled>✓ logged</button><button class="ta-btn" onclick="markDay('${d.iso}',null)">undo</button>`;
+  if(comp==='downgraded') acts+=`<button class="ta-btn warn" style="opacity:0.7;" disabled>↓ downgraded</button><button class="ta-btn" onclick="markDay('${d.iso}',null)">undo</button>`;
 
   // Build session blocks
   let sbs='';
   if(!isOff){
     if(nb.am){
       const light=nb.am==='light';
-      sbs+=mkSblock('teal','AM Precision Neuro','10–18 min · morning','am-neuro',[
+      sbs+=mkSblock('teal','AM Precision Neuro','15 min · morning','am-neuro',[
         {n:'1',name:'PNS Stim',detail:'Peroneal + tibial + median + V3 · 3 Hz, 300 μs, TENS-M · 2–3 min each side.',src:'Keiser-prescribed'},
-        {n:'2',name:'Cervical prep / midline',detail:'Gentle ROM · neutral before any eye work · TCD: cervical position modulates MCA flow'},
+        {n:'2',name:'Cervical prep',detail:'Gentle ROM · neutral before any eye work · always before head turns'},
         {n:'3',name:'Fixation holds',detail:'Fixation ON → OFF · work to reduce blink resets · progressive hold duration'},
         ...(light?[]:[
-          {n:'4',name:'Smooth pursuits — vertical first',detail:'Vertical before horizontal · reduces saccadic substitution · V 20s×3, H 20s×2',src:'v2 update: vertical priority'},
-          {n:'5',name:'Saccades — slow + accurate, vertical emphasis',detail:'Accuracy builds before speed · 10 reps × 4 rounds: 2 vertical, 1 diagonal, 1 horizontal · include downward accuracy',src:'VEST: vertical outside norms'},
-          {n:'6',name:'Vergence — left eye bias',detail:'Near-far shifts · left gain 0.57 vs right 1.26 · 30–45s × 2 · track near→far reset time'},
-          {n:'7',name:'NVC micro-ladder',detail:'Optional 3×/wk · 30s upright task + 30–60s rest × 3–4 rounds · builds demand→flow delivery · do after ocular work',src:'v2 addition: CBF robustness bridge'},
+          {n:'4',name:'Smooth pursuits',detail:'Horizontal first, then vertical · reduce saccadic intrusion rate'},
+          {n:'5',name:'Saccades — vertical emphasis',detail:'Horizontal random, then vertical · vertical channel outside norms · focus downward accuracy'},
+          {n:'6',name:'Vergence — left eye',detail:'Near-far shifts · left gain 0.57 vs right 1.26 · conscious left-eye convergence tracking'},
         ]),
       ]);
     }
@@ -2029,52 +2027,47 @@ function renderTodayExp(){
       {n:'4',name:'Zone 2',detail:'115–138 bpm · checkpoint at 5, 15, end · ETCO2 target 38–42 · below 36 → stop or reduce'},
       ...(d.t==='S'?[{n:'5',name:'Peak angle exposure',detail:'Small exposure at end · log: peak angle, minutes, ETCO2 + HR @ 2 min'}]:[]),
       {n:d.t==='S'?'6':'5',name:'Cooldown + transition',detail:'RR 10–12 to keep ETCO2 >35 · calf pumps throughout · start stop timer'},
-      {n:d.t==='S'?'7':'6',name:'Pre-upright primer',detail:'Before standing: gentle 360° brace + 10 calf pumps · 60–90s · reduces immediate HR spike on stand',src:'v2 addition: BN1'},
     ], true);
     if(nb.str) sbs+=mkSblock('amber',`Strength ${nb.str}`,'20–25 min · after cardio · RPE 6–7',`str-${nb.str}`,
       nb.str==='A'?[
-        {n:'1',name:'Seated calf raise',detail:'Slow eccentric · 2–3 × 12–20 · soleus pump = primary venous return driver'},
-        {n:'2',name:'Glute bridge',detail:'2–3 × 10–15 · posterior chain pump for upright economy'},
+        {n:'1',name:'Seated calf raise',detail:'Slow eccentric · 2–3 × 12–20'},
+        {n:'2',name:'Glute bridge',detail:'2–3 × 10–15'},
         {n:'3',name:'Hamstring curl',detail:'Band or machine · 2 × 10–15'},
-        {n:'4',name:'Trunk container — dead bug + Pallof',detail:'8–12 min total · anti-extension + anti-rotation · reduces splanchnic pooling, supports venous return during stillness',src:'v2 addition'},
+        {n:'4',name:'Dead bug',detail:'2 × 6–10 each side'},
       ]:[
         {n:'1',name:'Leg extension',detail:'Band or machine · 2–3 × 10–15'},
         {n:'2',name:'Sit-to-stand',detail:'Controlled · 2 × 6–10'},
         {n:'3',name:'Clamshells',detail:'2 × 12–20'},
         {n:'4',name:'Pallof press',detail:'2 × 8–12 each side'},
       ]);
-    if(nb.pm) sbs+=mkSblock('purple','PM Vestibular Block','10–15 min · late afternoon · not on step-up day','vestib',[
-      {n:'1',name:'PNS Stim',detail:'Same protocol as AM · always first · reduces background noise before provocative work'},
-      {n:'2',name:'Cervical prep',detail:'TCD confirmed: right lateral flexion drops left MCA · non-negotiable before any head movement'},
-      {n:'3',name:'Fixation primer',detail:'Short hold only · set baseline stability before VOR/vestibular load'},
-      {n:'4',name:'VOR return-phase repair',detail:'Targets your hard part: the return to center where zaps cluster · 6 reps × 2 sets · track: zap frequency on return',src:'Dr. T — return phase emphasis'},
-      {n:'5',name:'Head turns — right-biased',detail:'Primary asymmetry training · keep reps clean · add tiny left probe only if recovery is fast · 10–20s sets',src:'Keiser-prescribed'},
-      {n:'6',name:'Whole-body rotation RIGHT',detail:'Thumb target · right rotation · 30s × 3 · when stable: add short continuous L–R VOR at slow tempo · goes last before optional spins',src:'Keiser + Dr. T progression'},
+    if(nb.pm) sbs+=mkSblock('purple','PM Vestibular Block','15 min · late afternoon · not on step-up day','vestib',[
+      {n:'1',name:'PNS Stim',detail:'Same protocol as AM · always first'},
+      {n:'2',name:'Cervical prep',detail:'More important here — head turns next'},
+      {n:'3',name:'Brief fixation',detail:'Set baseline before provocative work'},
+      {n:'4',name:'Rightward Halmagyi thrusts',detail:'Supine, ceiling target · quick rightward thrust, close eyes, slow return · 5 × 3 sets, 1 min rest',src:'Keiser-prescribed'},
+      {n:'5',name:'Head-tilt fixation holds',detail:'Small angles only · few seconds · stop before breakdown',src:'Dr. T addition'},
+      {n:'6',name:'Whole-body rotation RIGHT',detail:'Thumb target · right rotation · 30s × 3 · when stable: add short continuous L–R VOR at slow tempo',src:'Keiser + Dr. T progression'},
     ]);
-    if(nb.osc) sbs+=mkSblock('red','CBF Robustness — Orthostatic Block','10–15 min · not before heavy cognitive work · Tue/Thu','osc',[
-      {n:'1',name:'Supported still-standing micro-doses',detail:'30–60s × 3–4 · trains the exact state that breaks you · builds pressure→flow stability without continuous movement',src:'v2 addition: BN2 priority'},
-      {n:'2',name:'0.05 Hz perch↔sit oscillations',detail:'Metronome 60 bpm · 10 beats up / 10 beats down = 0.05 Hz · start 60–90s total · max 3–5 min · controlled BP/flow oscillations for dynamic buffering'},
-      {n:'3',name:'Progression',detail:'Add 1–2 cycles/week · time first, not speed · park oscillations during exam weeks and keep still-standing only'},
-      {n:'4',name:'Stop if',detail:'Symptoms >20 sec post-cycle · ETCO2 <34 · HR spikes between cycles · exam week = skip this block entirely'},
+    if(nb.osc) sbs+=mkSblock('red','0.05 Hz Oscillation','10 min · not before cognitive work','osc',[
+      {n:'1',name:'Setup',detail:'Metronome 60 bpm · supported upright'},
+      {n:'2',name:'Cycles',detail:'Sit → stand/perch · 10 beats up, 10 down = 0.05 Hz · start 3–5 cycles'},
+      {n:'3',name:'Progression',detail:'Add 1–2 cycles/week · time first, not speed · cadence is the mechanism'},
+      {n:'4',name:'Stop if',detail:'Symptoms >20 sec · ETCO2 <34 · HR spikes between cycles'},
     ]);
   }
 
   el.innerHTML=`<div class="today-exp">
-    <div id="today-collapsible">
-      <div class="te-head">
-        <div>
-          <div class="te-lbl">${d.n} · ${d.dt} · week ${SCHED.find(function(w){ return w.days.some(function(x){ return x.iso===d.iso; }); })?.w||''}</div>
-          <div class="te-name" style="color:${typeColors[d.t]||'var(--sub)'}">${typeNames[d.t]||d.t}</div>
-          ${d.c?`<div class="te-sub">${d.c}</div>`:''}
-          ${warn?`<div class="te-warn">${warn}</div>`:''}
-        </div>
-        <div class="te-actions" id="action-bar-today"></div>
+    <div class="te-head">
+      <div>
+        <div class="te-lbl">today · ${d.dt}</div>
+        <div class="te-name" style="color:${typeColors[d.t]||'var(--sub)'}">${typeNames[d.t]||d.t}</div>
+        ${d.c?`<div class="te-sub">${d.c}</div>`:''}
+        ${warn?`<div class="te-warn">${warn}</div>`:''}
       </div>
-      <div class="sblocks">${sbs}</div>
-      ${buildNeuroBar(d.iso, d.n)}
+      <div class="te-actions">${acts}</div>
     </div>
+    <div class="sblocks">${sbs}</div>
   </div>`;
-  buildActionBar('action-bar-today', d.iso, comp, isOff);
 }
 
 function mkSblock(color,title,meta,id,steps,hasLogBtn=false){
@@ -2094,465 +2087,256 @@ function mkSblock(color,title,meta,id,steps,hasLogBtn=false){
 
 function toggleSB(id){document.getElementById('sb-'+id)?.classList.toggle('open');}
 
-
-
-
-
 function renderProgress(){
   const all=SCHED.flatMap(w=>w.days).filter(d=>d.t!=='off');
-  const done=(sState.cardioQueue||[]).filter(q=>q.status==='done').length;
+  const done=Object.values(sState.completions).filter(v=>v==='done'||v==='downgraded').length;
   const pct=Math.round((done/all.length)*100);
-  document.getElementById('prog-fill').style.width=pct+'%';
-  const _pp=document.getElementById('prog-pct'); if(_pp) _pp.textContent=pct+'%';
-  const _ph=document.getElementById('prog-phase'); if(_ph) _ph.textContent=SCHED[curWeek].phase;
+  const fill=document.getElementById('prog-fill');
+  if(fill) fill.style.width=pct+'%';
+  const week=SCHED[curWeek];
+  // Update hero
+  const heroPhase=document.getElementById('hero-phase');
+  if(heroPhase){
+    const parts=week.phase.split('—');
+    heroPhase.innerHTML = parts.length>1
+      ? parts[0].trim()+' <em>'+parts[1].trim()+'</em>'
+      : week.phase;
+  }
+  const heroWeek=document.getElementById('hero-week');
+  if(heroWeek) heroWeek.textContent='week '+week.w+' · '+week.dates.toLowerCase();
   const ms=[
     {l:'40° base',w:1},{l:'first 50°',w:2},{l:'50° base',w:4},
     {l:'first 60°',w:5},{l:'60° base',w:7},{l:'3×60°/wk',w:8},{l:'May 25 ★',w:10}
   ];
-  document.getElementById('milestones').innerHTML=ms.map(m=>{
+  const milEl=document.getElementById('milestones');
+  if(milEl) milEl.innerHTML=ms.map(m=>{
     const reached=curWeek>=m.w; const current=curWeek===m.w-1;
-    return `<div class="ms ${reached?'reached':current?'current':''}">${m.l}</div>`;
+    return '<div class="ms '+(reached?'reached':current?'current':'')+'">'+m.l+'</div>';
   }).join('');
 }
 
 // ─── Day click ────────────────────────────────────
-let selectedDayISO = null;
+let _detailISO=null;
 
 function onDayClick(iso){
-  const today = getTodayISO();
-  // If clicking today, let today-exp-wrap handle it (already rendered)
+  const today=getTodayISO();
   if(iso===today){
+    // Clicking today collapses any open detail
     document.getElementById('day-detail-wrap').innerHTML='';
-    selectedDayISO=null;
-    var wrap = document.getElementById('today-collapsible');
-    if(wrap) wrap.style.display = wrap.style.display==='none' ? '' : 'none';
+    _detailISO=null;
     return;
   }
   const all=SCHED.flatMap(w=>w.days);
   const d=all.find(x=>x.iso===iso);
   if(!d) return;
-  
-  // Toggle: clicking same day twice collapses it
-  if(selectedDayISO===iso){
+
+  // Toggle — clicking same day again closes it
+  if(_detailISO===iso){
     document.getElementById('day-detail-wrap').innerHTML='';
-    selectedDayISO=null;
-    // Re-highlight grid
-    document.querySelectorAll('.day-card').forEach(c=>c.style.outline='');
+    _detailISO=null;
+    document.querySelectorAll('.day-card').forEach(c=>c.classList.remove('selected-day'));
     return;
   }
-  selectedDayISO=iso;
-  
-  // Highlight selected card
-  document.querySelectorAll('.day-card').forEach(c=>c.style.outline='');
-  const cards=document.querySelectorAll('.day-card');
+  _detailISO=iso;
+  document.querySelectorAll('.day-card').forEach(c=>c.classList.remove('selected-day'));
+  // Highlight clicked card
   const week=SCHED[curWeek];
   const idx=week.days.findIndex(x=>x.iso===iso);
-  if(idx>=0 && cards[idx]) cards[idx].style.outline='2px solid var(--acc-mid)';
+  const cards=document.querySelectorAll('#week-grid .day-card');
+  if(cards[idx]) cards[idx].classList.add('selected-day');
 
   renderDayDetail(d);
-  // Scroll to detail
-  setTimeout(()=>document.getElementById('day-detail-wrap').scrollIntoView({behavior:'smooth',block:'nearest'}),50);
+  setTimeout(()=>document.getElementById('day-detail-wrap').scrollIntoView({behavior:'smooth',block:'nearest'}),60);
 }
 
 function renderDayDetail(d){
   const el=document.getElementById('day-detail-wrap');
+  if(!el) return;
   const nb=NEURO[d.n]||{};
+  const isOff=d.t==='off';
+  const comp=sState.completions[d.iso];
   const typeNames={F:'Foundation',S:'Step-up',R:'Recovery',M:'Monitoring',off:'Rest'};
   const typeColors={F:'var(--blue)',S:'var(--acc)',R:'var(--purple)',off:'var(--dim)'};
-  const _qsd=sState.cardioQueue.find(function(q){
-    return q.actualIso===d.iso ||
-      (q.projectedIso===d.iso && q.status==='pending') ||
-      (q.scheduledIso===d.iso && q.status!=='pending');
-  });
-  const comp=(_qsd&&_qsd.status!=='pending')?_qsd.status:null;
-  // isOff only if SCHED says off AND no session projected here
-  const _isOffDetail=d.t==='off' && !_qsd;
 
-  // action bar built after render via buildActionBar
+  // Action buttons
+  let acts='';
+  acts+=`<button class="ta-btn" style="font-size:10px;" onclick="document.getElementById('day-detail-wrap').innerHTML='';_detailISO=null;document.querySelectorAll('.day-card').forEach(c=>c.classList.remove('selected-day'))">✕ close</button>`;
+  if(!isOff){
+    if(comp==='missed'){
+      acts+=`<button class="ta-btn primary" onclick="prefillLogger('${d.iso}')">log make-up →</button>`;
+      acts+=`<button class="ta-btn" onclick="markDay('${d.iso}',null);renderDayDetail(SCHED.flatMap(w=>w.days).find(x=>x.iso==='${d.iso}'))">undo</button>`;
+    } else if(comp==='done'){
+      acts+=`<button class="ta-btn done-btn" disabled>✓ logged</button>`;
+      acts+=`<button class="ta-btn" onclick="markDay('${d.iso}',null);renderDayDetail(SCHED.flatMap(w=>w.days).find(x=>x.iso==='${d.iso}'))">undo</button>`;
+    } else if(comp==='downgraded'){
+      acts+=`<button class="ta-btn warn" disabled>↓ downgraded</button>`;
+      acts+=`<button class="ta-btn" onclick="markDay('${d.iso}',null);renderDayDetail(SCHED.flatMap(w=>w.days).find(x=>x.iso==='${d.iso}'))">undo</button>`;
+    } else {
+      acts+=`<button class="ta-btn primary" onclick="markDay('${d.iso}','done');renderDayDetail(SCHED.flatMap(w=>w.days).find(x=>x.iso==='${d.iso}'))">✓ done</button>`;
+      acts+=`<button class="ta-btn warn" onclick="markDay('${d.iso}','downgraded');renderDayDetail(SCHED.flatMap(w=>w.days).find(x=>x.iso==='${d.iso}'))">↓ downgraded</button>`;
+      acts+=`<button class="ta-btn" onclick="markDay('${d.iso}','missed');renderDayDetail(SCHED.flatMap(w=>w.days).find(x=>x.iso==='${d.iso}'))">○ missed</button>`;
+    }
+  }
+  acts+=`<button class="ta-btn" onclick="prefillLogger('${d.iso}')">+ log session</button>`;
 
+  // Session blocks — same as renderTodayExp
   let sbs='';
-  if(d.t!=='off'){
+  if(!isOff){
     if(nb.am){
       const light=nb.am==='light';
-      const opt=nb.am==='opt';
-      const label=light?'Light Precision Neuro':opt?'Precision Neuro (optional)':'AM Precision Neuro';
-      const meta=light?'~8 min · stim + fixation only':opt?'optional · full or skip':'10–18 min · morning';
-      sbs+=mkSblock('teal',label,meta,'dd-am-neuro',[
-        {n:'1',name:'PNS Stim',detail:'Peroneal + tibial + median + V3 · 3 Hz, 300 μs, TENS-M · 2–3 min each side',src:'Keiser-prescribed'},
-        {n:'2',name:'Cervical prep / midline',detail:'Gentle ROM · always before eye work · TCD: cervical position modulates MCA flow'},
+      sbs+=mkSblock('teal','AM Precision Neuro','15 min · morning','dd-am-neuro',[
+        {n:'1',name:'PNS Stim',detail:'Peroneal + tibial + median + V3 · 3 Hz, 300 μs, TENS-M · 2–3 min each side.',src:'Keiser-prescribed'},
+        {n:'2',name:'Cervical prep',detail:'Gentle ROM · neutral before any eye work · always before head turns'},
         {n:'3',name:'Fixation holds',detail:'Fixation ON → OFF · work to reduce blink resets · progressive hold duration'},
-        ...(light||opt?[]:[
-          {n:'4',name:'Smooth pursuits — vertical first',detail:'Vertical before horizontal · V 20s×3, H 20s×2 · reduce saccadic intrusion rate'},
-          {n:'5',name:'Saccades — slow + accurate, vertical emphasis',detail:'10 reps × 4 rounds: 2 vertical, 1 diagonal, 1 horizontal · include downward accuracy · VEST: vertical outside norms'},
-          {n:'6',name:'Vergence — left eye bias',detail:'Near-far shifts · left gain 0.57 vs right 1.26 · 30–45s × 2 · track near→far reset time'},
-          {n:'7',name:'NVC micro-ladder',detail:'Optional 3×/wk · 30s upright task + 30–60s rest × 3–4 rounds · after ocular work only'},
+        ...(light?[]:[
+          {n:'4',name:'Smooth pursuits',detail:'Horizontal first, then vertical · reduce saccadic intrusion rate'},
+          {n:'5',name:'Saccades — vertical emphasis',detail:'Horizontal random, then vertical · vertical channel outside norms · focus downward accuracy'},
+          {n:'6',name:'Vergence — left eye',detail:'Near-far shifts · left gain 0.57 vs right 1.26 · conscious left-eye convergence tracking'},
         ]),
       ]);
     }
-
-    sbs+=mkSblock(d.t==='S'?'acc':d.t==='R'?'purple':'blue',
-      typeNames[d.t]+' Cardio', d.c||'','dd-cardio',[
-        {n:'1',name:'Pre-load',detail:'500 ml water + 1.5g sodium · 500 ml during/after'},
-        {n:'2',name:'Baseline capture',detail:'At angle, no pedaling, 2 min · log ETCO2 + HR + RR · supine gives cleanest reading'},
-        {n:'3',name:'Warmup',detail:'10 min gradual to 100 bpm · ETCO2 must reach 38–40 before entering Z2'},
-        {n:'4',name:'Zone 2',detail:'115–138 bpm · checkpoint at 5, 15, end · ETCO2 target 38–42 · below 36 → stop or drop angle'},
-        ...(d.t==='S'?[{n:'5',name:'Peak angle exposure',detail:'Small exposure at end · log: peak angle, minutes at peak, ETCO2 + HR @ 2 min'}]:[]),
-        {n:d.t==='S'?'6':'5',name:'Cooldown + transition',detail:'RR 10–12 · keep ETCO2 >35 · calf pumps throughout · start stop timer in logger'},
-        {n:d.t==='S'?'7':'6',name:'Pre-upright primer',detail:'Before standing: 360° brace + 10 calf pumps · 60–90s · reduces immediate HR spike on stand'},
-      ], true);
-
-    if(nb.str) sbs+=mkSblock('amber','Strength '+nb.str,
-      '20–25 min · after cardio · RPE 6–7 · no Valsalva','dd-str',
+    sbs+=mkSblock(d.t==='S'?'acc':d.t==='R'?'purple':'blue',`${typeNames[d.t]||d.t} Cardio`,d.c||'','dd-cardio',[
+      {n:'1',name:'Pre-load',detail:'500 ml water + 1.5g sodium · 500 ml during/after'},
+      {n:'2',name:'Baseline',detail:'At angle, no pedaling, 2 min · log ETCO2 + HR + RR'},
+      {n:'3',name:'Warmup',detail:'10 min gradual to 100 bpm · ETCO2 must reach 38–40 before Z2'},
+      {n:'4',name:'Zone 2',detail:'115–138 bpm · checkpoint at 5, 15, end · ETCO2 target 38–42 · below 36 → stop or reduce'},
+      ...(d.t==='S'?[{n:'5',name:'Peak angle exposure',detail:'Small exposure at end · log: peak angle, minutes, ETCO2 + HR @ 2 min'}]:[]),
+      {n:d.t==='S'?'6':'5',name:'Cooldown + transition',detail:'RR 10–12 to keep ETCO2 >35 · calf pumps throughout · start stop timer'},
+    ],true);
+    if(nb.str) sbs+=mkSblock('amber',`Strength ${nb.str}`,'20–25 min · after cardio · RPE 6–7',`dd-str-${nb.str}`,
       nb.str==='A'?[
-        {n:'1',name:'Seated calf raise',detail:'Slow eccentric · 2–3 × 12–20 · soleus pump = primary venous return driver'},
-        {n:'2',name:'Glute bridge',detail:'2–3 × 10–15 · posterior chain pump'},
+        {n:'1',name:'Seated calf raise',detail:'Slow eccentric · 2–3 × 12–20'},
+        {n:'2',name:'Glute bridge',detail:'2–3 × 10–15'},
         {n:'3',name:'Hamstring curl',detail:'Band or machine · 2 × 10–15'},
-        {n:'4',name:'Trunk container',detail:'Dead bug + Pallof press · 8–12 min · anti-extension + anti-rotation · reduces splanchnic pooling'},
+        {n:'4',name:'Dead bug',detail:'2 × 6–10 each side'},
       ]:[
         {n:'1',name:'Leg extension',detail:'Band or machine · 2–3 × 10–15'},
         {n:'2',name:'Sit-to-stand',detail:'Controlled · 2 × 6–10'},
         {n:'3',name:'Clamshells',detail:'2 × 12–20'},
-        {n:'4',name:'Pallof press',detail:'Band · 2 × 8–12 each side'},
+        {n:'4',name:'Pallof press',detail:'2 × 8–12 each side'},
       ]);
-
-    if(nb.pm) sbs+=mkSblock('purple','PM Vestibular Block',
-      '10–15 min · late afternoon · not on step-up day','dd-vestib',[
-        {n:'1',name:'PNS Stim',detail:'Same protocol as AM · always first'},
-        {n:'2',name:'Cervical prep',detail:'TCD: right lateral flexion drops left MCA · more critical here than AM'},
-        {n:'3',name:'Fixation primer',detail:'Short hold · set baseline before VOR/vestibular load'},
-        {n:'4',name:'VOR return-phase repair',detail:'Targets the return to center where zaps cluster · 6 reps × 2 sets',src:'Dr. T'},
-        {n:'5',name:'Head turns — right-biased',detail:'Primary asymmetry training · 10–20s sets · add tiny left probe only if recovery is fast',src:'Keiser-prescribed'},
-        {n:'6',name:'Whole-body rotation RIGHT',detail:'Thumb target · right rotation · 30s × 3 · when stable: add short continuous L–R VOR at slow tempo',src:'Keiser + Dr. T'},
-      ]);
-
-    if(nb.osc) sbs+=mkSblock('red','CBF Robustness — Orthostatic Block',
-      '10–15 min · not before heavy cognitive work','dd-osc',[
-        {n:'1',name:'Supported still-standing micro-doses',detail:'30–60s × 3–4 · trains upright stillness directly · builds pressure→flow stability'},
-        {n:'2',name:'0.05 Hz perch↔sit oscillations',detail:'Metronome 60 bpm · 10 beats up / 10 beats down · start 60–90s total · max 3–5 min'},
-        {n:'3',name:'Progression',detail:'Add 1–2 cycles/week · time first, not speed · park oscillations during exam weeks'},
-        {n:'4',name:'Stop if',detail:'Symptoms >20 sec · ETCO2 <34 · HR spikes between cycles'},
-      ]);
+    if(nb.pm) sbs+=mkSblock('purple','PM Vestibular Block','15 min · late afternoon · not on step-up day','dd-vestib',[
+      {n:'1',name:'PNS Stim',detail:'Same protocol as AM · always first'},
+      {n:'2',name:'Cervical prep',detail:'More important here — head turns next'},
+      {n:'3',name:'Brief fixation',detail:'Set baseline before provocative work'},
+      {n:'4',name:'Rightward Halmagyi thrusts',detail:'Supine, ceiling target · quick rightward thrust, close eyes, slow return · 5 × 3 sets, 1 min rest',src:'Keiser-prescribed'},
+      {n:'5',name:'Head-tilt fixation holds',detail:'Small angles only · few seconds · stop before breakdown',src:'Dr. T addition'},
+      {n:'6',name:'Whole-body rotation RIGHT',detail:'Thumb target · right rotation · 30s × 3 · when stable: add short continuous L–R VOR at slow tempo',src:'Keiser + Dr. T progression'},
+    ]);
+    if(nb.osc) sbs+=mkSblock('red','0.05 Hz Oscillation','10 min · not before cognitive work','dd-osc',[
+      {n:'1',name:'Setup',detail:'Metronome 60 bpm · supported upright'},
+      {n:'2',name:'Cycles',detail:'Sit → stand/perch · 10 beats up, 10 down = 0.05 Hz · start 3–5 cycles'},
+      {n:'3',name:'Progression',detail:'Add 1–2 cycles/week · time first, not speed · cadence is the mechanism'},
+      {n:'4',name:'Stop if',detail:'Symptoms >20 sec · ETCO2 <34 · HR spikes between cycles'},
+    ]);
   }
 
-  const weekObj = SCHED.find(w=>w.days.some(x=>x.iso===d.iso));
-  const weekNote = weekObj?.note||'';
+  const weekObj=SCHED.find(w=>w.days.some(x=>x.iso===d.iso));
 
-  const neuroBar=buildNeuroBar(d.iso,d.n);
-  var detailWarn='';
-  if(sState.lastDowngrade){
-    var _cardDate=new Date(d.iso+'T12:00:00');
-    var _dayBefore=new Date(_cardDate); _dayBefore.setDate(_cardDate.getDate()-1);
-    var _dbIso=_dayBefore.getFullYear()+'-'+String(_dayBefore.getMonth()+1).padStart(2,'0')+'-'+String(_dayBefore.getDate()).padStart(2,'0');
-    if(sState.lastDowngrade.date===_dbIso){
-      var _pn={S:'Step-up',F:'Foundation',R:'Recovery'}[sState.lastDowngrade.plannedType]||sState.lastDowngrade.plannedType;
-      detailWarn='<div class="te-warn">⚠ you downgraded yesterday ('+_pn+' → '+fmtSessionType(labelActualType(sState.lastDowngrade.actualType))+') — assess before stepping back up</div>';
-    }
-  }
-  el.innerHTML=`<div class="today-exp" style="border-color:var(--border2);margin-bottom:14px;">
+  el.innerHTML=`<div class="today-exp" style="margin-bottom:14px;">
     <div class="te-head">
       <div>
-        <div class="te-lbl">${d.n} · ${d.dt} · week ${weekObj?.w||''}</div>
+        <div class="te-lbl">${d.n} · ${d.dt} · week ${weekObj?weekObj.w:''}</div>
         <div class="te-name" style="color:${typeColors[d.t]||'var(--sub)'}">${typeNames[d.t]||d.t}</div>
         ${d.c?`<div class="te-sub">${d.c}</div>`:''}
-        ${weekNote?`<div class="te-sub" style="color:var(--dim);margin-top:3px;font-style:italic;">${weekNote}</div>`:''}
-        ${detailWarn}
+        ${weekObj&&weekObj.note?`<div class="te-sub" style="color:var(--dim);font-style:italic;">${weekObj.note}</div>`:''}
+        ${comp==='missed'?`<div class="te-warn">○ missed — log make-up when ready</div>`:''}
       </div>
-      <div class="te-actions" id="action-bar-detail"></div>
+      <div class="te-actions">${acts}</div>
     </div>
-    <div class="sblocks">${(d.t==='off'&&!sbs)?'<div style="padding:14px;color:var(--sub);font-size:12px;">rest day — no cardio planned</div>':sbs}</div>
-    ${neuroBar}
+    <div class="sblocks">${isOff?'<div style="padding:14px;color:var(--sub);font-size:12px;">rest day — no planned cardio</div>':sbs}</div>
   </div>`;
-  buildActionBar('action-bar-detail', d.iso, comp, _isOffDetail);
 }
 
-// Builds neuro checklist - uses data attributes, no inline JS
-function buildNeuroBar(dateIso, dayName){
-  var nb = NEURO[dayName] || {};
-  var ns = sState.neuCompleted[dateIso] || {};
-  var items = [];
-  if(nb.am) items.push({k:'am', label: nb.am==='light'?'AM neuro (light)': nb.am==='opt'?'AM neuro (opt)':'AM precision neuro'});
-  if(nb.str) items.push({k:'str', label: 'Strength ' + nb.str});
-  if(nb.pm)  items.push({k:'pm',  label: 'PM vestibular'});
-  if(nb.osc) items.push({k:'osc', label: 'CBF robustness'});
-  if(!items.length) return '';
-  var html = '<div style="padding:10px 16px 14px;border-top:1px solid var(--border);">';
-  html += '<div style="font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;">neuro / non-cardio checklist</div>';
-  html += '<div id="neuro-checks-' + dateIso + '" style="display:flex;flex-wrap:wrap;gap:7px;">';
-  items.forEach(function(c) {
-    var done = !!ns[c.k];
-    html += '<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:11px;';
-    html += 'background:var(--s2);border:1px solid ' + (done ? 'var(--acc-mid)' : 'var(--border)') + ';border-radius:6px;padding:5px 9px;">';
-    html += '<input type="checkbox" ' + (done ? 'checked' : '') + ' ';
-    html += 'data-iso="' + dateIso + '" data-key="' + c.k + '" class="neuro-check" ';
-    html += 'style="accent-color:var(--acc-mid);width:13px;height:13px;">';
-    html += '<span style="color:' + (done ? 'var(--acc)' : 'var(--sub)') + '">' + c.label + '</span>';
-    html += '</label>';
-  });
-  html += '</div></div>';
-  return html;
-}
+function prefillLogger(iso){
+  clearForm();
+  document.getElementById('f-date').value=iso;
 
+  // Check if previous day had a missed session — auto-suggest it
+  var prevDate = new Date(iso+'T12:00:00');
+  prevDate.setDate(prevDate.getDate()-1);
+  var prevIso = prevDate.getFullYear()+'-'+String(prevDate.getMonth()+1).padStart(2,'0')+'-'+String(prevDate.getDate()).padStart(2,'0');
+  var prevComp = sState.completions[prevIso];
+  var allDays = SCHED.flatMap(function(w){return w.days;});
+  var prevDay = allDays.find(function(d){return d.iso===prevIso;});
 
-function buildActionBar(barId, iso, comp, isOff) {
-  var el = document.getElementById(barId);
-  if (!el) return;
-  el.setAttribute('data-bar-iso', iso);
-  var html = '';
-  if (!isOff && !comp) {
-    html += '<button class="ta-btn primary" data-action="done">log this session &rarr;</button> ';
-    html += '<button class="ta-btn warn" data-action="downgraded">&darr; downgraded</button> ';
-    html += '<button class="ta-btn" data-action="missed">&cir; missed</button>';
-  } else if (comp === 'done') {
-    html += '<button class="ta-btn done-btn" disabled>&check; logged</button> ';
-    html += '<button class="ta-btn" data-action="undo">undo</button>';
-  } else if (comp === 'downgraded') {
-    var dgSession=sState.cardioQueue.find(function(q){ return q.actualIso===iso||q.scheduledIso===iso; });
-    var dgLabel='↓ downgraded';
-    if(dgSession&&labelActualType(dgSession.actualType)) dgLabel+=': did '+fmtSessionType(labelActualType(dgSession.actualType))+' (planned '+fmtSessionType(dgSession.plannedType)+')';
-    html += '<button class="ta-btn done-btn" disabled>'+dgLabel+'</button> ';
-    html += '<button class="ta-btn" data-action="undo">undo</button>';
-  } else if (comp === 'missed') {
-    html += '<button class="ta-btn" style="opacity:0.6" disabled>&cir; missed</button> ';
-    html += '<button class="ta-btn" data-action="undo">undo</button>';
-  } else if (comp === 'skipped') {
-    html += '<button class="ta-btn" style="opacity:0.6" disabled>&ndash; skipped</button> ';
-    html += '<button class="ta-btn" data-action="undo">undo</button>';
+  if(prevComp==='missed' && prevDay && prevDay.t!=='off'){
+    // Pre-select the session type
+    var typeBtn = document.querySelector('#tg-type .tg-btn[data-val="'+prevDay.t+'"]');
+    if(typeBtn) typeBtn.click();
+    // Set angle hint if available
+    var angleMatch = prevDay.c && prevDay.c.match(/(\d+)°/);
+    if(angleMatch) document.getElementById('f-angle').value=angleMatch[1];
+    // Show a banner explaining why
+    var typeNames={F:'Foundation',S:'Step-up',R:'Recovery'};
+    showToast('pre-filled from missed '+( typeNames[prevDay.t]||prevDay.t)+' on '+prevIso);
+    // Add a note
+    document.getElementById('f-notes').value='Make-up from missed '+prevIso+(prevDay.c?' — '+prevDay.c:'');
   }
-  // Add close button only when it's a day-detail panel (not today card)
-  if(document.getElementById('day-detail-wrap').contains(el)){
-    html += ' <button class="ta-btn" data-action="close">✕ close</button>';
-  }
-  el.innerHTML = html;
-  // Attach click handlers after setting innerHTML
-  el.querySelectorAll('button[data-action]').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var action = this.getAttribute('data-action');
-      var barIso = this.closest('[data-bar-iso]').getAttribute('data-bar-iso');
-      if (action === 'close') { closeDayDetail(); return; }
-      if (action === 'done') { markDay(barIso, 'done'); showTab('logger'); return; }
-      markDay(barIso, action === 'undo' ? null : action);
-    });
-  });
+
+  showTab('logger');
+  window.scrollTo(0,0);
+}
+function closeModal(e){if(e&&e.target!==document.getElementById('modal'))return;document.getElementById('modal').classList.remove('open');}
+function markDay(iso,status){
+  if(status===null)delete sState.completions[iso];
+  else sState.completions[iso]=status;
+  saveSchedState(); renderWeek();
+  showToast(status?'marked: '+status:'cleared');
 }
 
+function changeWeek(d){curWeek=Math.max(0,Math.min(SCHED.length-1,curWeek+d));sState.curWeek=curWeek;saveSchedState();renderWeek();}
+function goToday(){curWeek=getTodayWeek();sState.curWeek=curWeek;saveSchedState();renderWeek();}
 
-function toggleTodayCard(){
-  const card = document.querySelector('#today-exp-wrap .today-exp');
-  if(!card) return;
-  card.classList.toggle('today-exp-collapsed');
+// ═══ LOGGER ═════════════════════════════════════════
+let timerInterval=null,timerStart=null,timerRunning=false,capturedMs=null;
+
+function startTimer(){
+  if(timerRunning)return;
+  timerRunning=true;timerStart=Date.now();capturedMs=null;
+  document.getElementById('stop-panel').className='stop-panel running';
+  document.getElementById('timer-sub').textContent='counting — wait for HR to cross 100';
+  document.getElementById('btn-start').style.display='none';
+  document.getElementById('btn-reset').style.display='inline-block';
+  timerInterval=setInterval(()=>{document.getElementById('timer-disp').textContent=fmtMs(Date.now()-timerStart);},100);
 }
-
-function labelActualType(t){
-  return {F:'Foundation',S:'Step-up',R:'Recovery',short:'Very short/partial'}[t]||t;
+function mark100(){
+  if(!timerRunning)return;
+  clearInterval(timerInterval);
+  const el=Date.now()-timerStart;capturedMs=el;timerRunning=false;
+  const m=(el/60000).toFixed(1);
+  document.getElementById('stop-panel').className='stop-panel captured';
+  document.getElementById('timer-disp').textContent=fmtMs(el);
+  document.getElementById('timer-sub').textContent='captured';
+  document.getElementById('result-badge').textContent='✓ '+m+' min to HR < 100';
+  showToast('cliff: '+m+' min');
 }
-
-function closeDayDetail(){
-  document.getElementById('day-detail-wrap').innerHTML='';
-  selectedDayISO=null;
-  document.querySelectorAll('.day-card').forEach(function(c){ c.style.outline=''; });
+function resetTimer(){
+  clearInterval(timerInterval);timerRunning=false;timerStart=null;capturedMs=null;
+  document.getElementById('stop-panel').className='stop-panel';
+  document.getElementById('timer-disp').textContent='00:00';
+  document.getElementById('timer-sub').textContent='waiting to start';
+  document.getElementById('btn-start').style.display='inline-block';
+  document.getElementById('btn-reset').style.display='none';
+  document.getElementById('result-badge').textContent='';
 }
+function fmtMs(ms){const s=Math.floor(ms/1000),m=Math.floor(s/60);return String(m).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
 
-function showSkipModal(sessionId){
-  var s=sState.cardioQueue.find(function(q){ return q.id===sessionId; });
-  if(!s) return;
-  var typeName={F:'Foundation',S:'Step-up',R:'Recovery'}[s.type]||s.type;
-  document.getElementById('modal-title').textContent='why skipping?';
-  document.getElementById('modal-sub').textContent=typeName+' \u00b7 '+(s.description||'');
-  var opts=[
-    {v:'crash',      label:'Crash / PEM',       sub:'post-exertional malaise or crash'},
-    {v:'bad-morning',label:'Bad morning state',  sub:'woke up poorly, not safe to train'},
-    {v:'time-school',label:'Time / school',      sub:'schedule conflict or exam pressure'},
-  ];
-  var html='';
-  opts.forEach(function(o){
-    html+='<div class="modal-opt" data-reason="'+o.v+'" data-sid="'+sessionId+'">';
-    html+='<strong>'+o.label+'</strong><span>'+o.sub+'</span></div>';
-  });
-  document.getElementById('modal-opts').innerHTML=html;
-  document.querySelectorAll('#modal-opts .modal-opt').forEach(function(el){
-    el.addEventListener('click', function(){
-      skipCardioSession(this.getAttribute('data-sid'), this.getAttribute('data-reason'));
-      closeModal(); renderWeek();
-    });
-  });
-  document.getElementById('modal').classList.add('open');
+function selTag(btn,gid,color){
+  document.querySelectorAll('#'+gid+' .tg-btn').forEach(b=>b.className='tg-btn');
+  const map={green:'tg-sel-green',amber:'tg-sel-amber',red:'tg-sel-red',blue:'tg-sel-blue',purple:'tg-sel-purple'};
+  btn.classList.add(map[color]||'tg-sel-none');
 }
+function getTag(gid){const s=document.querySelector('#'+gid+' .tg-btn.tg-sel-none, #'+gid+' .tg-btn[class*="tg-sel-"]');return s?s.dataset.val:null;}
+function toggleSU(){const t=getTag('tg-type');document.getElementById('su-block').classList.toggle('vis',t==='S');}
 
-function showDowngradeModal(iso){
-  var allD=SCHED.flatMap(function(w){ return w.days; }).find(function(d){ return d.iso===iso; });
-  var planned=allD?allD.t:'F';
-  var typeNames={F:'Foundation',S:'Step-up',R:'Recovery'};
-  var opts = planned==='S'
-    ? [{t:'F',label:'Did Foundation instead',sub:'base angle, completed zone 2'},
-       {t:'R',label:'Did Recovery instead',  sub:'short easy session'}]
-    : planned==='F'
-    ? [{t:'R',    label:'Did Recovery instead', sub:'short easy session only'},
-       {t:'short',label:'Very short / partial', sub:'started but cut it short'}]
-    : [{t:'short',label:'Very short / partial', sub:'less than planned'},
-       {t:'R',    label:'Just moved a little',  sub:'minimal effort'}];
-  document.getElementById('modal-title').textContent='what did you actually do?';
-  document.getElementById('modal-sub').textContent='planned: '+(typeNames[planned]||planned)+' \u00b7 '+((allD&&allD.c)||'');
-  var html='';
-  opts.forEach(function(o){
-    html+='<div class="modal-opt" data-iso="'+iso+'" data-type="'+o.t+'" data-planned="'+planned+'">';
-    html+='<strong>'+o.label+'</strong><span>'+o.sub+'</span></div>';
-  });
-  document.getElementById('modal-opts').innerHTML=html;
-  document.querySelectorAll('#modal-opts .modal-opt').forEach(function(el){
-    el.addEventListener('click', function(){
-      confirmDowngrade(
-        this.getAttribute('data-iso'),
-        this.getAttribute('data-type'),
-        this.getAttribute('data-planned')
-      );
-      closeModal();
-    });
-  });
-  document.getElementById('modal').classList.add('open');
-}
-
-function confirmDowngrade(iso, actualType, plannedType){
-  var s=sState.cardioQueue.find(function(q){ return q.scheduledIso===iso; });
-  if(!s){
-    var allD=SCHED.flatMap(function(w){ return w.days; }).find(function(d){ return d.iso===iso; });
-    if(allD){
-      var entry={id:iso+'_'+allD.t, type:allD.t, description:allD.c||'',
-        phase:'', weekNum:null, weekNote:'', scheduledIso:iso, actualIso:null,
-        status:'pending', skipReason:null, isExtra:false};
-      sState.cardioQueue.push(entry);
-      s=entry;
-    }
-  }
-  if(s){
-    s.status='downgraded'; s.actualIso=iso;
-    s.actualType=actualType; s.plannedType=plannedType;
-  }
-  sState.lastDowngrade={date:iso, plannedType:plannedType, actualType:actualType};
-  buildProjections(); saveSchedState(); renderWeek();
-  showToast('logged \u2014 '+actualType+' instead of '+plannedType);
-}
-
-function markDay(iso, status){
-  if(status===null){
-    var s=sState.cardioQueue.find(function(q){
-      return q.actualIso===iso||(q.scheduledIso===iso&&['done','downgraded','missed','skipped'].includes(q.status));
-    });
-    if(s) undoCardioSession(s.id);
-    saveSchedState(); renderWeek(); showToast('cleared'); return;
-  }
-  if(status==='done'){
-    var s=sState.cardioQueue.find(function(q){
-      return (q.scheduledIso===iso || q.projectedIso===iso) && q.status==='pending' && !q.isGate;
-    }) || sState.cardioQueue.find(function(q){ return q.actualIso===iso; });
-    if(!s){
-      var allD=SCHED.flatMap(function(w){ return w.days; }).find(function(d){ return d.iso===iso; });
-      if(allD && (allD.t==='F'||allD.t==='S'||allD.t==='R')){
-        var entry={id:iso+'_'+allD.t, type:allD.t, description:allD.c||'',
-          phase:'', weekNum:null, weekNote:'', scheduledIso:iso, actualIso:null,
-          status:'pending', skipReason:null, isExtra:false};
-        sState.cardioQueue.push(entry); s=entry;
-      }
-    }
-    if(s){ completeCardioSession(s.id, iso); renderWeek(); showToast('marked done'); }
-    else {
-      // Off day extra session
-      document.getElementById('modal-title').textContent='extra session on off day';
-      document.getElementById('modal-sub').textContent='log what you did';
-      var opts2=[{t:'F',label:'Foundation',sub:'zone 2 at base angle'},{t:'R',label:'Recovery',sub:'easy short session'}];
-      var html2='';
-      opts2.forEach(function(o){
-        html2+='<div class="modal-opt" data-iso="'+iso+'" data-type="'+o.t+'">';
-        html2+='<strong>'+o.label+'</strong><span>'+o.sub+'</span></div>';
-      });
-      document.getElementById('modal-opts').innerHTML=html2;
-      document.querySelectorAll('#modal-opts .modal-opt').forEach(function(el){
-        el.addEventListener('click', function(){
-          addExtraSession(this.getAttribute('data-iso'), this.getAttribute('data-type'), this.getAttribute('data-type')==='F'?'Foundation':'Recovery');
-          closeModal(); renderWeek();
-        });
-      });
-      document.getElementById('modal').classList.add('open');
-    }
-    return;
-  }
-  if(status==='downgraded'){
-    showDowngradeModal(iso); return;
-  }
-  if(status==='missed'){
-    // Find by scheduledIso or actualIso directly — avoid projectedIso ambiguity
-    var s=sState.cardioQueue.find(function(q){
-      return (q.scheduledIso===iso || q.actualIso===iso) && !q.isGate;
-    });
-    if(!s){
-      var allD=SCHED.flatMap(function(w){ return w.days; }).find(function(d){ return d.iso===iso; });
-      if(allD && (allD.t==='F'||allD.t==='S'||allD.t==='R')){
-        var entry={id:iso+'_'+allD.t, type:allD.t, description:allD.c||'',
-          phase:'', weekNum:null, weekNote:'', scheduledIso:iso, actualIso:null,
-          status:'pending', skipReason:null, isExtra:false};
-        sState.cardioQueue.push(entry); s=entry;
-      }
-    }
-    if(s){
-      s.status='missed'; s.actualIso=iso;
-      sState.skipLog.push({sessionId:s.id, reason:'missed',
-        morningState:morningState||'unknown', date:iso, type:s.type});
-      // Re-insert a pending copy of this session so it reschedules to next available day
-      // Use tomorrow as scheduledIso so dedupeQueue doesn't clash with the original
-      var nextDay=new Date(iso+'T12:00:00'); nextDay.setDate(nextDay.getDate()+1);
-      var nextIso=nextDay.getFullYear()+'-'+String(nextDay.getMonth()+1).padStart(2,'0')+'-'+String(nextDay.getDate()).padStart(2,'0');
-      var reinsert={
-        id:iso+'_'+s.type+'_rescheduled_'+Date.now(),
-        type:s.type, description:s.description,
-        phase:s.phase, weekNum:s.weekNum, weekNote:s.weekNote,
-        scheduledIso:nextIso,
-        sortIso:nextIso,  // used for ordering — stays with the missed session
-        actualIso:null,
-        status:'pending', skipReason:null, isExtra:false, isRescheduled:true,
-      };
-      // Insert right after the missed session in the queue
-      var missedIdx=sState.cardioQueue.findIndex(function(q){ return q.id===s.id; });
-      sState.cardioQueue.splice(missedIdx+1, 0, reinsert);
-      buildProjections(); saveSchedState(); renderWeek(); showToast('marked missed');
-    }
-    return;
-  }
-  if(status==='skipped'){
-    var s=getSessionForDate(iso);
-    if(s) showSkipModal(s.id);
-    return;
-  }
-}
-
-function markStatus(status){
-  // Fallback only — buttons now call markDay directly via data-bar-iso
-  if(_activeISO) markDay(_activeISO, status);
-}
-
-function toggleNeuro(dateIso,key,checked){
-  if(!sState.neuCompleted[dateIso]) sState.neuCompleted[dateIso]={};
-  sState.neuCompleted[dateIso][key]=checked;
-  saveSchedState();
-  // Re-render the relevant detail panel
-  const allDays=SCHED.flatMap(w=>w.days);
-  const d=allDays.find(x=>x.iso===dateIso);
-  const isToday=dateIso===getTodayISO();
-  if(isToday) renderTodayExp();
-  else if(d) renderDayDetail(d);
-}
-
-// Bottleneck map collapse (program tab)
 function toggle(head){
   const body=head.nextElementSibling;
   if(!body) return;
-  body.style.display=(body.style.display==='none'||body.style.display==='')?'block':'none';
+  body.style.display=(body.style.display==='none'||!body.style.display)?'block':'none';
 }
-
-// Initialize all bn-bodies collapsed except first
 function initBnCollapse(){
-  const bodies=document.querySelectorAll('.bn-body');
-  bodies.forEach((b,i)=>{
-    b.style.display=i===0?'block':'none';
-  });
+  document.querySelectorAll('.bn-body').forEach((b,i)=>{b.style.display=i===0?'block':'none';});
 }
 
 function saveSession(){
@@ -2586,28 +2370,62 @@ function saveSession(){
     sleepQuality:document.getElementById('sleep-quality').value||null,
     notes:document.getElementById('f-notes').value.trim(),
   };
-  sessions.push(s);saveSessions();
-  // Push to Supabase
-  if(currentUser) sbInsert('sessions', {
-    user_id: currentUser.id,
-    session_date: s.date,
-    type: s.type,
-    angle: s.angle,
-    pre_etco2: s.pre ? s.pre.etco2 : null,
-    cp5_etco2: s.cp5 ? s.cp5.etco2 : null,
-    cp15_etco2: s.cp15 ? s.cp15.etco2 : null,
-    z2_min: s.z2min,
-    min_under_100: s.minUnder100,
-    etco2_at_60s: s.etco2at60s,
-    morning_state: s.morningState,
-    data: s
-  }).catch(function(e){ console.warn('Session sync failed:', e.message); });
-  clearForm();showToast('session saved');
+  if(window._editingId){
+    const idx=sessions.findIndex(x=>x.id===window._editingId);
+    if(idx>=0){ s.id=window._editingId; sessions[idx]=s; }
+    else sessions.push(s);
+    window._editingId=null;
+    document.getElementById('log-edit-banner').style.display='none';
+    showToast('session updated');
+  } else {
+    sessions.push(s);
+    showToast('session saved');
+  }
+  saveSessions();
+  sbUpsert(s); // non-blocking sync to Supabase
+  clearForm();
   // Auto-mark today as done in schedule
   const today=getTodayISO();
-  // Auto-mark today's cardio session done when logging
-  const _autoS=sState.cardioQueue.find(q=>q.scheduledIso===today&&q.status==='pending');
-  if(_autoS){ completeCardioSession(_autoS.id,today); }
+  if(!sState.completions[today]) { sState.completions[today]='done'; saveSchedState(); }
+}
+
+function editSess(id){
+  const s=sessions.find(x=>x.id===id);
+  if(!s) return;
+  // Store editing id
+  window._editingId=id;
+  clearForm();
+  // Fill fields
+  const set=(elId,val)=>{const el=document.getElementById(elId);if(el&&val!=null)el.value=val;};
+  set('f-date',s.date);
+  set('f-angle',s.angle);
+  set('f-prop',s.propHours);
+  set('f-polar',s.polarName);
+  set('pre-etco2',s.pre?.etco2); set('pre-hr',s.pre?.hr); set('pre-rr',s.pre?.rr);
+  set('cp5-etco2',s.cp5?.etco2); set('cp5-hr',s.cp5?.hr); set('cp5-rr',s.cp5?.rr);
+  set('cp15-etco2',s.cp15?.etco2); set('cp15-hr',s.cp15?.hr); set('cp15-rr',s.cp15?.rr);
+  set('cpE-etco2',s.cpEnd?.etco2); set('cpE-hr',s.cpEnd?.hr); set('cpE-rr',s.cpEnd?.rr);
+  set('f-z2min',s.z2min);
+  set('etco2-60s',s.etco2at60s); set('etco2-hr100',s.etco2atHR100);
+  set('m-supine-hr',s.morningSupineHR); set('m-stand-hr',s.morningStandingHR);
+  set('sleep-hours',s.sleepHours); set('f-notes',s.notes);
+  if(s.sleepQuality) document.getElementById('sleep-quality').value=s.sleepQuality;
+  // Restore tag selections
+  const tagMap={type:s.type,day:s.dayState,feel:s.sessionFeel,breath:s.breathRoute,
+    capno:s.capnoSetup,cleaned:s.adapterCleaned,comp:s.compression,morning:s.morningState};
+  Object.entries(tagMap).forEach(([gid,val])=>{
+    if(!val) return;
+    const btn=document.querySelector('#tg-'+gid+' .tg-btn[data-val="'+val+'"]');
+    if(btn) btn.click();
+  });
+  if(s.stepUp){
+    set('su-angle',s.stepUp.peakAngle); set('su-mins',s.stepUp.minutes);
+    set('su-etco2',s.stepUp.etco2at2min); set('su-hr',s.stepUp.hrAt2min);
+  }
+  // Show editing banner
+  document.getElementById('log-edit-banner').style.display='block';
+  showTab('logger');
+  window.scrollTo(0,0);
 }
 
 function clearForm(){
@@ -2627,7 +2445,7 @@ function clearForm(){
 // ═══ SESSIONS ═══════════════════════════════════════
 function renderSessions(){
   const sorted=[...sessions].sort((a,b)=>b.date.localeCompare(a.date));
-  const _sc=document.getElementById('sess-count'); if(_sc) _sc.textContent=sessions.length+' session'+(sessions.length!==1?'s':'')+' logged';
+  document.getElementById('sess-count').textContent=sessions.length+' session'+(sessions.length!==1?'s':'')+' logged';
   if(!sorted.length){
     document.getElementById('sess-list').innerHTML='<div class="empty-state"><div class="empty-icon">◈</div>no sessions yet</div>';
     return;
@@ -2659,16 +2477,27 @@ function renderSessions(){
           ${s.propHours?'prop: '+s.propHours+'h  ':''}${s.sleepHours?'sleep: '+s.sleepHours+'h  ':''}
           ${s.notes?'<br>'+s.notes:''}
         </div>
-        <button class="btn-danger" style="margin-top:7px;" onclick="event.stopPropagation();delSess(${s.id})">delete</button>
+        <button class="btn-sec" style="margin-top:7px;margin-left:0;" onclick="event.stopPropagation();editSess(${s.id})">edit</button>
+        <button class="btn-danger" style="margin-top:7px;" data-del-id="${s.id}" onclick="event.stopPropagation();delSess(${s.id})">delete</button>
       </div>
     </div>`;
   }).join('');
 }
 function delSess(id){
+  // Find and replace delete button with inline confirm
+  const btn=document.querySelector('[data-del-id="'+id+'"]');
+  if(!btn) return;
+  const orig=btn.outerHTML;
+  btn.outerHTML='<span data-del-id="'+id+'" style="display:inline-flex;gap:5px;align-items:center;">'
+    +'<span style="font-size:11px;color:var(--red);font-family:var(--mono);">delete?</span>'
+    +'<button class="btn-danger" onclick="event.stopPropagation();doDelSess('+id+')" style="padding:3px 8px;">yes</button>'
+    +'<button class="btn-sec" onclick="event.stopPropagation();renderSessions()" style="padding:3px 8px;margin-left:0;">no</button>'
+    +'</span>';
+}
+function doDelSess(id){
   sessions=sessions.filter(s=>s.id!==id);
   saveSessions();
-  // Delete from Supabase by matching data->>'id' 
-  if(currentUser) sbDelete('sessions', {user_id: currentUser.id, id: parseInt(id)||id}).catch(function(e){ console.warn('Delete sync failed:', e.message); });
+  sbDelete(id); // non-blocking
   renderSessions();showToast('deleted');
 }
 
@@ -2768,35 +2597,6 @@ function renderTrends(){
 
 // ═══ UTILS ══════════════════════════════════════════
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
-function renderSkipAnalytics(){
-  const data=getSkipAnalytics();
-  const el=document.getElementById('skip-analytics');
-  if(!el) return;
-  if(data.total===0){
-    el.innerHTML='<div style="color:var(--dim);font-size:11px;font-family:var(--mono);">no skips logged yet</div>';
-    return;
-  }
-  const reasons={'crash':'Crash/PEM','bad-morning':'Bad morning','time-school':'Time/school'};
-  let html='<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">';
-  Object.entries(data.reasons).forEach(function(e){
-    if(e[1]>0){
-      html+='<div style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;text-align:center;">';
-      html+='<div style="font-family:var(--mono);font-size:18px;color:var(--text);">'+e[1]+'</div>';
-      html+='<div style="font-size:10px;color:var(--sub);">'+reasons[e[0]]+'</div></div>';
-    }
-  });
-  html+='</div>';
-  html+='<div style="font-family:var(--mono);font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">recent skips</div>';
-  data.log.slice(-5).reverse().forEach(function(s){
-    html+='<div style="font-size:11px;color:var(--sub);padding:4px 0;border-bottom:1px solid var(--border);">';
-    html+=s.date+' · '+({F:'Foundation',S:'Step-up',R:'Recovery'}[s.type]||s.type);
-    html+=' · <span style="color:var(--amber);">'+reasons[s.reason]+'</span>';
-    if(s.morningState&&s.morningState!=='unknown') html+=' · morning: '+s.morningState;
-    html+='</div>';
-  });
-  el.innerHTML=html;
-}
-
 function exportData(){const b=new Blob([JSON.stringify(sessions,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='pots_sessions.json';a.click();showToast('exported');}
 
 // ═══ INIT ═══════════════════════════════════════════
@@ -2809,158 +2609,181 @@ if(morningState){
   const cls={normal:'s-green',tired:'s-amber',bad:'s-red',crash:'s-red'}[morningState];
   document.getElementById('rt-'+morningState)?.classList.add(cls);
 }
-document.addEventListener('change', function(e) {
-  if(e.target.classList.contains('neuro-check')) {
-    var iso = e.target.getAttribute('data-iso');
-    var key = e.target.getAttribute('data-key');
-    toggleNeuro(iso, key, e.target.checked);
-  }
+updateReadiness();
+renderWeek();
+// Load + sync from Supabase on startup
+sbLoad().then(function(){
+  renderSessions();
+  renderTrends();
 });
 
-// ── ASYNC INIT: load from Supabase, fall back to localStorage ─────────
-function toggleAccountMenu(){
-  var m = document.getElementById('acct-menu');
-  m.style.display = m.style.display==='none' ? 'block' : 'none';
-}
 
-// Close menu when clicking outside
-document.addEventListener('click', function(e){
-  if(!document.getElementById('nav-account')?.contains(e.target)){
-    var m = document.getElementById('acct-menu');
-    if(m) m.style.display='none';
-  }
-});
+// ── CURSOR GLOW — zero lag ───────────────────────────
+(function(){
+  const glow = document.getElementById('cursor-glow');
+  if(!glow) return;
+  document.addEventListener('mousemove', function(e){
+    glow.style.transform = 'translate(calc('+e.clientX+'px - 50%), calc('+e.clientY+'px - 50%))';
+    glow.style.opacity = '1';
+  }, {passive:true});
+  document.addEventListener('mouseleave', function(){ glow.style.opacity='0'; });
+})();
 
-async function signOut(){
-  await sb.auth.signOut();
-  document.getElementById('app-wrap').style.display='none';
-  document.getElementById('nav-account').style.display='none';
-  document.getElementById('login-screen').style.display='flex';
-}
-
-function signInWithGoogle(){
-  sb.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo: 'https://lymancorp.github.io/POTS/',
-      skipBrowserRedirect: false
+// ── GRAIN CANVAS ─────────────────────────────────────
+(function(){
+  const canvas = document.getElementById('grain-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let w, h, frame=0;
+  function resize(){ w=canvas.width=window.innerWidth; h=canvas.height=window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  function drawGrain(){
+    frame++;
+    if(frame % 3 !== 0){ requestAnimationFrame(drawGrain); return; } // 20fps grain
+    const img = ctx.createImageData(w, h);
+    const d = img.data;
+    for(let i=0;i<d.length;i+=4){
+      const v = Math.random()*255|0;
+      d[i]=d[i+1]=d[i+2]=v; d[i+3]=255;
     }
-  });
-}
-
-// Handle auth redirect on page load
-async function handleAuthRedirect(){
-  var hash = window.location.hash;
-  if(hash && hash.includes('access_token')){
-    var {data,error} = await sb.auth.getSession();
-    if(data.session){
-      window.history.replaceState(null, '', window.location.pathname);
-    }
+    ctx.putImageData(img, 0, 0);
+    requestAnimationFrame(drawGrain);
   }
-}
+  drawGrain();
+})();
 
-async function initApp() {
-  // Check auth
-  var {data:{session}} = await sb.auth.getSession();
-  if(!session) {
-    document.getElementById('login-screen').style.display = 'flex';
-    return;
-  }
-  currentUser = session.user;
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('app-wrap').style.display = 'block';
-  // Show account button
-  var acctWrap = document.getElementById('nav-account');
-  if(acctWrap){
-    acctWrap.style.display = 'flex';
-    var meta = currentUser.user_metadata || {};
-    var name = meta.name || meta.full_name || currentUser.email.split('@')[0];
-    var avatar = meta.avatar_url || meta.picture || '';
-    document.getElementById('acct-name').textContent = name;
-    document.getElementById('acct-email').textContent = currentUser.email;
-    var avatarEl = document.getElementById('acct-avatar');
-    if(avatar){ avatarEl.src=avatar; avatarEl.style.display='block'; }
-  }
-
-  // Show loading
-  document.getElementById('today-exp-wrap').innerHTML = '<div style="padding:20px;color:var(--sub);font-family:var(--mono);font-size:11px;">loading from database…</div>';
-
-  try {
-    // Load schedule state from Supabase
-    var sbSched = await sbGet('schedule_state', {user_id: currentUser.id});
-    if(sbSched && sbSched.length > 0) {
-      var ss = sbSched[0];
-      sState.cardioQueue    = ss.cardio_queue    || sState.cardioQueue;
-      sState.neuCompleted   = ss.neuro_completed || sState.neuCompleted;
-      sState.skipLog        = ss.skip_log        || sState.skipLog;
-      sState.morning        = ss.morning         || sState.morning;
-      sState.morningDate    = ss.morning_date    || sState.morningDate;
-      sState.lastDowngrade  = ss.last_downgrade  || sState.lastDowngrade;
-      sState.curWeek        = ss.cur_week != null ? ss.cur_week : sState.curWeek;
-      curWeek = sState.curWeek;
-      morningState = sState.morning || null;
-      // Re-apply morning tag
-      if(morningState){
-        var cls={normal:'s-green',tired:'s-amber',bad:'s-red',crash:'s-red'}[morningState];
-        document.getElementById('rt-'+morningState)?.classList.add(cls);
-      }
-      localStorage.setItem(SKEY, JSON.stringify(sState));
-    }
-
-    // Load sessions from Supabase
-    var {data: sbSess, error: sessErr} = await sb.from('sessions')
-      .select('*').eq('user_id', currentUser.id).order('session_date');
-    if(sessErr) throw new Error(sessErr.message);
-    if(sbSess && sbSess.length > 0) {
-      // Use Supabase data — it's the source of truth
-      sessions = sbSess.map(function(row){ return row.data; });
-      localStorage.setItem(LKEY, JSON.stringify(sessions));
-    }
-  } catch(e) {
-    console.warn('Supabase load failed, using localStorage:', e.message);
-  }
-
-  // Push historical seeded sessions to Supabase if it has none
-  try {
-    var count = sbSess;
-    if(count && count.length === 0 && sessions.length > 0) {
-      // Seed historical sessions
-      var batch = sessions.map(function(s){
-        return {
-          user_id: currentUser.id,
-          session_date: s.date, type: s.type, angle: s.angle,
-          pre_etco2: s.pre?s.pre.etco2:null, cp5_etco2: s.cp5?s.cp5.etco2:null,
-          cp15_etco2: s.cp15?s.cp15.etco2:null, z2_min: s.z2min,
-          min_under_100: s.minUnder100, etco2_at_60s: s.etco2at60s,
-          morning_state: s.morningState, data: s
-        };
+// ── MAGNETIC BUTTONS ─────────────────────────────────
+(function(){
+  function initMagnetic(){
+    document.querySelectorAll('.ta-btn.primary, .save-btn, .wn-btn').forEach(function(btn){
+      if(btn._magneticInit) return;
+      btn._magneticInit = true;
+      btn.addEventListener('mousemove', function(e){
+        const r = btn.getBoundingClientRect();
+        const cx = r.left + r.width/2;
+        const cy = r.top  + r.height/2;
+        const dx = (e.clientX - cx) * 0.3;
+        const dy = (e.clientY - cy) * 0.3;
+        btn.style.transform = 'translate('+dx+'px,'+dy+'px) translateY(-1px)';
       });
-      await sbInsert('sessions', batch);
-      showToast('historical sessions synced to database');
-    }
-  } catch(e) {
-    console.warn('Seed sync failed:', e.message);
+      btn.addEventListener('mouseleave', function(){
+        btn.style.transform = '';
+      });
+    });
   }
+  // Run on tab switch too
+  initMagnetic();
+  const origShowTab = showTab;
+  window.showTab = function(name){
+    origShowTab(name);
+    setTimeout(initMagnetic, 100);
+  };
+})();
 
-  cleanQueueOnInit();
-  buildProjections();
-  updateReadiness();
-  renderWeek();
+// ── TEXT SCRAMBLE (nav logo) ──────────────────────────
+(function(){
+  const logo = document.querySelector('.nav-logo');
+  if(!logo) return;
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  const original = 'POTS rehab';
+  let frame = 0;
+  const totalFrames = 20;
+  function scramble(){
+    if(frame >= totalFrames){ logo.innerHTML = 'POTS <em>rehab</em>'; return; }
+    const progress = frame / totalFrames;
+    let result = '';
+    for(let i=0; i<original.length; i++){
+      if(original[i] === ' '){ result += ' '; continue; }
+      if(i/original.length < progress){
+        result += original[i];
+      } else {
+        result += chars[Math.floor(Math.random()*chars.length)];
+      }
+    }
+    // Preserve italic on rehab portion
+    const plain = result.slice(0,5);
+    const italic = result.slice(5);
+    logo.innerHTML = plain + ' <em>' + italic.trim() + '</em>';
+    frame++;
+    setTimeout(scramble, 40);
+  }
+  setTimeout(scramble, 200);
+})();
+
+// ── COUNT-UP NUMBERS ─────────────────────────────────
+function animateCountUp(el, target, suffix){
+  if(isNaN(target) || target === null) return;
+  const duration = 800;
+  const start = performance.now();
+  el.classList.add('counting');
+  function tick(now){
+    const t = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - t, 3);
+    const val = target * ease;
+    el.textContent = (val % 1 === 0 ? Math.round(val) : val.toFixed(1)) + (suffix||'');
+    if(t < 1) requestAnimationFrame(tick);
+    else { el.textContent = target + (suffix||''); el.classList.remove('counting'); }
+  }
+  requestAnimationFrame(tick);
 }
 
-handleAuthRedirect().then(function(){ initApp(); });
+// ── SCROLL REVEAL ─────────────────────────────────────
+(function(){
+  const obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        // Trigger count-up for metric values
+        const mv = e.target.querySelector('.metric-v');
+        if(mv && !mv._counted){
+          mv._counted = true;
+          const raw = mv.textContent.trim();
+          const num = parseFloat(raw);
+          const suffix = raw.replace(num,'').trim();
+          if(!isNaN(num)) animateCountUp(mv, num, suffix);
+        }
+      }
+    });
+  }, { threshold: 0.15 });
+
+  function initReveal(){
+    document.querySelectorAll('.metric, .chart-card, .prog-card, .rules-card').forEach(function(el){
+      if(!el._revealInit){
+        el._revealInit = true;
+        el.classList.add('reveal');
+        obs.observe(el);
+      }
+    });
+  }
+  initReveal();
+  // Re-run after tab switches
+  const _origRenderTrends = renderTrends;
+  window.renderTrends = function(){
+    _origRenderTrends();
+    setTimeout(initReveal, 50);
+  };
+  const _origRenderWeek = renderWeek;
+  window.renderWeek = function(){
+    _origRenderWeek();
+    setTimeout(initReveal, 50);
+  };
+})();
+
+// ── SMOOTH TAB TRANSITION ────────────────────────────
+(function(){
+  const _orig = showTab;
+  window.showTab = function(name){
+    const current = document.querySelector('.page.active');
+    if(current){
+      current.classList.add('page-exit');
+      setTimeout(function(){ _orig(name); }, 150);
+    } else {
+      _orig(name);
+    }
+  };
+})();
+
 </script>
-</div><!-- /app-wrap -->
-<div id="login-screen" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;">
-  <div style="font-family:var(--sans);text-align:center;">
-    <div style="font-size:28px;font-weight:700;letter-spacing:-1px;">POTS <span style="color:var(--acc);font-style:italic;">rehab</span></div>
-    <div style="color:var(--sub);font-size:13px;margin-top:6px;">personal rehabilitation tracker</div>
-  </div>
-  <button onclick="signInWithGoogle()" style="display:flex;align-items:center;gap:12px;background:white;border:1px solid #ddd;border-radius:8px;padding:12px 24px;font-size:15px;font-family:var(--sans);cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-    <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A353" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2.01c-.72.48-1.63.76-2.7.76-2.08 0-3.84-1.4-4.47-3.29H1.88v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.51 10.52A4.8 4.8 0 0 1 4.26 9c0-.53.09-1.04.25-1.52V5.41H1.88A8 8 0 0 0 .98 9c0 1.29.31 2.51.9 3.59l2.63-2.07z"/><path fill="#EA4335" d="M8.98 3.58c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 .9 5.41L3.53 7.48C4.16 5.6 5.92 3.58 8.98 3.58z"/></svg>
-    Continue with Google
-  </button>
-  <div id="login-error" style="color:var(--red);font-size:12px;font-family:var(--mono);display:none;"></div>
-</div>
 </body>
 </html>
