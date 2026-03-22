@@ -4,11 +4,20 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 const POLAR_CLIENT_ID = Deno.env.get('POLAR_CLIENT_ID')!
 const REDIRECT_URI = 'https://bpvgkgayivflrhaypjpc.supabase.co/functions/v1/polar-callback'
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': 'https://lymancorp.github.io',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+}
+
 serve(async (req) => {
-  // Verify user is authenticated
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders })
+  }
+
   const authHeader = req.headers.get('Authorization')
   if (!authHeader) {
-    return new Response(JSON.stringify({ error: 'unauthorized' }), { status: 401 })
+    return new Response(JSON.stringify({ error: 'unauthorized' }), { status: 401, headers: corsHeaders })
   }
 
   const sb = createClient(
@@ -19,21 +28,19 @@ serve(async (req) => {
 
   const { data: { user }, error } = await sb.auth.getUser()
   if (error || !user) {
-    return new Response(JSON.stringify({ error: 'unauthorized' }), { status: 401 })
+    return new Response(JSON.stringify({ error: 'unauthorized' }), { status: 401, headers: corsHeaders })
   }
 
-  // Build Polar OAuth URL
   const params = new URLSearchParams({
     response_type: 'code',
     client_id: POLAR_CLIENT_ID,
     redirect_uri: REDIRECT_URI,
     scope: 'accesslink.read_all',
-    state: user.id, // pass user_id through state so callback knows who to link
+    state: user.id,
   })
 
-  const polarAuthURL = `https://flow.polar.com/oauth2/authorization?${params}`
-
-  return new Response(JSON.stringify({ url: polarAuthURL }), {
-    headers: { 'Content-Type': 'application/json' },
-  })
+  return new Response(
+    JSON.stringify({ url: `https://flow.polar.com/oauth2/authorization?${params}` }),
+    { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+  )
 })
