@@ -1,0 +1,21 @@
+{
+  "name": "POTS Rehab",
+  "short_name": "POTS",
+  "description": "Cardio + neuro rehabilitation protocol tracker",
+  "start_url": "/POTS/",
+  "scope": "/POTS/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#030810",
+  "theme_color": "#030810",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%23030810'/><text x='256' y='340' font-size='280' text-anchor='middle'>🫀</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["health", "fitness", "medical"],
+  "lang": "en"
+}
