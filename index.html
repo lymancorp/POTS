@@ -957,40 +957,7 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; 
   </div>
 </div>
 
-<script>
-function fpTap() {
-  const btn = document.getElementById('fp-btn');
-  const lbl = document.getElementById('fp-label');
-  if (btn.classList.contains('scanning') || btn.classList.contains('done')) return;
-  btn.classList.add('scanning');
-  lbl.textContent = 'scanning…';
-  lbl.className = 'fp-label scanning';
-  setTimeout(() => {
-    btn.classList.remove('scanning');
-    btn.classList.add('done');
-    lbl.textContent = 'verified — connecting…';
-    lbl.className = 'fp-label done';
-    setTimeout(() => signInGoogle(), 500);
-  }, 1200);
-}
 
-async function signInGoogle() {
-  const status = document.getElementById('login-status');
-  const lbl = document.getElementById('fp-label');
-  status.textContent = 'redirecting to Google…';
-  const { error } = await sb.auth.signInWithOAuth({
-    provider: 'google',
-    options: { redirectTo: window.location.href }
-  });
-  if (error) {
-    status.textContent = 'error: ' + error.message;
-    lbl.textContent = 'tap to try again';
-    lbl.className = 'fp-label error';
-    const btn = document.getElementById('fp-btn');
-    btn.classList.remove('done','scanning');
-  }
-}
-</script>
 
 <!-- APP WRAPPER (hidden until logged in) -->
 <div id="app-wrapper" style="display:none;">
@@ -1687,6 +1654,39 @@ async function signInGoogle() {
 <div class="toast" id="toast"></div>
 
 <script>
+// ── LOGIN ─────────────────────────────────────────────────────
+function fpTap() {
+  const btn = document.getElementById('fp-btn');
+  const lbl = document.getElementById('fp-label');
+  if (btn.classList.contains('scanning') || btn.classList.contains('done')) return;
+  btn.classList.add('scanning');
+  lbl.textContent = 'scanning…';
+  lbl.className = 'fp-label scanning';
+  setTimeout(() => {
+    btn.classList.remove('scanning');
+    btn.classList.add('done');
+    lbl.textContent = 'verified — connecting…';
+    lbl.className = 'fp-label done';
+    setTimeout(() => signInGoogle(), 500);
+  }, 1200);
+}
+
+async function signInGoogle() {
+  const status = document.getElementById('login-status');
+  const lbl = document.getElementById('fp-label');
+  if (status) status.textContent = 'redirecting to Google…';
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.href }
+  });
+  if (error) {
+    if (status) status.textContent = 'error: ' + error.message;
+    if (lbl) { lbl.textContent = 'tap to try again'; lbl.className = 'fp-label error'; }
+    const btn = document.getElementById('fp-btn');
+    if (btn) btn.classList.remove('done','scanning');
+  }
+}
+
 // ═══════════════════════════════════════════════════════
 // SCHEDULE DATA — starts Mon Mar 23 (correct dates)
 // ═══════════════════════════════════════════════════════
@@ -1861,23 +1861,6 @@ function onSignedOut(){
   currentUser = null;
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('app-wrapper').style.display = 'none';
-}
-
-async function signInGoogle(){
-  const btn = document.getElementById('google-btn');
-  const status = document.getElementById('login-status');
-  btn.textContent = 'redirecting...';
-  btn.disabled = true;
-  status.textContent = '';
-  const { error } = await sb.auth.signInWithOAuth({
-    provider: 'google',
-    options: { redirectTo: window.location.href }
-  });
-  if(error){
-    status.textContent = 'error: ' + error.message;
-    btn.textContent = 'continue with Google';
-    btn.disabled = false;
-  }
 }
 
 async function signOut(){
