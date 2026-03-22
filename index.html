@@ -890,141 +890,69 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; 
 
 <!-- LOGIN SCREEN -->
 <style>
-.fp-wrap {
-  display:flex;flex-direction:column;align-items:center;gap:24px;
-}
-
-.fp-btn {
-  position:relative;
-  width:140px;height:140px;
-  background:none;border:none;cursor:pointer;padding:0;
-  -webkit-tap-highlight-color:transparent;
-  outline:none;
-}
-
-/* outer ring */
-.fp-ring {
-  position:absolute;inset:0;border-radius:50%;
-  border:2px solid var(--border);
-  transition:border-color 0.4s, box-shadow 0.4s;
-}
-.fp-btn.scanning .fp-ring,
-.fp-btn.done .fp-ring {
-  border-color:var(--acc);
-  box-shadow:0 0 0 8px rgba(60,110,40,0.08),0 0 20px rgba(60,110,40,0.15);
-}
-
-/* LOGIN text in center */
-.fp-text {
-  position:absolute;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--mono);
-  font-size:11px;
-  letter-spacing:0.2em;
-  color:var(--sub);
-  transition:opacity 0.3s;
-  z-index:2;
-}
-.fp-btn.scanning .fp-text,
-.fp-btn.done .fp-text { opacity:0; }
-
-.fp-svg {
-  width:100%;height:100%;display:block;
-  position:absolute;inset:0;
-}
-
-/* fingerprint paths — all start invisible */
-.fp-path {
-  fill:none;
-  stroke:var(--border);
-  stroke-width:1.5;
-  stroke-linecap:round;
-  transition:stroke 0.3s;
-}
-.fp-btn.done .fp-path { stroke:var(--acc); }
-
-/* animate each path on scanning */
-.p1  { stroke-dasharray:35;  stroke-dashoffset:35;  }
-.p2  { stroke-dasharray:55;  stroke-dashoffset:55;  }
-.p3  { stroke-dasharray:75;  stroke-dashoffset:75;  }
-.p4  { stroke-dasharray:95;  stroke-dashoffset:95;  }
-.p5  { stroke-dasharray:115; stroke-dashoffset:115; }
-.p6  { stroke-dasharray:130; stroke-dashoffset:130; }
-.p7  { stroke-dasharray:145; stroke-dashoffset:145; }
-.p8  { stroke-dasharray:155; stroke-dashoffset:155; }
-.p9  { stroke-dasharray:145; stroke-dashoffset:145; }
-.p10 { stroke-dasharray:130; stroke-dashoffset:130; }
-.p11 { stroke-dasharray:115; stroke-dashoffset:115; }
-
-.fp-btn.scanning .fp-path { stroke:var(--acc); }
-
-.fp-btn.scanning .p1  { animation:fpd 0.5s ease forwards 0.00s; }
-.fp-btn.scanning .p2  { animation:fpd 0.5s ease forwards 0.07s; }
-.fp-btn.scanning .p3  { animation:fpd 0.5s ease forwards 0.14s; }
-.fp-btn.scanning .p4  { animation:fpd 0.5s ease forwards 0.21s; }
-.fp-btn.scanning .p5  { animation:fpd 0.5s ease forwards 0.28s; }
-.fp-btn.scanning .p6  { animation:fpd 0.5s ease forwards 0.35s; }
-.fp-btn.scanning .p7  { animation:fpd 0.5s ease forwards 0.42s; }
-.fp-btn.scanning .p8  { animation:fpd 0.5s ease forwards 0.49s; }
-.fp-btn.scanning .p9  { animation:fpd 0.5s ease forwards 0.56s; }
-.fp-btn.scanning .p10 { animation:fpd 0.5s ease forwards 0.63s; }
-.fp-btn.scanning .p11 { animation:fpd 0.5s ease forwards 0.70s; }
-
-@keyframes fpd {
-  to { stroke-dashoffset:0; }
-}
-
-.fp-label {
-  font-family:var(--mono);
-  font-size:10px;
-  letter-spacing:0.14em;
-  text-transform:uppercase;
-  color:var(--dim);
-  transition:color 0.3s;
-  min-height:14px;
-}
-.fp-label.scanning { color:var(--acc); }
-.fp-label.done     { color:var(--acc); }
-.fp-label.error    { color:#cc2222; }
+.fp-wrap{display:flex;flex-direction:column;align-items:center;gap:24px;}
+.fp-btn{position:relative;width:140px;height:140px;background:none;border:none;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent;outline:none;}
+.fp-ring{position:absolute;inset:0;border-radius:50%;border:2px solid var(--border);transition:border-color 0.4s,box-shadow 0.4s;}
+.fp-btn.scanning .fp-ring,.fp-btn.done .fp-ring{border-color:var(--acc);box-shadow:0 0 0 8px rgba(60,110,40,0.08),0 0 20px rgba(60,110,40,0.15);}
+.fp-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;letter-spacing:0.2em;color:var(--sub);transition:opacity 0.3s;z-index:2;}
+.fp-btn.scanning .fp-text,.fp-btn.done .fp-text{opacity:0;}
+.fp-svg{width:100%;height:100%;display:block;position:absolute;inset:0;}
+.fp-path{fill:none;stroke:var(--border);stroke-width:1.5;stroke-linecap:round;transition:stroke 0.3s;}
+.fp-btn.scanning .fp-path{stroke:var(--acc);}
+.fp-btn.done .fp-path{stroke:var(--acc);}
+.p1 {stroke-dasharray:35; stroke-dashoffset:35;}
+.p2 {stroke-dasharray:55; stroke-dashoffset:55;}
+.p3 {stroke-dasharray:75; stroke-dashoffset:75;}
+.p4 {stroke-dasharray:95; stroke-dashoffset:95;}
+.p5 {stroke-dasharray:115;stroke-dashoffset:115;}
+.p6 {stroke-dasharray:130;stroke-dashoffset:130;}
+.p7 {stroke-dasharray:145;stroke-dashoffset:145;}
+.p8 {stroke-dasharray:155;stroke-dashoffset:155;}
+.p9 {stroke-dasharray:145;stroke-dashoffset:145;}
+.p10{stroke-dasharray:130;stroke-dashoffset:130;}
+.p11{stroke-dasharray:115;stroke-dashoffset:115;}
+.fp-btn.scanning .p1 {animation:fpd 0.5s ease forwards 0.00s;}
+.fp-btn.scanning .p2 {animation:fpd 0.5s ease forwards 0.07s;}
+.fp-btn.scanning .p3 {animation:fpd 0.5s ease forwards 0.14s;}
+.fp-btn.scanning .p4 {animation:fpd 0.5s ease forwards 0.21s;}
+.fp-btn.scanning .p5 {animation:fpd 0.5s ease forwards 0.28s;}
+.fp-btn.scanning .p6 {animation:fpd 0.5s ease forwards 0.35s;}
+.fp-btn.scanning .p7 {animation:fpd 0.5s ease forwards 0.42s;}
+.fp-btn.scanning .p8 {animation:fpd 0.5s ease forwards 0.49s;}
+.fp-btn.scanning .p9 {animation:fpd 0.5s ease forwards 0.56s;}
+.fp-btn.scanning .p10{animation:fpd 0.5s ease forwards 0.63s;}
+.fp-btn.scanning .p11{animation:fpd 0.5s ease forwards 0.70s;}
+@keyframes fpd{to{stroke-dashoffset:0;}}
+.fp-label{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);transition:color 0.3s;min-height:14px;}
+.fp-label.scanning{color:var(--acc);}
+.fp-label.done{color:var(--acc);}
+.fp-label.error{color:#cc2222;}
 </style>
 
 <div id="login-screen" style="display:none;position:fixed;inset:0;z-index:1000;background:var(--bg);display:flex;align-items:center;justify-content:center;">
   <div style="text-align:center;max-width:360px;padding:32px 24px;">
     <div style="font-family:var(--serif);font-size:32px;font-weight:300;color:var(--acc);margin-bottom:4px;">POTS <em style='font-style:italic;color:#a8c4e0;'>rehab</em></div>
     <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:44px;">rehabilitation protocol</div>
-
     <div class="fp-wrap">
       <button class="fp-btn" id="fp-btn" onclick="fpTap()" aria-label="Sign in">
         <div class="fp-ring"></div>
         <div class="fp-text">LOGIN</div>
         <svg class="fp-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <!-- whorl center -->
           <path class="fp-path p1"  d="M 48 50 Q 48 46 50 45 Q 52 44 54 46 Q 56 49 54 53 Q 52 56 49 55 Q 46 53 47 50"/>
-          <!-- ring 2 -->
           <path class="fp-path p2"  d="M 44 54 Q 42 47 46 42 Q 50 38 55 41 Q 60 44 59 51 Q 58 57 53 60 Q 48 62 44 58"/>
-          <!-- ring 3 -->
           <path class="fp-path p3"  d="M 39 56 Q 37 45 43 38 Q 49 32 57 35 Q 64 38 65 47 Q 66 56 60 63 Q 54 68 46 65 Q 40 62 39 56"/>
-          <!-- ring 4 -->
           <path class="fp-path p4"  d="M 34 57 Q 31 42 40 34 Q 49 26 59 30 Q 69 34 71 46 Q 73 57 65 66 Q 57 74 46 71 Q 36 68 34 57"/>
-          <!-- ring 5 -->
           <path class="fp-path p5"  d="M 29 55 Q 26 37 37 28 Q 48 20 61 25 Q 73 30 76 45 Q 79 59 70 70 Q 61 79 48 76 Q 35 73 29 60"/>
-          <!-- ring 6 — widest complete arc -->
           <path class="fp-path p6"  d="M 25 52 Q 21 31 35 21 Q 49 12 64 18 Q 78 25 81 43 Q 84 60 74 73 Q 64 84 50 83 Q 36 82 28 72 Q 22 63 23 52"/>
-          <!-- arch top break — fingertip arches -->
           <path class="fp-path p7"  d="M 38 22 Q 50 16 62 21"/>
-          <!-- left side descending -->
           <path class="fp-path p8"  d="M 22 52 Q 20 65 26 74"/>
-          <!-- right side descending -->
           <path class="fp-path p9"  d="M 81 48 Q 83 62 77 74"/>
-          <!-- bottom left -->
           <path class="fp-path p10" d="M 29 76 Q 37 83 48 84"/>
-          <!-- bottom right -->
           <path class="fp-path p11" d="M 72 76 Q 64 83 52 84"/>
         </svg>
       </button>
       <div class="fp-label" id="fp-label">tap to authenticate</div>
     </div>
-
     <div id="login-status" style="font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:20px;min-height:16px;"></div>
   </div>
 </div>
@@ -1034,11 +962,9 @@ function fpTap() {
   const btn = document.getElementById('fp-btn');
   const lbl = document.getElementById('fp-label');
   if (btn.classList.contains('scanning') || btn.classList.contains('done')) return;
-
   btn.classList.add('scanning');
   lbl.textContent = 'scanning…';
   lbl.className = 'fp-label scanning';
-
   setTimeout(() => {
     btn.classList.remove('scanning');
     btn.classList.add('done');
@@ -1058,56 +984,11 @@ async function signInGoogle() {
   });
   if (error) {
     status.textContent = 'error: ' + error.message;
-    lbl.textContent = 'try again';
+    lbl.textContent = 'tap to try again';
     lbl.className = 'fp-label error';
     const btn = document.getElementById('fp-btn');
     btn.classList.remove('done','scanning');
   }
-}
-</script>
-
-<div id="login-screen" style="display:none;position:fixed;inset:0;z-index:1000;background:var(--bg);display:flex;align-items:center;justify-content:center;">
-  <div style="text-align:center;max-width:360px;padding:32px 24px;">
-    <div style="font-family:var(--serif);font-size:32px;font-weight:300;color:var(--acc);margin-bottom:4px;">POTS <em style='font-style:italic;color:#a8c4e0;'>rehab</em></div>
-    <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:40px;">rehabilitation protocol</div>
-
-    <div class="fp-wrap">
-      <button class="fp-btn" id="fp-btn" onclick="fpTap()" aria-label="Sign in with Google">
-        <div class="fp-ring"></div>
-        <svg class="fp-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <path class="fp-path p1" d="M 42 50 Q 44 40 50 38 Q 56 36 60 42"/>
-          <path class="fp-path p2" d="M 34 54 Q 34 38 50 33 Q 64 29 70 44 Q 72 52 68 60"/>
-          <path class="fp-path p3" d="M 27 56 Q 25 35 50 27 Q 72 21 78 48 Q 80 60 74 70 Q 68 78 58 80"/>
-          <path class="fp-path p4" d="M 22 52 Q 18 28 50 20 Q 80 14 86 50 Q 88 68 78 78 Q 66 88 50 88 Q 36 88 28 78"/>
-          <path class="fp-path p5" d="M 30 72 Q 22 64 20 52"/>
-          <path class="fp-path p6" d="M 38 84 Q 28 80 22 70"/>
-          <path class="fp-path p7" d="M 46 58 Q 46 50 50 48 Q 54 46 56 50 Q 58 56 54 62 Q 50 66 46 62"/>
-        </svg>
-      </button>
-      <div class="fp-label" id="fp-label">tap to sign in</div>
-    </div>
-
-    <div id="login-status" style="font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:20px;min-height:16px;"></div>
-  </div>
-</div>
-
-<script>
-function fpTap() {
-  const btn = document.getElementById('fp-btn');
-  const lbl = document.getElementById('fp-label');
-  if (btn.classList.contains('scanning') || btn.classList.contains('done')) return;
-
-  btn.classList.add('scanning');
-  lbl.textContent = 'scanning…';
-  lbl.className = 'fp-label scanning';
-
-  setTimeout(() => {
-    btn.classList.remove('scanning');
-    btn.classList.add('done');
-    lbl.textContent = 'verified';
-    lbl.className = 'fp-label done';
-    setTimeout(() => signInGoogle(), 400);
-  }, 1300);
 }
 </script>
 
@@ -1187,7 +1068,6 @@ function fpTap() {
 
     <!-- Today / Day detail -->
     <div id="today-exp-wrap"></div>
-    <div id="day-detail-wrap"></div>
 
     <!-- Rules — minimal, collapsed by default -->
     <div class="rules-card" style="margin-top:16px;">
@@ -1991,7 +1871,7 @@ async function signInGoogle(){
   status.textContent = '';
   const { error } = await sb.auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: window.location.origin + window.location.pathname }
+    options: { redirectTo: window.location.href }
   });
   if(error){
     status.textContent = 'error: ' + error.message;
@@ -2051,24 +1931,60 @@ async function sbUpsert(s){
 // Delete a session from Supabase
 async function sbDelete(id){
   try {
-    const { error, data } = await sb.from('sessions').delete().eq('id', String(id));
-    if(error) console.error('Supabase delete failed:', error.message, error);
-    else console.log('Supabase delete OK for id:', id);
-  } catch(e){ console.error('Supabase delete exception:', e); }
+    const { error } = await sb.from('sessions').delete().eq('id', String(id));
+    if(error) console.warn('Supabase delete failed:', error.message);
+  } catch(e){ console.warn('Supabase error:', e); }
 }
 
-// Load all sessions from Supabase — Supabase is the only source of truth
+// Load all sessions from Supabase and merge with localStorage
 async function sbLoad(){
   try {
     const { data, error } = await sb.from('sessions').select('*').order('session_date', {ascending:true});
     if(error || !data) return;
-    sessions = data.map(fromRow);
-    saveSessions();
+    if(data.length === 0 && sessions.length > 0){
+      // First time — push all local sessions to Supabase
+      console.log('Seeding Supabase with', sessions.length, 'local sessions...');
+      for(const s of sessions){
+        await sbUpsert(s);
+      }
+      showToast('synced '+sessions.length+' sessions ↑');
+    } else if(data.length > 0){
+      // Merge: Supabase is source of truth
+      const remoteIds = new Set(data.map(r => String(r.id)));
+      const localIds  = new Set(sessions.map(s => String(s.id)));
+      // Add any remote sessions not in local
+      let added = 0;
+      data.forEach(row => {
+        if(!localIds.has(String(row.id))){
+          sessions.push(fromRow(row));
+          added++;
+        }
+      });
+      if(added > 0){
+        saveSessions();
+        console.log('Pulled', added, 'sessions from Supabase');
+      }
+      // Push any local sessions not in remote
+      let pushed = 0;
+      for(const s of sessions){
+        if(!remoteIds.has(String(s.id))){
+          await sbUpsert(s);
+          pushed++;
+        }
+      }
+      if(pushed > 0) console.log('Pushed', pushed, 'sessions to Supabase');
+    }
   } catch(e){ console.warn('sbLoad error:', e); }
 }
-// Supabase is source of truth — no local seed needed
+// migrate from v1.2
+(function migrate(){
+  ['pots_v12','pots_sessions'].forEach(k=>{
+    if(!sessions.length){try{const o=localStorage.getItem(k);if(o){const p=JSON.parse(o);if(p.length){sessions=p;saveSessions();}}}catch(e){}}
+  });
+})();
+// seed historical if empty
 (function seed(){
-  if(false){
+  if(!sessions.length){
     const h=[{"id":1725000000000,"date":"2025-09-11","angle":40,"type":"F","propHours":null,"polarName":null,"dayState":null,"pre":{"etco2":35.5,"hr":120,"rr":12},"cp5":{"etco2":31.0,"hr":120,"rr":14},"cp15":{"etco2":33.0,"hr":122,"rr":15},"cpEnd":{"etco2":33.5,"hr":124,"rr":14},"z2min":25,"coolEtco2":null,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":null,"morningSupineHR":null,"morningStandingHR":null,"notes":"First logged session."},{"id":1726185600000,"date":"2025-09-13","angle":30,"type":"M","propHours":null,"polarName":null,"dayState":null,"pre":{"etco2":33.0,"hr":100,"rr":10},"cp5":{"etco2":33.0,"hr":117.5,"rr":12},"cp15":{"etco2":33.0,"hr":117.5,"rr":13},"cpEnd":{"etco2":29.5,"hr":null,"rr":14},"z2min":10,"coolEtco2":null,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":null,"morningSupineHR":null,"morningStandingHR":null,"notes":"Angle tolerance test."},{"id":1728432000000,"date":"2025-10-09","angle":40,"type":"F","propHours":null,"polarName":"2025-10-09","dayState":"normal","pre":{"etco2":34.0,"hr":null,"rr":12},"cp5":{"etco2":34.0,"hr":123.5,"rr":16},"cp15":{"etco2":32.5,"hr":125.0,"rr":15.5},"cpEnd":{"etco2":34.5,"hr":130.0,"rr":14},"z2min":35,"coolEtco2":null,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":null,"morningSupineHR":null,"morningStandingHR":null,"notes":""},{"id":1728864000000,"date":"2025-10-14","angle":40,"type":"F","propHours":null,"polarName":"2025-10-14","dayState":"normal","pre":{"etco2":35.5,"hr":100,"rr":11},"cp5":{"etco2":37.0,"hr":124.0,"rr":16.5},"cp15":{"etco2":37.5,"hr":127.5,"rr":16},"cpEnd":{"etco2":38.5,"hr":130.0,"rr":16},"z2min":35,"coolEtco2":null,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":null,"morningSupineHR":null,"morningStandingHR":null,"notes":""},{"id":1729123200000,"date":"2025-10-17","angle":40,"type":"F","propHours":null,"polarName":"2025-10-17","dayState":"normal","pre":{"etco2":36.5,"hr":92.5,"rr":12},"cp5":{"etco2":39.5,"hr":122.5,"rr":16.5},"cp15":{"etco2":40.5,"hr":122.5,"rr":16},"cpEnd":{"etco2":37.5,"hr":123.5,"rr":15},"z2min":35,"coolEtco2":null,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":"crash","morningSupineHR":null,"morningStandingHR":null,"notes":"CRASH 3-4 days after. Do not repeat this volume/intensity."},{"id":1729641600000,"date":"2025-10-23","angle":30,"type":"F","propHours":null,"polarName":"2025-10-23","dayState":"normal","pre":{"etco2":35.0,"hr":null,"rr":12},"cp5":{"etco2":36.5,"hr":117.5,"rr":16},"cp15":{"etco2":36.5,"hr":121.5,"rr":15.5},"cpEnd":{"etco2":35.5,"hr":122.5,"rr":15},"z2min":20,"coolEtco2":null,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":null,"morningSupineHR":null,"morningStandingHR":null,"notes":"Dropped to 30° after crash."},{"id":1729814400000,"date":"2025-10-25","angle":30,"type":"F","propHours":null,"polarName":"2025-10-25","dayState":"normal","pre":{"etco2":39.0,"hr":105,"rr":16},"cp5":{"etco2":40.5,"hr":117.5,"rr":16},"cp15":{"etco2":32.5,"hr":121.5,"rr":15},"cpEnd":{"etco2":33.0,"hr":122.5,"rr":14},"z2min":25,"coolEtco2":null,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":null,"morningSupineHR":null,"morningStandingHR":null,"notes":"Possible calibration error early."},{"id":1730160000000,"date":"2025-10-29","angle":40,"type":"F","propHours":null,"polarName":"2025-10-29","dayState":"normal","pre":{"etco2":39.0,"hr":100,"rr":16},"cp5":{"etco2":38.5,"hr":null,"rr":16.5},"cp15":{"etco2":39.0,"hr":122.5,"rr":17},"cpEnd":{"etco2":38.5,"hr":125.0,"rr":17.5},"z2min":35,"coolEtco2":35.0,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":null,"morningSupineHR":null,"morningStandingHR":null,"notes":""},{"id":1730246400000,"date":"2025-10-30","angle":40,"type":"R","propHours":null,"polarName":"2025-10-30","dayState":"normal","pre":{"etco2":39.0,"hr":null,"rr":null},"cp5":{"etco2":43.0,"hr":null,"rr":null},"cp15":{"etco2":33.5,"hr":null,"rr":13},"cpEnd":{"etco2":null,"hr":null,"rr":null},"z2min":10,"coolEtco2":null,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":null,"morningSupineHR":null,"morningStandingHR":null,"notes":"Short 15min. Calibration suspect."},{"id":1730592000000,"date":"2025-11-03","angle":40,"type":"F","propHours":null,"polarName":"2025-11-03","dayState":"normal","pre":{"etco2":37.5,"hr":76,"rr":null},"cp5":{"etco2":34.0,"hr":121.5,"rr":20},"cp15":{"etco2":35.5,"hr":119.0,"rr":15.5},"cpEnd":{"etco2":36.5,"hr":121.5,"rr":16},"z2min":30,"coolEtco2":28.5,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":null,"morningSupineHR":null,"morningStandingHR":null,"notes":"Post-stop cliff: ETCO2 26-28. IRT used."},{"id":1730851200000,"date":"2025-11-06","angle":40,"type":"F","propHours":null,"polarName":"2025-11-06","dayState":"normal","pre":{"etco2":38.5,"hr":72.5,"rr":12},"cp5":{"etco2":41.0,"hr":119.5,"rr":15.5},"cp15":{"etco2":38.0,"hr":124.0,"rr":15.5},"cpEnd":{"etco2":37.0,"hr":123.5,"rr":16.5},"z2min":30,"coolEtco2":28.0,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":null,"morningSupineHR":null,"morningStandingHR":null,"notes":"Post-stop: ETCO2 27-30. IRT 3min."},{"id":1731283200000,"date":"2025-11-11","angle":40,"type":"F","propHours":8,"polarName":"2025-11-11","dayState":"tired","pre":{"etco2":36.0,"hr":80,"rr":12},"cp5":{"etco2":40.5,"hr":121.5,"rr":15.5},"cp15":{"etco2":39.5,"hr":126.5,"rr":16},"cpEnd":{"etco2":38.0,"hr":130.0,"rr":16.5},"z2min":35,"coolEtco2":34.0,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":null,"morningSupineHR":null,"morningStandingHR":null,"notes":"8h prop. Strong ETCO2 39-42."},{"id":1731456000000,"date":"2025-11-13","angle":40,"type":"F","propHours":8,"polarName":"2025-11-13","dayState":"normal","pre":{"etco2":36.0,"hr":90,"rr":12},"cp5":{"etco2":36.5,"hr":121.5,"rr":14.5},"cp15":{"etco2":36.0,"hr":126.5,"rr":14.5},"cpEnd":{"etco2":null,"hr":130.0,"rr":16.5},"z2min":35,"coolEtco2":32.0,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":"bad","morningSupineHR":null,"morningStandingHR":null,"notes":"Lower ETCO2 — dirty adapter. Standing HR 100→137."},{"id":1731801600000,"date":"2025-11-17","angle":40,"type":"F","propHours":8,"polarName":"2025-11-17","dayState":"tired","pre":{"etco2":34.5,"hr":81.5,"rr":null},"cp5":{"etco2":38.0,"hr":121.5,"rr":15},"cp15":{"etco2":36.0,"hr":119.0,"rr":15.5},"cpEnd":{"etco2":36.0,"hr":127.5,"rr":15},"z2min":40,"coolEtco2":33.0,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":null,"morningSupineHR":null,"morningStandingHR":null,"notes":"Hot hands, pooling. Standing HR 85→133."},{"id":1731808000000,"date":"2025-11-17","angle":40,"type":"F","propHours":8,"polarName":"2025-11-17b","dayState":"tired","pre":{"etco2":34.5,"hr":80,"rr":null},"cp5":{"etco2":40.0,"hr":121.5,"rr":17},"cp15":{"etco2":39.5,"hr":124.0,"rr":16},"cpEnd":{"etco2":39.5,"hr":127.5,"rr":16},"z2min":40,"coolEtco2":36.0,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":null,"morningSupineHR":null,"morningStandingHR":null,"notes":"After cleaning lenses. ETCO2 39-41."},{"id":1732320000000,"date":"2025-11-23","angle":40,"type":"F","propHours":5,"polarName":"2025-11-23","dayState":"tired","pre":{"etco2":31.0,"hr":77,"rr":11},"cp5":{"etco2":40.0,"hr":121.5,"rr":16},"cp15":{"etco2":39.5,"hr":124.0,"rr":16.5},"cpEnd":{"etco2":36.0,"hr":132.5,"rr":17},"z2min":40,"coolEtco2":null,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":null,"morningSupineHR":null,"morningStandingHR":null,"notes":"5h prop. Baseline low 30-32."},{"id":1733270400000,"date":"2025-12-04","angle":40,"type":"F","propHours":6.5,"polarName":"2025-12-04","dayState":"normal","pre":{"etco2":36.5,"hr":77,"rr":9.5},"cp5":{"etco2":42.5,"hr":110.0,"rr":16},"cp15":{"etco2":40.0,"hr":121.5,"rr":17},"cpEnd":{"etco2":41.0,"hr":121.5,"rr":17},"z2min":20,"coolEtco2":38.5,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":null,"morningSupineHR":null,"morningStandingHR":null,"notes":"Compression socks. Excellent ETCO2 40-42."},{"id":1739750400000,"date":"2026-02-17","angle":40,"type":"F","propHours":null,"polarName":"2026-02-17","dayState":"normal","pre":{"etco2":36.5,"hr":82.5,"rr":11},"cp5":{"etco2":41.0,"hr":128.5,"rr":16.5},"cp15":{"etco2":41.5,"hr":128.5,"rr":15.5},"cpEnd":{"etco2":42.0,"hr":133.5,"rr":15.5},"z2min":15,"coolEtco2":null,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":null,"morningSupineHR":null,"morningStandingHR":null,"notes":"First day back after ~10 week gap. No regression."},{"id":1740009600000,"date":"2026-02-20","angle":40,"type":"F","propHours":null,"polarName":"2026-02-20","dayState":"normal","pre":{"etco2":41.0,"hr":82.5,"rr":14.5},"cp5":{"etco2":41.0,"hr":132.5,"rr":17.5},"cp15":{"etco2":41.5,"hr":137.0,"rr":17.5},"cpEnd":{"etco2":39.5,"hr":132.5,"rr":16},"z2min":30,"coolEtco2":33.0,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":null,"morningSupineHR":null,"morningStandingHR":null,"notes":"Sauna suit. Z2 ceiling ~133 HR confirmed."},{"id":1740355200000,"date":"2026-02-24","angle":40,"type":"F","propHours":null,"polarName":"2026-02-24","dayState":"normal","pre":{"etco2":37.5,"hr":72,"rr":null},"cp5":{"etco2":40.5,"hr":121.5,"rr":15.5},"cp15":{"etco2":39.5,"hr":130.0,"rr":17.5},"cpEnd":{"etco2":39.0,"hr":130.0,"rr":17.5},"z2min":30,"coolEtco2":null,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":null,"morningSupineHR":null,"morningStandingHR":null,"notes":"Best Z2 characterization. Ceiling 135-138 HR."},{"id":1741824000000,"date":"2026-03-13","angle":40,"type":"F","propHours":null,"polarName":"2026-03-13","dayState":"tired","pre":{"etco2":32.5,"hr":73,"rr":14.5},"cp5":{"etco2":40.0,"hr":127.5,"rr":17},"cp15":{"etco2":40.0,"hr":130.5,"rr":17.5},"cpEnd":{"etco2":39.5,"hr":130.5,"rr":17.5},"z2min":15,"coolEtco2":36.5,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":null,"morningSupineHR":null,"morningStandingHR":null,"notes":"2 exam weeks prior. Pre low 32-33."},{"id":1742256000000,"date":"2026-03-18","angle":40,"type":"F","propHours":null,"polarName":"2026-03-18","dayState":"normal","pre":{"etco2":34.5,"hr":80,"rr":null},"cp5":{"etco2":37.0,"hr":130.0,"rr":16.5},"cp15":{"etco2":37.5,"hr":132.5,"rr":15.5},"cpEnd":{"etco2":38.5,"hr":132.5,"rr":15.5},"z2min":15,"coolEtco2":34.0,"etco2at60s":null,"etco2atHR100":null,"minUnder100":null,"morningState":null,"morningSupineHR":null,"morningStandingHR":null,"notes":"Drift day — ETCO2 36-38 vs usual 39-41."}];
     sessions=h; saveSessions();
   }
@@ -2271,15 +2187,15 @@ function renderTodayExp(){
   if(!isOff){
     if(nb.am){
       const light=nb.am==='light';
-      sbs+=mkSblock('teal','AM Precision Neuro','15 min · morning','am-neuro',[
+      sbs+=mkSblock('teal','Neuro Block — Session 1','15–20 min · morning · all exercises','am-neuro',[
         {n:'1',name:'PNS Stim',detail:'Peroneal + tibial + median + V3 · 3 Hz, 300 μs, TENS-M · 2–3 min each side.',src:'Keiser-prescribed'},
-        {n:'2',name:'Cervical prep',detail:'Gentle ROM · neutral before any eye work · always before head turns'},
+        {n:'2',name:'Cervical prep',detail:'Gentle ROM · neutral spine · always before eye work and head turns'},
         {n:'3',name:'Fixation holds',detail:'Fixation ON → OFF · work to reduce blink resets · progressive hold duration'},
-        ...(light?[]:[
-          {n:'4',name:'Smooth pursuits',detail:'Horizontal first, then vertical · reduce saccadic intrusion rate'},
-          {n:'5',name:'Saccades — vertical emphasis',detail:'Horizontal random, then vertical · vertical channel outside norms · focus downward accuracy'},
-          {n:'6',name:'Vergence — left eye',detail:'Near-far shifts · left gain 0.57 vs right 1.26 · conscious left-eye convergence tracking'},
-        ]),
+        {n:'4',name:'Smooth pursuits',detail:'Vertical first, then horizontal · reduce saccadic intrusion rate'},
+        {n:'5',name:'Saccades — vertical emphasis',detail:'Vertical channel outside norms · extra vertical reps · focus downward accuracy'},
+        {n:'6',name:'Vergence — left eye',detail:'Near-far shifts · left gain 0.57 vs right 1.26 · conscious left-eye convergence tracking'},
+        {n:'7',name:'Rightward Halmagyi thrusts',detail:'Supine, ceiling target · quick rightward thrust, close eyes, slow return · 5 × 3 sets, 1 min rest',src:'Keiser-prescribed'},
+        {n:'8',name:'Whole-body rotation RIGHT',detail:'Thumb target · right rotation · 30s × 3 sets, 1 min rest · image on thumb stays clear',src:'Keiser-prescribed'},
       ]);
     }
     sbs+=mkSblock(d.t==='S'?'acc':d.t==='R'?'purple':'blue',`${typeNames[d.t]||d.t} Cardio`,d.c||'','cardio',[
@@ -2302,14 +2218,16 @@ function renderTodayExp(){
         {n:'3',name:'Clamshells',detail:'2 × 12–20'},
         {n:'4',name:'Pallof press',detail:'2 × 8–12 each side'},
       ]);
-    if(nb.pm) sbs+=mkSblock('purple','PM Vestibular Block','15 min · late afternoon · not on step-up day','vestib',[
-      {n:'1',name:'PNS Stim',detail:'Same protocol as AM · always first'},
-      {n:'2',name:'Cervical prep',detail:'More important here — head turns next'},
-      {n:'3',name:'Brief fixation',detail:'Set baseline before provocative work'},
-      {n:'4',name:'Rightward Halmagyi thrusts',detail:'Supine, ceiling target · quick rightward thrust, close eyes, slow return · 5 × 3 sets, 1 min rest',src:'Keiser-prescribed'},
-      {n:'5',name:'Head-tilt fixation holds',detail:'Small angles only · few seconds · stop before breakdown',src:'Dr. T addition'},
-      {n:'6',name:'Whole-body rotation RIGHT',detail:'Thumb target · right rotation · 30s × 3 · when stable: add short continuous L–R VOR at slow tempo',src:'Keiser + Dr. T progression'},
-    ]);
+    if(nb.pm) sbs+=mkSblock('teal','Neuro Block — Session 2','15–20 min · afternoon · repeat all exercises','pm-neuro',[
+        {n:'1',name:'PNS Stim',detail:'Peroneal + tibial + median + V3 · 3 Hz, 300 μs, TENS-M · 2–3 min each side.',src:'Keiser-prescribed'},
+        {n:'2',name:'Cervical prep',detail:'Gentle ROM · neutral spine · always before eye work and head turns'},
+        {n:'3',name:'Fixation holds',detail:'Fixation ON → OFF · work to reduce blink resets · progressive hold duration'},
+        {n:'4',name:'Smooth pursuits',detail:'Vertical first, then horizontal · reduce saccadic intrusion rate'},
+        {n:'5',name:'Saccades — vertical emphasis',detail:'Vertical channel outside norms · extra vertical reps · focus downward accuracy'},
+        {n:'6',name:'Vergence — left eye',detail:'Near-far shifts · left gain 0.57 vs right 1.26 · conscious left-eye convergence tracking'},
+        {n:'7',name:'Rightward Halmagyi thrusts',detail:'Supine, ceiling target · quick rightward thrust, close eyes, slow return · 5 × 3 sets, 1 min rest',src:'Keiser-prescribed'},
+        {n:'8',name:'Whole-body rotation RIGHT',detail:'Thumb target · right rotation · 30s × 3 sets, 1 min rest · image on thumb stays clear',src:'Keiser-prescribed'},
+      ]);
     if(nb.osc) sbs+=mkSblock('red','0.05 Hz Oscillation','10 min · not before cognitive work','osc',[
       {n:'1',name:'Setup',detail:'Metronome 60 bpm · supported upright'},
       {n:'2',name:'Cycles',detail:'Sit → stand/perch · 10 beats up, 10 down = 0.05 Hz · start 3–5 cycles'},
@@ -2446,15 +2364,15 @@ function renderDayDetail(d){
   if(!isOff){
     if(nb.am){
       const light=nb.am==='light';
-      sbs+=mkSblock('teal','AM Precision Neuro','15 min · morning','dd-am-neuro',[
+      sbs+=mkSblock('teal','Neuro Block — Session 1','15–20 min · morning · all exercises','am-neuro',[
         {n:'1',name:'PNS Stim',detail:'Peroneal + tibial + median + V3 · 3 Hz, 300 μs, TENS-M · 2–3 min each side.',src:'Keiser-prescribed'},
-        {n:'2',name:'Cervical prep',detail:'Gentle ROM · neutral before any eye work · always before head turns'},
+        {n:'2',name:'Cervical prep',detail:'Gentle ROM · neutral spine · always before eye work and head turns'},
         {n:'3',name:'Fixation holds',detail:'Fixation ON → OFF · work to reduce blink resets · progressive hold duration'},
-        ...(light?[]:[
-          {n:'4',name:'Smooth pursuits',detail:'Horizontal first, then vertical · reduce saccadic intrusion rate'},
-          {n:'5',name:'Saccades — vertical emphasis',detail:'Horizontal random, then vertical · vertical channel outside norms · focus downward accuracy'},
-          {n:'6',name:'Vergence — left eye',detail:'Near-far shifts · left gain 0.57 vs right 1.26 · conscious left-eye convergence tracking'},
-        ]),
+        {n:'4',name:'Smooth pursuits',detail:'Vertical first, then horizontal · reduce saccadic intrusion rate'},
+        {n:'5',name:'Saccades — vertical emphasis',detail:'Vertical channel outside norms · extra vertical reps · focus downward accuracy'},
+        {n:'6',name:'Vergence — left eye',detail:'Near-far shifts · left gain 0.57 vs right 1.26 · conscious left-eye convergence tracking'},
+        {n:'7',name:'Rightward Halmagyi thrusts',detail:'Supine, ceiling target · quick rightward thrust, close eyes, slow return · 5 × 3 sets, 1 min rest',src:'Keiser-prescribed'},
+        {n:'8',name:'Whole-body rotation RIGHT',detail:'Thumb target · right rotation · 30s × 3 sets, 1 min rest · image on thumb stays clear',src:'Keiser-prescribed'},
       ]);
     }
     sbs+=mkSblock(d.t==='S'?'acc':d.t==='R'?'purple':'blue',`${typeNames[d.t]||d.t} Cardio`,d.c||'','dd-cardio',[
@@ -2477,14 +2395,16 @@ function renderDayDetail(d){
         {n:'3',name:'Clamshells',detail:'2 × 12–20'},
         {n:'4',name:'Pallof press',detail:'2 × 8–12 each side'},
       ]);
-    if(nb.pm) sbs+=mkSblock('purple','PM Vestibular Block','15 min · late afternoon · not on step-up day','dd-vestib',[
-      {n:'1',name:'PNS Stim',detail:'Same protocol as AM · always first'},
-      {n:'2',name:'Cervical prep',detail:'More important here — head turns next'},
-      {n:'3',name:'Brief fixation',detail:'Set baseline before provocative work'},
-      {n:'4',name:'Rightward Halmagyi thrusts',detail:'Supine, ceiling target · quick rightward thrust, close eyes, slow return · 5 × 3 sets, 1 min rest',src:'Keiser-prescribed'},
-      {n:'5',name:'Head-tilt fixation holds',detail:'Small angles only · few seconds · stop before breakdown',src:'Dr. T addition'},
-      {n:'6',name:'Whole-body rotation RIGHT',detail:'Thumb target · right rotation · 30s × 3 · when stable: add short continuous L–R VOR at slow tempo',src:'Keiser + Dr. T progression'},
-    ]);
+    if(nb.pm) sbs+=mkSblock('teal','Neuro Block — Session 2','15–20 min · afternoon · repeat all exercises','pm-neuro',[
+        {n:'1',name:'PNS Stim',detail:'Peroneal + tibial + median + V3 · 3 Hz, 300 μs, TENS-M · 2–3 min each side.',src:'Keiser-prescribed'},
+        {n:'2',name:'Cervical prep',detail:'Gentle ROM · neutral spine · always before eye work and head turns'},
+        {n:'3',name:'Fixation holds',detail:'Fixation ON → OFF · work to reduce blink resets · progressive hold duration'},
+        {n:'4',name:'Smooth pursuits',detail:'Vertical first, then horizontal · reduce saccadic intrusion rate'},
+        {n:'5',name:'Saccades — vertical emphasis',detail:'Vertical channel outside norms · extra vertical reps · focus downward accuracy'},
+        {n:'6',name:'Vergence — left eye',detail:'Near-far shifts · left gain 0.57 vs right 1.26 · conscious left-eye convergence tracking'},
+        {n:'7',name:'Rightward Halmagyi thrusts',detail:'Supine, ceiling target · quick rightward thrust, close eyes, slow return · 5 × 3 sets, 1 min rest',src:'Keiser-prescribed'},
+        {n:'8',name:'Whole-body rotation RIGHT',detail:'Thumb target · right rotation · 30s × 3 sets, 1 min rest · image on thumb stays clear',src:'Keiser-prescribed'},
+      ]);
     if(nb.osc) sbs+=mkSblock('red','0.05 Hz Oscillation','10 min · not before cognitive work','dd-osc',[
       {n:'1',name:'Setup',detail:'Metronome 60 bpm · supported upright'},
       {n:'2',name:'Cycles',detail:'Sit → stand/perch · 10 beats up, 10 down = 0.05 Hz · start 3–5 cycles'},
