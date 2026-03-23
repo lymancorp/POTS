@@ -383,9 +383,9 @@ body {
   display: none; padding: 12px 14px; border-top: 1px solid var(--border);
 }
 .sblock.open .sblock-bd { display: block; }
-.rstep { display: flex; gap: 9px; margin-bottom: 8px; font-size: 11px; }
-.rstep:last-child { margin-bottom: 0; }
-.rs-n { font-family: var(--mono); font-size: 9px; color: var(--dim); min-width: 14px; margin-top: 1px; }
+
+
+
 .rs-name { font-weight: 500; color: var(--text); }
 .rs-detail { color: var(--sub); line-height: 1.55; }
 .rs-src { font-family: var(--mono); font-size: 9px; color: var(--dim); margin-top: 2px; }
@@ -813,6 +813,21 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; 
 
 
 
+
+
+.rstep { display:flex; gap:9px; margin-bottom:8px; font-size:11px; align-items:flex-start; }
+.rstep:last-child { margin-bottom:0; }
+.rstep-check {
+  width:16px; height:16px; border-radius:4px; flex-shrink:0; margin-top:1px;
+  border:1.5px solid var(--border2); cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-size:10px; transition:all 0.15s; background:var(--s1);
+  color:#fff;
+}
+.rstep-check:hover { border-color:#2a8a4a; }
+.rstep-check.checked { background:#2a8a4a; border-color:#2a8a4a; }
+.rstep-done { opacity:0.6; }
+.rs-done { text-decoration:line-through; color:var(--dim) !important; }
 
 .sblock-check-btn {
   display: inline-flex; align-items: center; gap: 5px;
@@ -3163,7 +3178,23 @@ function renderTodayExp(){
 
 function mkSblock(color,title,meta,id,steps,hasLogBtn=false){
   const cc={teal:'var(--teal)',acc:'var(--acc-mid)',blue:'var(--blue)',purple:'var(--purple)',amber:'var(--amber)',red:'var(--red)'}[color]||'var(--sub)';
-  const stepsHtml=steps.map(s=>`<div class="rstep"><div class="rs-n">${s.n}</div><div><div class="rs-name">${s.name}</div><div class="rs-detail">${s.detail}</div>${s.src?`<div class="rs-src">${s.src}</div>`:''}</div></div>`).join('');
+  const today = getTodayISO();
+  const stepKey = `sblock_steps_${today}_${id}`;
+  const stepDone = JSON.parse(localStorage.getItem(stepKey)||'{}');
+
+  const stepsHtml=steps.map((s,i)=>{
+    const sid = `${id}-step-${i}`;
+    const isDone = !!stepDone[i];
+    return `<div class="rstep ${isDone?'rstep-done':''}" id="rstep-${sid}">
+      <div class="rstep-check ${isDone?'checked':''}" onclick="toggleStepDone('${id}',${i},'${sid}')">${isDone?'✓':''}</div>
+      <div style="flex:1">
+        <div class="rs-name ${isDone?'rs-done':''}">${s.name}</div>
+        <div class="rs-detail">${s.detail}</div>
+        ${s.src?`<div class="rs-src">${s.src}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+
   const logBtn=hasLogBtn?`<button class="log-btn" onclick="showTab('logger')">→ open log session to record this session</button>`:'';
   const done = getSblockDone(id);
   return `<div class="sblock ${done?'sblock-done':''}" id="sb-${id}">
@@ -3175,18 +3206,31 @@ function mkSblock(color,title,meta,id,steps,hasLogBtn=false){
     </div>
     <div class="sblock-bd">${stepsHtml}${logBtn}
       <button class="sblock-check-btn ${done?'checked':''}" onclick="event.stopPropagation();toggleSblockDone('${id}')" id="sbcheck-${id}">
-        ${done?'✓ done':'mark done'}
+        ${done?'✓ block done':'mark block done'}
       </button>
     </div>
   </div>`;
 }
 
-function getSblockDone(id){
+function toggleStepDone(blockId, stepIdx, sid){
   const today = getTodayISO();
-  const key = `sblock_done_${today}`;
-  const done = JSON.parse(localStorage.getItem(key)||'{}');
-  return !!done[id];
+  const stepKey = `sblock_steps_${today}_${blockId}`;
+  const stepDone = JSON.parse(localStorage.getItem(stepKey)||'{}');
+  stepDone[stepIdx] = !stepDone[stepIdx];
+  localStorage.setItem(stepKey, JSON.stringify(stepDone));
+  const row = document.getElementById('rstep-'+sid);
+  const check = row?.querySelector('.rstep-check');
+  const name = row?.querySelector('.rs-name');
+  const isDone = stepDone[stepIdx];
+  if(row)  row.classList.toggle('rstep-done', isDone);
+  if(check){ check.classList.toggle('checked', isDone); check.textContent = isDone?'✓':''; }
+  if(name) name.classList.toggle('rs-done', isDone);
+  const allKeys = Object.keys(stepDone);
+  const allDone = allKeys.length > 0 && allKeys.every(k => stepDone[k]);
+  const block = document.getElementById('sb-'+blockId);
+  if(block) block.classList.toggle('sblock-done', allDone || getSblockDone(blockId));
 }
+
 
 function toggleSblockDone(id){
   const today = getTodayISO();
