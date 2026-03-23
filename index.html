@@ -3176,6 +3176,13 @@ function renderTodayExp(){
   </div>`;
 }
 
+function getSblockDone(id){
+  const today = getTodayISO();
+  const key = `sblock_done_${today}`;
+  const done = JSON.parse(localStorage.getItem(key)||'{}');
+  return !!done[id];
+}
+
 function mkSblock(color,title,meta,id,steps,hasLogBtn=false){
   const cc={teal:'var(--teal)',acc:'var(--acc-mid)',blue:'var(--blue)',purple:'var(--purple)',amber:'var(--amber)',red:'var(--red)'}[color]||'var(--sub)';
   const today = getTodayISO();
