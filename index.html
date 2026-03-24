@@ -817,6 +817,26 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; 
 
 .rstep { display:flex; gap:9px; margin-bottom:8px; font-size:11px; align-items:flex-start; }
 .rstep:last-child { margin-bottom:0; }
+
+.rs-name-row { display:flex; align-items:center; gap:8px; margin-bottom:2px; }
+.rs-guide-btn {
+  font-family:var(--mono); font-size:9px; padding:1px 7px;
+  border:1px solid var(--border); border-radius:4px;
+  background:var(--s2); color:var(--dim); cursor:pointer;
+  transition:all 0.12s; white-space:nowrap;
+}
+.rs-guide-btn:hover { border-color:var(--acc-mid); color:var(--acc); }
+.rs-guide {
+  display:none; margin-top:8px;
+  background:var(--s2); border-left:2px solid var(--acc-mid);
+  border-radius:0 6px 6px 0; padding:10px 12px;
+  font-size:10px; color:var(--sub); line-height:1.7;
+}
+.rs-guide.open { display:block; animation:slideDown 0.2s ease both; }
+.rs-guide strong { color:var(--text); font-weight:500; display:block; margin-top:6px; margin-bottom:2px; }
+.rs-guide strong:first-child { margin-top:0; }
+.rs-guide em { color:var(--acc); font-style:normal; }
+
 .rstep-check {
   width:16px; height:16px; border-radius:4px; flex-shrink:0; margin-top:1px;
   border:1.5px solid var(--border2); cursor:pointer;
@@ -3114,14 +3134,74 @@ function renderTodayExp(){
     if(nb.am){
       const light=nb.am==='light';
       sbs+=mkSblock('teal','Neuro Block — Session 1','15–20 min · morning · all exercises','today-am-neuro',[
-        {n:'1',name:'PNS Stim',detail:'Peroneal + tibial + median + V3 · 3 Hz, 300 μs, TENS-M · 2–3 min each side.',src:'Keiser-prescribed'},
-        {n:'2',name:'Cervical prep',detail:'Gentle ROM · neutral spine · always before eye work and head turns'},
-        {n:'3',name:'Fixation holds',detail:'Fixation ON → OFF · work to reduce blink resets · progressive hold duration'},
-        {n:'4',name:'Smooth pursuits',detail:'Vertical first, then horizontal · reduce saccadic intrusion rate'},
-        {n:'5',name:'Saccades — vertical emphasis',detail:'Vertical channel outside norms · extra vertical reps · focus downward accuracy'},
-        {n:'6',name:'Vergence — left eye',detail:'Near-far shifts · left gain 0.57 vs right 1.26 · conscious left-eye convergence tracking'},
-        {n:'7',name:'Rightward Halmagyi thrusts',detail:'Supine, ceiling target · quick rightward thrust, close eyes, slow return · 5 × 3 sets, 1 min rest',src:'Keiser-prescribed'},
-        {n:'8',name:'Whole-body rotation RIGHT',detail:'Thumb target · right rotation · 30s × 3 sets, 1 min rest · image on thumb stays clear',src:'Keiser-prescribed'},
+        {n:'1',name:'PNS Stim',guide:`<strong>Setup</strong>
+TENS-M unit · 3 Hz, 300 μs pulse width · self-adhesive electrodes · seated or supine.
+<strong>Sites & placement</strong>
+<em>Peroneal:</em> one pad at fibular head (just below outer knee), one pad on dorsal foot. <em>Tibial:</em> one pad behind medial malleolus, one on medial arch. <em>Median:</em> one pad at wrist crease between flexor tendons, one on thenar eminence. <em>V3 (mandibular):</em> one pad on masseter (jaw angle), one at mental foramen (chin).
+<strong>Execution</strong>
+Set intensity to visible/palpable muscle twitch but not painful. Run 2–3 min per site, per side. Do all four sites on the left, then repeat on the right. Total: ~16–24 min.
+<strong>Why</strong>
+Peripheral nerve stimulation at 3 Hz recruits large-diameter afferents (Aβ fibers) that feed into dorsal horn and brainstem circuits — the same circuits governing autonomic tone and vestibular processing. Keiser uses this to prime the nervous system before vestibular loading.`,detail:'Peroneal + tibial + median + V3 · 3 Hz, 300 μs, TENS-M · 2–3 min each side.',src:'Keiser-prescribed'},
+        {n:'2',name:'Cervical prep',guide:`<strong>Setup</strong>
+Seated, feet flat, neutral spine. No pillow. Eyes open.
+<strong>Execution</strong>
+Slow controlled ROM: 5 reps each direction. <em>Flexion/extension:</em> chin to chest, then gaze up. <em>Rotation:</em> turn head fully left, then right — eyes follow. <em>Lateral tilt:</em> ear toward shoulder, no shoulder shrug. End with 5 slow shoulder rolls back.
+<strong>Target</strong>
+Cervical mechanoreceptors (especially C1–C3) feed into the vestibular nuclei via the cervicocollic reflex. Tight or restricted cervical joints generate noisy proprioceptive signals that compete with vestibular input — this prep quiets that noise.
+<strong>Cues</strong>
+Move only as far as comfortable. No pain. No dizziness during this phase — if dizzy, slow down and breathe. Keep jaw relaxed throughout.`,detail:'Gentle ROM · neutral spine · always before eye work and head turns'},
+        {n:'3',name:'Fixation holds',guide:`<strong>Setup</strong>
+Seated, arm's length from a wall target — X on paper, small sticker, or finger. Eye level.
+<strong>Execution</strong>
+Fix gaze on target. Count seconds on target without a blink reset. <em>Round 1:</em> 10s holds × 5 reps. <em>Round 2:</em> 15s holds × 3 reps. Rest 20s between rounds. Progressively extend hold duration each week.
+<strong>Target</strong>
+Your vestibulo-ocular reflex (VOR) suppression and fixation stability. The goal is to reduce saccadic intrusions — the small involuntary eye movements that break fixation. These are a marker of cerebellar and brainstem dysregulation common in post-viral POTS.
+<strong>Cues</strong>
+You should feel mild mental effort — this is not passive staring. Active fixation. If your eyes feel like they want to flick away, that's the training stimulus. Slightly dim lighting increases the challenge.`,detail:'Fixation ON → OFF · work to reduce blink resets · progressive hold duration'},
+        {n:'4',name:'Smooth pursuits',guide:`<strong>Setup</strong>
+Seated, arm extended, thumb as target. Head still throughout — only eyes move.
+<strong>Execution</strong>
+<em>Vertical first (Dr. T priority):</em> move thumb slowly up and down through ~30° arc, 0.3–0.5 Hz (one full cycle per 2–3 seconds). Eyes track smoothly — no catch-up saccades. 3 × 30s. Rest 15s. <em>Horizontal:</em> same protocol. <em>Diagonal:</em> 2 × 20s each diagonal if tolerated.
+<strong>Target</strong>
+Smooth pursuit is mediated by the cerebellum (flocculus) and frontal eye fields. Your vertical channel is specifically impaired — vertical pursuit requires more cerebellar gain control than horizontal. Prioritizing vertical trains the deficit directly.
+<strong>Cues</strong>
+Move the target slowly enough that your eyes never have to jump to catch up. If you see jumps — slow down. The speed should feel almost boring. Quality over speed.`,detail:'Vertical first, then horizontal · reduce saccadic intrusion rate'},
+        {n:'5',name:'Saccades — vertical emphasis',guide:`<strong>Setup</strong>
+Two targets on wall: one at eye level, one ~20° above OR below. Arm's length. Head completely still.
+<strong>Execution</strong>
+<em>Vertical (primary):</em> shift gaze between targets on a metronome beat — 1 beat per shift, ~60 bpm. Land cleanly on target. 3 × 20 reps. Rest 20s. <em>Horizontal:</em> 2 × 20 reps. <em>Anti-saccade challenge (if tolerated):</em> target moves left — you look right. 1 × 10 reps.
+<strong>Target</strong>
+Saccadic accuracy and velocity in the vertical channel. Your vertical saccades are outside norms — the downward channel is often specifically impaired post-EBV due to cerebellar involvement (dorsal vermis). Each accurate landing rep is error-correction signal to the cerebellum.
+<strong>Cues</strong>
+Land on target — don't overshoot. If you consistently overshoot (hypermetric), slow the metronome. The goal is accuracy first, speed second. Downward saccades get extra reps.`,detail:'Vertical channel outside norms · extra vertical reps · focus downward accuracy'},
+        {n:'6',name:'Vergence — left eye',guide:`<strong>Setup</strong>
+Brock string: attach one end to wall at eye level, hold other end at nose. Place beads at 15cm, 40cm, and 80cm.
+<strong>Execution</strong>
+<em>Near-far shifts:</em> focus on near bead (15cm) — you should see two strings forming a V. Hold 5s. Shift to far bead (80cm) — strings form an X. Hold 5s. 10 cycles. <em>Left eye emphasis:</em> patch right eye for 2 cycles, then both eyes for 2 cycles, alternating. This forces the weaker left eye to do the convergence work. <em>Without Brock string:</em> hold finger at 30cm, slowly bring to nose, focus on maintaining single image as long as possible.
+<strong>Target</strong>
+Your left eye convergence gain is 0.57 vs right at 1.26 — nearly half. The left eye is under-converging, causing diplopia and visual instability that feeds into your vestibular disorientation. Patching the dominant right eye forces the left to compensate.
+<strong>Cues</strong>
+The double-string V or X pattern should be clear. If you can't see the pattern you're not truly fusing. Don't force — if eyes fatigue (burning, blurring) stop and rest 30s. Left eye fatigue during patching is expected and means it's working.`,detail:'Near-far shifts · left gain 0.57 vs right 1.26 · conscious left-eye convergence tracking'},
+        {n:'7',name:'Rightward Halmagyi thrusts',guide:`<strong>Setup</strong>
+Seated or supine. Fix gaze on a ceiling target (supine) or wall target (seated) — a small X at eye level, 1–2m away. Head neutral.
+<strong>Execution</strong>
+Quick, small-amplitude (15–20°) head thrust to the RIGHT. Eyes must stay on target — do not let them move with the head. After the thrust: close eyes for 1s, then slow return to center. 5 reps × 3 sets, 1 min rest between sets.
+<strong>Target</strong>
+The rightward horizontal semicircular canal (right HC) — specifically the VOR gain in the rightward direction. The thrust tests and trains the vestibulo-ocular reflex: the eyes should counter-rotate leftward at the same speed as the head moves right, keeping the target stable on the fovea.
+<strong>Cues</strong>
+The thrust is QUICK — like a surprise movement. The return is SLOW. If you feel your eyes slip off target and have to jump back (corrective saccade) that's the deficit being exercised. Eyes-closed pause after each thrust is the rest/consolidation phase. Do not rush.
+<strong>Red flags</strong>
+Significant nausea — reduce amplitude. Intense vertigo lasting >30s — stop and rest. Brief spinning is expected and normal.`,detail:'Supine, ceiling target · quick rightward thrust, close eyes, slow return · 5 × 3 sets, 1 min rest',src:'Keiser-prescribed'},
+        {n:'8',name:'Whole-body rotation RIGHT',guide:`<strong>Setup</strong>
+Seated in a swivel chair or standing with support. Fix gaze on a thumb target held at arm's length in front of you. Keep eyes on thumb throughout.
+<strong>Execution</strong>
+Rotate body (and head together) to the RIGHT at a constant, slow speed. One full rotation per ~20 seconds (0.05 Hz). Thumb stays in visual field — rotate your arm with you. 30s × 3 sets, 1 min rest between sets. Eyes must stay on thumb — not the room.
+<strong>Target</strong>
+Low-frequency rotational VOR and spatial orientation. The 0.05 Hz frequency specifically targets otolith-canal integration and the velocity storage mechanism — a brainstem process that extends the VOR response beyond what the canals alone can detect. Rightward-only training addresses your right-sided deficit asymmetry.
+<strong>Cues</strong>
+Constant speed — no acceleration or deceleration mid-rotation. The thumb image should stay stable and clear. If the thumb blurs or doubles, slow down. Keep breathing — don't hold breath during rotation.
+<strong>Red flags</strong>
+Do not do this within 2 hours of a tilt table session if feeling symptomatic. Mild dizziness after stopping is normal and resolves in 30–60s — this is the training effect.`,detail:'Thumb target · right rotation · 30s × 3 sets, 1 min rest · image on thumb stays clear',src:'Keiser-prescribed'},
       ]);
     }
     sbs+=mkSblock(d.t==='S'?'acc':d.t==='R'?'purple':'blue',`${typeNames[d.t]||d.t} Cardio`,d.c||'','today-cardio',[
@@ -3145,14 +3225,74 @@ function renderTodayExp(){
         {n:'4',name:'Pallof press',detail:'2 × 8–12 each side'},
       ]);
     if(nb.pm) sbs+=mkSblock('teal','Neuro Block — Session 2','15–20 min · afternoon · repeat all exercises','today-pm-neuro',[
-        {n:'1',name:'PNS Stim',detail:'Peroneal + tibial + median + V3 · 3 Hz, 300 μs, TENS-M · 2–3 min each side.',src:'Keiser-prescribed'},
-        {n:'2',name:'Cervical prep',detail:'Gentle ROM · neutral spine · always before eye work and head turns'},
-        {n:'3',name:'Fixation holds',detail:'Fixation ON → OFF · work to reduce blink resets · progressive hold duration'},
-        {n:'4',name:'Smooth pursuits',detail:'Vertical first, then horizontal · reduce saccadic intrusion rate'},
-        {n:'5',name:'Saccades — vertical emphasis',detail:'Vertical channel outside norms · extra vertical reps · focus downward accuracy'},
-        {n:'6',name:'Vergence — left eye',detail:'Near-far shifts · left gain 0.57 vs right 1.26 · conscious left-eye convergence tracking'},
-        {n:'7',name:'Rightward Halmagyi thrusts',detail:'Supine, ceiling target · quick rightward thrust, close eyes, slow return · 5 × 3 sets, 1 min rest',src:'Keiser-prescribed'},
-        {n:'8',name:'Whole-body rotation RIGHT',detail:'Thumb target · right rotation · 30s × 3 sets, 1 min rest · image on thumb stays clear',src:'Keiser-prescribed'},
+        {n:'1',name:'PNS Stim',guide:`<strong>Setup</strong>
+TENS-M unit · 3 Hz, 300 μs pulse width · self-adhesive electrodes · seated or supine.
+<strong>Sites & placement</strong>
+<em>Peroneal:</em> one pad at fibular head (just below outer knee), one pad on dorsal foot. <em>Tibial:</em> one pad behind medial malleolus, one on medial arch. <em>Median:</em> one pad at wrist crease between flexor tendons, one on thenar eminence. <em>V3 (mandibular):</em> one pad on masseter (jaw angle), one at mental foramen (chin).
+<strong>Execution</strong>
+Set intensity to visible/palpable muscle twitch but not painful. Run 2–3 min per site, per side. Do all four sites on the left, then repeat on the right. Total: ~16–24 min.
+<strong>Why</strong>
+Peripheral nerve stimulation at 3 Hz recruits large-diameter afferents (Aβ fibers) that feed into dorsal horn and brainstem circuits — the same circuits governing autonomic tone and vestibular processing. Keiser uses this to prime the nervous system before vestibular loading.`,detail:'Peroneal + tibial + median + V3 · 3 Hz, 300 μs, TENS-M · 2–3 min each side.',src:'Keiser-prescribed'},
+        {n:'2',name:'Cervical prep',guide:`<strong>Setup</strong>
+Seated, feet flat, neutral spine. No pillow. Eyes open.
+<strong>Execution</strong>
+Slow controlled ROM: 5 reps each direction. <em>Flexion/extension:</em> chin to chest, then gaze up. <em>Rotation:</em> turn head fully left, then right — eyes follow. <em>Lateral tilt:</em> ear toward shoulder, no shoulder shrug. End with 5 slow shoulder rolls back.
+<strong>Target</strong>
+Cervical mechanoreceptors (especially C1–C3) feed into the vestibular nuclei via the cervicocollic reflex. Tight or restricted cervical joints generate noisy proprioceptive signals that compete with vestibular input — this prep quiets that noise.
+<strong>Cues</strong>
+Move only as far as comfortable. No pain. No dizziness during this phase — if dizzy, slow down and breathe. Keep jaw relaxed throughout.`,detail:'Gentle ROM · neutral spine · always before eye work and head turns'},
+        {n:'3',name:'Fixation holds',guide:`<strong>Setup</strong>
+Seated, arm's length from a wall target — X on paper, small sticker, or finger. Eye level.
+<strong>Execution</strong>
+Fix gaze on target. Count seconds on target without a blink reset. <em>Round 1:</em> 10s holds × 5 reps. <em>Round 2:</em> 15s holds × 3 reps. Rest 20s between rounds. Progressively extend hold duration each week.
+<strong>Target</strong>
+Your vestibulo-ocular reflex (VOR) suppression and fixation stability. The goal is to reduce saccadic intrusions — the small involuntary eye movements that break fixation. These are a marker of cerebellar and brainstem dysregulation common in post-viral POTS.
+<strong>Cues</strong>
+You should feel mild mental effort — this is not passive staring. Active fixation. If your eyes feel like they want to flick away, that's the training stimulus. Slightly dim lighting increases the challenge.`,detail:'Fixation ON → OFF · work to reduce blink resets · progressive hold duration'},
+        {n:'4',name:'Smooth pursuits',guide:`<strong>Setup</strong>
+Seated, arm extended, thumb as target. Head still throughout — only eyes move.
+<strong>Execution</strong>
+<em>Vertical first (Dr. T priority):</em> move thumb slowly up and down through ~30° arc, 0.3–0.5 Hz (one full cycle per 2–3 seconds). Eyes track smoothly — no catch-up saccades. 3 × 30s. Rest 15s. <em>Horizontal:</em> same protocol. <em>Diagonal:</em> 2 × 20s each diagonal if tolerated.
+<strong>Target</strong>
+Smooth pursuit is mediated by the cerebellum (flocculus) and frontal eye fields. Your vertical channel is specifically impaired — vertical pursuit requires more cerebellar gain control than horizontal. Prioritizing vertical trains the deficit directly.
+<strong>Cues</strong>
+Move the target slowly enough that your eyes never have to jump to catch up. If you see jumps — slow down. The speed should feel almost boring. Quality over speed.`,detail:'Vertical first, then horizontal · reduce saccadic intrusion rate'},
+        {n:'5',name:'Saccades — vertical emphasis',guide:`<strong>Setup</strong>
+Two targets on wall: one at eye level, one ~20° above OR below. Arm's length. Head completely still.
+<strong>Execution</strong>
+<em>Vertical (primary):</em> shift gaze between targets on a metronome beat — 1 beat per shift, ~60 bpm. Land cleanly on target. 3 × 20 reps. Rest 20s. <em>Horizontal:</em> 2 × 20 reps. <em>Anti-saccade challenge (if tolerated):</em> target moves left — you look right. 1 × 10 reps.
+<strong>Target</strong>
+Saccadic accuracy and velocity in the vertical channel. Your vertical saccades are outside norms — the downward channel is often specifically impaired post-EBV due to cerebellar involvement (dorsal vermis). Each accurate landing rep is error-correction signal to the cerebellum.
+<strong>Cues</strong>
+Land on target — don't overshoot. If you consistently overshoot (hypermetric), slow the metronome. The goal is accuracy first, speed second. Downward saccades get extra reps.`,detail:'Vertical channel outside norms · extra vertical reps · focus downward accuracy'},
+        {n:'6',name:'Vergence — left eye',guide:`<strong>Setup</strong>
+Brock string: attach one end to wall at eye level, hold other end at nose. Place beads at 15cm, 40cm, and 80cm.
+<strong>Execution</strong>
+<em>Near-far shifts:</em> focus on near bead (15cm) — you should see two strings forming a V. Hold 5s. Shift to far bead (80cm) — strings form an X. Hold 5s. 10 cycles. <em>Left eye emphasis:</em> patch right eye for 2 cycles, then both eyes for 2 cycles, alternating. This forces the weaker left eye to do the convergence work. <em>Without Brock string:</em> hold finger at 30cm, slowly bring to nose, focus on maintaining single image as long as possible.
+<strong>Target</strong>
+Your left eye convergence gain is 0.57 vs right at 1.26 — nearly half. The left eye is under-converging, causing diplopia and visual instability that feeds into your vestibular disorientation. Patching the dominant right eye forces the left to compensate.
+<strong>Cues</strong>
+The double-string V or X pattern should be clear. If you can't see the pattern you're not truly fusing. Don't force — if eyes fatigue (burning, blurring) stop and rest 30s. Left eye fatigue during patching is expected and means it's working.`,detail:'Near-far shifts · left gain 0.57 vs right 1.26 · conscious left-eye convergence tracking'},
+        {n:'7',name:'Rightward Halmagyi thrusts',guide:`<strong>Setup</strong>
+Seated or supine. Fix gaze on a ceiling target (supine) or wall target (seated) — a small X at eye level, 1–2m away. Head neutral.
+<strong>Execution</strong>
+Quick, small-amplitude (15–20°) head thrust to the RIGHT. Eyes must stay on target — do not let them move with the head. After the thrust: close eyes for 1s, then slow return to center. 5 reps × 3 sets, 1 min rest between sets.
+<strong>Target</strong>
+The rightward horizontal semicircular canal (right HC) — specifically the VOR gain in the rightward direction. The thrust tests and trains the vestibulo-ocular reflex: the eyes should counter-rotate leftward at the same speed as the head moves right, keeping the target stable on the fovea.
+<strong>Cues</strong>
+The thrust is QUICK — like a surprise movement. The return is SLOW. If you feel your eyes slip off target and have to jump back (corrective saccade) that's the deficit being exercised. Eyes-closed pause after each thrust is the rest/consolidation phase. Do not rush.
+<strong>Red flags</strong>
+Significant nausea — reduce amplitude. Intense vertigo lasting >30s — stop and rest. Brief spinning is expected and normal.`,detail:'Supine, ceiling target · quick rightward thrust, close eyes, slow return · 5 × 3 sets, 1 min rest',src:'Keiser-prescribed'},
+        {n:'8',name:'Whole-body rotation RIGHT',guide:`<strong>Setup</strong>
+Seated in a swivel chair or standing with support. Fix gaze on a thumb target held at arm's length in front of you. Keep eyes on thumb throughout.
+<strong>Execution</strong>
+Rotate body (and head together) to the RIGHT at a constant, slow speed. One full rotation per ~20 seconds (0.05 Hz). Thumb stays in visual field — rotate your arm with you. 30s × 3 sets, 1 min rest between sets. Eyes must stay on thumb — not the room.
+<strong>Target</strong>
+Low-frequency rotational VOR and spatial orientation. The 0.05 Hz frequency specifically targets otolith-canal integration and the velocity storage mechanism — a brainstem process that extends the VOR response beyond what the canals alone can detect. Rightward-only training addresses your right-sided deficit asymmetry.
+<strong>Cues</strong>
+Constant speed — no acceleration or deceleration mid-rotation. The thumb image should stay stable and clear. If the thumb blurs or doubles, slow down. Keep breathing — don't hold breath during rotation.
+<strong>Red flags</strong>
+Do not do this within 2 hours of a tilt table session if feeling symptomatic. Mild dizziness after stopping is normal and resolves in 30–60s — this is the training effect.`,detail:'Thumb target · right rotation · 30s × 3 sets, 1 min rest · image on thumb stays clear',src:'Keiser-prescribed'},
       ]);
     if(nb.osc) sbs+=mkSblock('red','0.05 Hz Oscillation','10 min · not before cognitive work','today-osc',[
       {n:'1',name:'Setup',detail:'Metronome 60 bpm · supported upright'},
@@ -3192,12 +3332,18 @@ function mkSblock(color,title,meta,id,steps,hasLogBtn=false){
   const stepsHtml=steps.map((s,i)=>{
     const sid = `${id}-step-${i}`;
     const isDone = !!stepDone[i];
+    const hasGuide = !!s.guide;
+    const guideId = `guide-${sid}`;
     return `<div class="rstep ${isDone?'rstep-done':''}" id="rstep-${sid}">
       <div class="rstep-check ${isDone?'checked':''}" onclick="toggleStepDone('${id}',${i},'${sid}')">${isDone?'✓':''}</div>
       <div style="flex:1">
-        <div class="rs-name ${isDone?'rs-done':''}">${s.name}</div>
+        <div class="rs-name-row">
+          <span class="rs-name ${isDone?'rs-done':''}">${s.name}</span>
+          ${hasGuide?`<button class="rs-guide-btn" onclick="toggleGuide('${guideId}')">how to</button>`:''}
+        </div>
         <div class="rs-detail">${s.detail}</div>
         ${s.src?`<div class="rs-src">${s.src}</div>`:''}
+        ${hasGuide?`<div class="rs-guide" id="${guideId}">${s.guide}</div>`:''}
       </div>
     </div>`;
   }).join('');
@@ -3217,6 +3363,16 @@ function mkSblock(color,title,meta,id,steps,hasLogBtn=false){
       </button>
     </div>
   </div>`;
+}
+
+
+function toggleGuide(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.classList.toggle('open');
+  const btn = el.previousElementSibling?.previousElementSibling?.querySelector('.rs-guide-btn') ||
+              document.querySelector(`[onclick="toggleGuide('${id}')"]`);
+  if(btn) btn.textContent = el.classList.contains('open') ? 'hide' : 'how to';
 }
 
 function toggleStepDone(blockId, stepIdx, sid){
@@ -3353,14 +3509,74 @@ function renderDayDetail(d){
     if(nb.am){
       const light=nb.am==='light';
       sbs+=mkSblock('teal','Neuro Block — Session 1','15–20 min · morning · all exercises','dd-am-neuro',[
-        {n:'1',name:'PNS Stim',detail:'Peroneal + tibial + median + V3 · 3 Hz, 300 μs, TENS-M · 2–3 min each side.',src:'Keiser-prescribed'},
-        {n:'2',name:'Cervical prep',detail:'Gentle ROM · neutral spine · always before eye work and head turns'},
-        {n:'3',name:'Fixation holds',detail:'Fixation ON → OFF · work to reduce blink resets · progressive hold duration'},
-        {n:'4',name:'Smooth pursuits',detail:'Vertical first, then horizontal · reduce saccadic intrusion rate'},
-        {n:'5',name:'Saccades — vertical emphasis',detail:'Vertical channel outside norms · extra vertical reps · focus downward accuracy'},
-        {n:'6',name:'Vergence — left eye',detail:'Near-far shifts · left gain 0.57 vs right 1.26 · conscious left-eye convergence tracking'},
-        {n:'7',name:'Rightward Halmagyi thrusts',detail:'Supine, ceiling target · quick rightward thrust, close eyes, slow return · 5 × 3 sets, 1 min rest',src:'Keiser-prescribed'},
-        {n:'8',name:'Whole-body rotation RIGHT',detail:'Thumb target · right rotation · 30s × 3 sets, 1 min rest · image on thumb stays clear',src:'Keiser-prescribed'},
+        {n:'1',name:'PNS Stim',guide:`<strong>Setup</strong>
+TENS-M unit · 3 Hz, 300 μs pulse width · self-adhesive electrodes · seated or supine.
+<strong>Sites & placement</strong>
+<em>Peroneal:</em> one pad at fibular head (just below outer knee), one pad on dorsal foot. <em>Tibial:</em> one pad behind medial malleolus, one on medial arch. <em>Median:</em> one pad at wrist crease between flexor tendons, one on thenar eminence. <em>V3 (mandibular):</em> one pad on masseter (jaw angle), one at mental foramen (chin).
+<strong>Execution</strong>
+Set intensity to visible/palpable muscle twitch but not painful. Run 2–3 min per site, per side. Do all four sites on the left, then repeat on the right. Total: ~16–24 min.
+<strong>Why</strong>
+Peripheral nerve stimulation at 3 Hz recruits large-diameter afferents (Aβ fibers) that feed into dorsal horn and brainstem circuits — the same circuits governing autonomic tone and vestibular processing. Keiser uses this to prime the nervous system before vestibular loading.`,detail:'Peroneal + tibial + median + V3 · 3 Hz, 300 μs, TENS-M · 2–3 min each side.',src:'Keiser-prescribed'},
+        {n:'2',name:'Cervical prep',guide:`<strong>Setup</strong>
+Seated, feet flat, neutral spine. No pillow. Eyes open.
+<strong>Execution</strong>
+Slow controlled ROM: 5 reps each direction. <em>Flexion/extension:</em> chin to chest, then gaze up. <em>Rotation:</em> turn head fully left, then right — eyes follow. <em>Lateral tilt:</em> ear toward shoulder, no shoulder shrug. End with 5 slow shoulder rolls back.
+<strong>Target</strong>
+Cervical mechanoreceptors (especially C1–C3) feed into the vestibular nuclei via the cervicocollic reflex. Tight or restricted cervical joints generate noisy proprioceptive signals that compete with vestibular input — this prep quiets that noise.
+<strong>Cues</strong>
+Move only as far as comfortable. No pain. No dizziness during this phase — if dizzy, slow down and breathe. Keep jaw relaxed throughout.`,detail:'Gentle ROM · neutral spine · always before eye work and head turns'},
+        {n:'3',name:'Fixation holds',guide:`<strong>Setup</strong>
+Seated, arm's length from a wall target — X on paper, small sticker, or finger. Eye level.
+<strong>Execution</strong>
+Fix gaze on target. Count seconds on target without a blink reset. <em>Round 1:</em> 10s holds × 5 reps. <em>Round 2:</em> 15s holds × 3 reps. Rest 20s between rounds. Progressively extend hold duration each week.
+<strong>Target</strong>
+Your vestibulo-ocular reflex (VOR) suppression and fixation stability. The goal is to reduce saccadic intrusions — the small involuntary eye movements that break fixation. These are a marker of cerebellar and brainstem dysregulation common in post-viral POTS.
+<strong>Cues</strong>
+You should feel mild mental effort — this is not passive staring. Active fixation. If your eyes feel like they want to flick away, that's the training stimulus. Slightly dim lighting increases the challenge.`,detail:'Fixation ON → OFF · work to reduce blink resets · progressive hold duration'},
+        {n:'4',name:'Smooth pursuits',guide:`<strong>Setup</strong>
+Seated, arm extended, thumb as target. Head still throughout — only eyes move.
+<strong>Execution</strong>
+<em>Vertical first (Dr. T priority):</em> move thumb slowly up and down through ~30° arc, 0.3–0.5 Hz (one full cycle per 2–3 seconds). Eyes track smoothly — no catch-up saccades. 3 × 30s. Rest 15s. <em>Horizontal:</em> same protocol. <em>Diagonal:</em> 2 × 20s each diagonal if tolerated.
+<strong>Target</strong>
+Smooth pursuit is mediated by the cerebellum (flocculus) and frontal eye fields. Your vertical channel is specifically impaired — vertical pursuit requires more cerebellar gain control than horizontal. Prioritizing vertical trains the deficit directly.
+<strong>Cues</strong>
+Move the target slowly enough that your eyes never have to jump to catch up. If you see jumps — slow down. The speed should feel almost boring. Quality over speed.`,detail:'Vertical first, then horizontal · reduce saccadic intrusion rate'},
+        {n:'5',name:'Saccades — vertical emphasis',guide:`<strong>Setup</strong>
+Two targets on wall: one at eye level, one ~20° above OR below. Arm's length. Head completely still.
+<strong>Execution</strong>
+<em>Vertical (primary):</em> shift gaze between targets on a metronome beat — 1 beat per shift, ~60 bpm. Land cleanly on target. 3 × 20 reps. Rest 20s. <em>Horizontal:</em> 2 × 20 reps. <em>Anti-saccade challenge (if tolerated):</em> target moves left — you look right. 1 × 10 reps.
+<strong>Target</strong>
+Saccadic accuracy and velocity in the vertical channel. Your vertical saccades are outside norms — the downward channel is often specifically impaired post-EBV due to cerebellar involvement (dorsal vermis). Each accurate landing rep is error-correction signal to the cerebellum.
+<strong>Cues</strong>
+Land on target — don't overshoot. If you consistently overshoot (hypermetric), slow the metronome. The goal is accuracy first, speed second. Downward saccades get extra reps.`,detail:'Vertical channel outside norms · extra vertical reps · focus downward accuracy'},
+        {n:'6',name:'Vergence — left eye',guide:`<strong>Setup</strong>
+Brock string: attach one end to wall at eye level, hold other end at nose. Place beads at 15cm, 40cm, and 80cm.
+<strong>Execution</strong>
+<em>Near-far shifts:</em> focus on near bead (15cm) — you should see two strings forming a V. Hold 5s. Shift to far bead (80cm) — strings form an X. Hold 5s. 10 cycles. <em>Left eye emphasis:</em> patch right eye for 2 cycles, then both eyes for 2 cycles, alternating. This forces the weaker left eye to do the convergence work. <em>Without Brock string:</em> hold finger at 30cm, slowly bring to nose, focus on maintaining single image as long as possible.
+<strong>Target</strong>
+Your left eye convergence gain is 0.57 vs right at 1.26 — nearly half. The left eye is under-converging, causing diplopia and visual instability that feeds into your vestibular disorientation. Patching the dominant right eye forces the left to compensate.
+<strong>Cues</strong>
+The double-string V or X pattern should be clear. If you can't see the pattern you're not truly fusing. Don't force — if eyes fatigue (burning, blurring) stop and rest 30s. Left eye fatigue during patching is expected and means it's working.`,detail:'Near-far shifts · left gain 0.57 vs right 1.26 · conscious left-eye convergence tracking'},
+        {n:'7',name:'Rightward Halmagyi thrusts',guide:`<strong>Setup</strong>
+Seated or supine. Fix gaze on a ceiling target (supine) or wall target (seated) — a small X at eye level, 1–2m away. Head neutral.
+<strong>Execution</strong>
+Quick, small-amplitude (15–20°) head thrust to the RIGHT. Eyes must stay on target — do not let them move with the head. After the thrust: close eyes for 1s, then slow return to center. 5 reps × 3 sets, 1 min rest between sets.
+<strong>Target</strong>
+The rightward horizontal semicircular canal (right HC) — specifically the VOR gain in the rightward direction. The thrust tests and trains the vestibulo-ocular reflex: the eyes should counter-rotate leftward at the same speed as the head moves right, keeping the target stable on the fovea.
+<strong>Cues</strong>
+The thrust is QUICK — like a surprise movement. The return is SLOW. If you feel your eyes slip off target and have to jump back (corrective saccade) that's the deficit being exercised. Eyes-closed pause after each thrust is the rest/consolidation phase. Do not rush.
+<strong>Red flags</strong>
+Significant nausea — reduce amplitude. Intense vertigo lasting >30s — stop and rest. Brief spinning is expected and normal.`,detail:'Supine, ceiling target · quick rightward thrust, close eyes, slow return · 5 × 3 sets, 1 min rest',src:'Keiser-prescribed'},
+        {n:'8',name:'Whole-body rotation RIGHT',guide:`<strong>Setup</strong>
+Seated in a swivel chair or standing with support. Fix gaze on a thumb target held at arm's length in front of you. Keep eyes on thumb throughout.
+<strong>Execution</strong>
+Rotate body (and head together) to the RIGHT at a constant, slow speed. One full rotation per ~20 seconds (0.05 Hz). Thumb stays in visual field — rotate your arm with you. 30s × 3 sets, 1 min rest between sets. Eyes must stay on thumb — not the room.
+<strong>Target</strong>
+Low-frequency rotational VOR and spatial orientation. The 0.05 Hz frequency specifically targets otolith-canal integration and the velocity storage mechanism — a brainstem process that extends the VOR response beyond what the canals alone can detect. Rightward-only training addresses your right-sided deficit asymmetry.
+<strong>Cues</strong>
+Constant speed — no acceleration or deceleration mid-rotation. The thumb image should stay stable and clear. If the thumb blurs or doubles, slow down. Keep breathing — don't hold breath during rotation.
+<strong>Red flags</strong>
+Do not do this within 2 hours of a tilt table session if feeling symptomatic. Mild dizziness after stopping is normal and resolves in 30–60s — this is the training effect.`,detail:'Thumb target · right rotation · 30s × 3 sets, 1 min rest · image on thumb stays clear',src:'Keiser-prescribed'},
       ]);
     }
     sbs+=mkSblock(d.t==='S'?'acc':d.t==='R'?'purple':'blue',`${typeNames[d.t]||d.t} Cardio`,d.c||'','dd-cardio',[
@@ -3384,14 +3600,74 @@ function renderDayDetail(d){
         {n:'4',name:'Pallof press',detail:'2 × 8–12 each side'},
       ]);
     if(nb.pm) sbs+=mkSblock('teal','Neuro Block — Session 2','15–20 min · afternoon · repeat all exercises','dd-pm-neuro',[
-        {n:'1',name:'PNS Stim',detail:'Peroneal + tibial + median + V3 · 3 Hz, 300 μs, TENS-M · 2–3 min each side.',src:'Keiser-prescribed'},
-        {n:'2',name:'Cervical prep',detail:'Gentle ROM · neutral spine · always before eye work and head turns'},
-        {n:'3',name:'Fixation holds',detail:'Fixation ON → OFF · work to reduce blink resets · progressive hold duration'},
-        {n:'4',name:'Smooth pursuits',detail:'Vertical first, then horizontal · reduce saccadic intrusion rate'},
-        {n:'5',name:'Saccades — vertical emphasis',detail:'Vertical channel outside norms · extra vertical reps · focus downward accuracy'},
-        {n:'6',name:'Vergence — left eye',detail:'Near-far shifts · left gain 0.57 vs right 1.26 · conscious left-eye convergence tracking'},
-        {n:'7',name:'Rightward Halmagyi thrusts',detail:'Supine, ceiling target · quick rightward thrust, close eyes, slow return · 5 × 3 sets, 1 min rest',src:'Keiser-prescribed'},
-        {n:'8',name:'Whole-body rotation RIGHT',detail:'Thumb target · right rotation · 30s × 3 sets, 1 min rest · image on thumb stays clear',src:'Keiser-prescribed'},
+        {n:'1',name:'PNS Stim',guide:`<strong>Setup</strong>
+TENS-M unit · 3 Hz, 300 μs pulse width · self-adhesive electrodes · seated or supine.
+<strong>Sites & placement</strong>
+<em>Peroneal:</em> one pad at fibular head (just below outer knee), one pad on dorsal foot. <em>Tibial:</em> one pad behind medial malleolus, one on medial arch. <em>Median:</em> one pad at wrist crease between flexor tendons, one on thenar eminence. <em>V3 (mandibular):</em> one pad on masseter (jaw angle), one at mental foramen (chin).
+<strong>Execution</strong>
+Set intensity to visible/palpable muscle twitch but not painful. Run 2–3 min per site, per side. Do all four sites on the left, then repeat on the right. Total: ~16–24 min.
+<strong>Why</strong>
+Peripheral nerve stimulation at 3 Hz recruits large-diameter afferents (Aβ fibers) that feed into dorsal horn and brainstem circuits — the same circuits governing autonomic tone and vestibular processing. Keiser uses this to prime the nervous system before vestibular loading.`,detail:'Peroneal + tibial + median + V3 · 3 Hz, 300 μs, TENS-M · 2–3 min each side.',src:'Keiser-prescribed'},
+        {n:'2',name:'Cervical prep',guide:`<strong>Setup</strong>
+Seated, feet flat, neutral spine. No pillow. Eyes open.
+<strong>Execution</strong>
+Slow controlled ROM: 5 reps each direction. <em>Flexion/extension:</em> chin to chest, then gaze up. <em>Rotation:</em> turn head fully left, then right — eyes follow. <em>Lateral tilt:</em> ear toward shoulder, no shoulder shrug. End with 5 slow shoulder rolls back.
+<strong>Target</strong>
+Cervical mechanoreceptors (especially C1–C3) feed into the vestibular nuclei via the cervicocollic reflex. Tight or restricted cervical joints generate noisy proprioceptive signals that compete with vestibular input — this prep quiets that noise.
+<strong>Cues</strong>
+Move only as far as comfortable. No pain. No dizziness during this phase — if dizzy, slow down and breathe. Keep jaw relaxed throughout.`,detail:'Gentle ROM · neutral spine · always before eye work and head turns'},
+        {n:'3',name:'Fixation holds',guide:`<strong>Setup</strong>
+Seated, arm's length from a wall target — X on paper, small sticker, or finger. Eye level.
+<strong>Execution</strong>
+Fix gaze on target. Count seconds on target without a blink reset. <em>Round 1:</em> 10s holds × 5 reps. <em>Round 2:</em> 15s holds × 3 reps. Rest 20s between rounds. Progressively extend hold duration each week.
+<strong>Target</strong>
+Your vestibulo-ocular reflex (VOR) suppression and fixation stability. The goal is to reduce saccadic intrusions — the small involuntary eye movements that break fixation. These are a marker of cerebellar and brainstem dysregulation common in post-viral POTS.
+<strong>Cues</strong>
+You should feel mild mental effort — this is not passive staring. Active fixation. If your eyes feel like they want to flick away, that's the training stimulus. Slightly dim lighting increases the challenge.`,detail:'Fixation ON → OFF · work to reduce blink resets · progressive hold duration'},
+        {n:'4',name:'Smooth pursuits',guide:`<strong>Setup</strong>
+Seated, arm extended, thumb as target. Head still throughout — only eyes move.
+<strong>Execution</strong>
+<em>Vertical first (Dr. T priority):</em> move thumb slowly up and down through ~30° arc, 0.3–0.5 Hz (one full cycle per 2–3 seconds). Eyes track smoothly — no catch-up saccades. 3 × 30s. Rest 15s. <em>Horizontal:</em> same protocol. <em>Diagonal:</em> 2 × 20s each diagonal if tolerated.
+<strong>Target</strong>
+Smooth pursuit is mediated by the cerebellum (flocculus) and frontal eye fields. Your vertical channel is specifically impaired — vertical pursuit requires more cerebellar gain control than horizontal. Prioritizing vertical trains the deficit directly.
+<strong>Cues</strong>
+Move the target slowly enough that your eyes never have to jump to catch up. If you see jumps — slow down. The speed should feel almost boring. Quality over speed.`,detail:'Vertical first, then horizontal · reduce saccadic intrusion rate'},
+        {n:'5',name:'Saccades — vertical emphasis',guide:`<strong>Setup</strong>
+Two targets on wall: one at eye level, one ~20° above OR below. Arm's length. Head completely still.
+<strong>Execution</strong>
+<em>Vertical (primary):</em> shift gaze between targets on a metronome beat — 1 beat per shift, ~60 bpm. Land cleanly on target. 3 × 20 reps. Rest 20s. <em>Horizontal:</em> 2 × 20 reps. <em>Anti-saccade challenge (if tolerated):</em> target moves left — you look right. 1 × 10 reps.
+<strong>Target</strong>
+Saccadic accuracy and velocity in the vertical channel. Your vertical saccades are outside norms — the downward channel is often specifically impaired post-EBV due to cerebellar involvement (dorsal vermis). Each accurate landing rep is error-correction signal to the cerebellum.
+<strong>Cues</strong>
+Land on target — don't overshoot. If you consistently overshoot (hypermetric), slow the metronome. The goal is accuracy first, speed second. Downward saccades get extra reps.`,detail:'Vertical channel outside norms · extra vertical reps · focus downward accuracy'},
+        {n:'6',name:'Vergence — left eye',guide:`<strong>Setup</strong>
+Brock string: attach one end to wall at eye level, hold other end at nose. Place beads at 15cm, 40cm, and 80cm.
+<strong>Execution</strong>
+<em>Near-far shifts:</em> focus on near bead (15cm) — you should see two strings forming a V. Hold 5s. Shift to far bead (80cm) — strings form an X. Hold 5s. 10 cycles. <em>Left eye emphasis:</em> patch right eye for 2 cycles, then both eyes for 2 cycles, alternating. This forces the weaker left eye to do the convergence work. <em>Without Brock string:</em> hold finger at 30cm, slowly bring to nose, focus on maintaining single image as long as possible.
+<strong>Target</strong>
+Your left eye convergence gain is 0.57 vs right at 1.26 — nearly half. The left eye is under-converging, causing diplopia and visual instability that feeds into your vestibular disorientation. Patching the dominant right eye forces the left to compensate.
+<strong>Cues</strong>
+The double-string V or X pattern should be clear. If you can't see the pattern you're not truly fusing. Don't force — if eyes fatigue (burning, blurring) stop and rest 30s. Left eye fatigue during patching is expected and means it's working.`,detail:'Near-far shifts · left gain 0.57 vs right 1.26 · conscious left-eye convergence tracking'},
+        {n:'7',name:'Rightward Halmagyi thrusts',guide:`<strong>Setup</strong>
+Seated or supine. Fix gaze on a ceiling target (supine) or wall target (seated) — a small X at eye level, 1–2m away. Head neutral.
+<strong>Execution</strong>
+Quick, small-amplitude (15–20°) head thrust to the RIGHT. Eyes must stay on target — do not let them move with the head. After the thrust: close eyes for 1s, then slow return to center. 5 reps × 3 sets, 1 min rest between sets.
+<strong>Target</strong>
+The rightward horizontal semicircular canal (right HC) — specifically the VOR gain in the rightward direction. The thrust tests and trains the vestibulo-ocular reflex: the eyes should counter-rotate leftward at the same speed as the head moves right, keeping the target stable on the fovea.
+<strong>Cues</strong>
+The thrust is QUICK — like a surprise movement. The return is SLOW. If you feel your eyes slip off target and have to jump back (corrective saccade) that's the deficit being exercised. Eyes-closed pause after each thrust is the rest/consolidation phase. Do not rush.
+<strong>Red flags</strong>
+Significant nausea — reduce amplitude. Intense vertigo lasting >30s — stop and rest. Brief spinning is expected and normal.`,detail:'Supine, ceiling target · quick rightward thrust, close eyes, slow return · 5 × 3 sets, 1 min rest',src:'Keiser-prescribed'},
+        {n:'8',name:'Whole-body rotation RIGHT',guide:`<strong>Setup</strong>
+Seated in a swivel chair or standing with support. Fix gaze on a thumb target held at arm's length in front of you. Keep eyes on thumb throughout.
+<strong>Execution</strong>
+Rotate body (and head together) to the RIGHT at a constant, slow speed. One full rotation per ~20 seconds (0.05 Hz). Thumb stays in visual field — rotate your arm with you. 30s × 3 sets, 1 min rest between sets. Eyes must stay on thumb — not the room.
+<strong>Target</strong>
+Low-frequency rotational VOR and spatial orientation. The 0.05 Hz frequency specifically targets otolith-canal integration and the velocity storage mechanism — a brainstem process that extends the VOR response beyond what the canals alone can detect. Rightward-only training addresses your right-sided deficit asymmetry.
+<strong>Cues</strong>
+Constant speed — no acceleration or deceleration mid-rotation. The thumb image should stay stable and clear. If the thumb blurs or doubles, slow down. Keep breathing — don't hold breath during rotation.
+<strong>Red flags</strong>
+Do not do this within 2 hours of a tilt table session if feeling symptomatic. Mild dizziness after stopping is normal and resolves in 30–60s — this is the training effect.`,detail:'Thumb target · right rotation · 30s × 3 sets, 1 min rest · image on thumb stays clear',src:'Keiser-prescribed'},
       ]);
     if(nb.osc) sbs+=mkSblock('red','0.05 Hz Oscillation','10 min · not before cognitive work','dd-osc',[
       {n:'1',name:'Setup',detail:'Metronome 60 bpm · supported upright'},
